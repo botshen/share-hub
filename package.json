@@ -1,6 +1,6 @@
 {
-  "name": "wxt-vue-starter",
-  "description": "manifest.json description",
+  "name": "share-hub",
+  "description": "share-hub",
   "private": true,
   "version": "0.0.0",
   "type": "module",
