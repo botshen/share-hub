@@ -1,7 +1,6 @@
 // 1. Import the style
 import { createApp } from 'vue';
 import Button from './button.vue';
-import './style.css';
 
 
 export default defineContentScript({
@@ -17,7 +16,7 @@ export default defineContentScript({
       mode: "open",
       anchor: 'html',
       append: "first",
-      
+
       onMount: (container) => {
         // Define how your UI will be mounted inside the container
         const app = createApp(Button);
