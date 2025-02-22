@@ -15,28 +15,29 @@
     "postinstall": "wxt prepare"
   },
   "dependencies": {
-    "@webext-core/proxy-service": "^1.2.1",
-    "@wxt-dev/storage": "^1.1.0",
     "@tanstack/vue-query": "^5.59.13",
     "@webext-core/messaging": "^2.0.2",
-    "async-mutex": "^0.5.0"
+    "@webext-core/proxy-service": "^1.2.1",
+    "@wxt-dev/storage": "^1.1.0",
+    "async-mutex": "^0.5.0",
+    "idb": "^8.0.2"
   },
   "devDependencies": {
+    "@iconify/json": "^2.2.261",
     "@tailwindcss/vite": "^4.0.6",
     "@types/chrome": "^0.0.280",
     "@types/jsdom": "^21.1.7",
     "@wxt-dev/auto-icons": "^1.0.2",
-    "@wxt-dev/module-vue": "^1.0.1",
     "@wxt-dev/i18n": "^0.2.1",
+    "@wxt-dev/module-vue": "^1.0.1",
     "daisyui": "^5.0.0-beta.7",
-    "typescript": "5.6.3",
-    "tailwindcss": "^4.0.6",
-    "@iconify/json": "^2.2.261",
-    "publish-browser-extension": "^2.2.2",
     "prettier": "^3.3.3",
+    "publish-browser-extension": "^2.2.2",
+    "tailwindcss": "^4.0.6",
+    "typescript": "5.6.3",
     "unplugin-icons": "^0.19.3",
-    "vue-tsc": "^2.1.6",
     "vue": "^3.5.12",
+    "vue-tsc": "^2.1.6",
     "wxt": "^0.19.13"
   },
   "packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab"
