@@ -1,8 +1,8 @@
- 
+import { sendMessage } from "@/utils/message";
 
 let comments: NodeListOf<Element> | null = null
 const style = document.createElement("style")
- 
+const todosRepo = getTodosRepo();
 
 // 初始查找所有评论元素
 const mainElement = document.querySelector("#Main")
@@ -69,7 +69,7 @@ function cleanHTMLContent(html: string): string {
   return container.innerHTML
 }
 
-export function sharePostContent() {
+export async function sharePostContent() {
   console.log("开始分享帖子内容")
 
   const postContentElement = document.querySelector(
@@ -114,10 +114,21 @@ export function sharePostContent() {
       url: currentPageUrl
     }
   })
-}
 
  
+  todosRepo.update({
+    title: title || "",
+    postContent: postContent,
+    url: currentPageUrl,
+    author: author || "",
+    avatarUrl: avatarUrl || "",
+    comments: checkedComments,
+    postscripts: postscripts
+  })
+  await sendMessage('openOptionsPage',undefined);
 
+}
+ 
 function collectCheckedComments() {
   const checkedComments: { avatarUrl: string; author: string; content: string }[] = []
   if (comments) {
