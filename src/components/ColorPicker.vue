@@ -6,9 +6,7 @@ import { ref } from 'vue'
   backgroundStartColor: string
   backgroundEndColor: string
   backgroundAngle?: number
-  backgroundPosition?: string
-  backgroundRadius?: number
-}
+  }
 
 const selectedPresetIndex = ref(0)
 

@@ -2,7 +2,7 @@
 import { generateImage } from "@/utils/image";
 import { useOptionsStore } from "./use-options-store";
 import ColorPicker, { ColorPreset } from "@/components/ColorPicker.vue";
-const { todos, addTodo, clearAllTodos, getTodos, deleteTodo } =
+const { todos, getTodos, deleteTodo } =
   useOptionsStore();
 
 onMounted(async () => {
@@ -14,7 +14,7 @@ onMessage("openOptionsPage", async () => {
 
 const handlePresetSelect = (preset: ColorPreset) => {
   console.log("选中的预设:", preset);
-};
+ };
 
 const handleSelectTodo = (todoId: number) => {
   currentTodoId.value = todoId;
@@ -31,20 +31,86 @@ const currentTodo = computed(() => {
 });
 
 // 添加配置选项的响应式变量
-const config = ref({
-  width: 'md',
-  padding: 'md',
-  format: 'png',
-  fontSize: 'md',
-  imageQuality: '2'
-});
-
 const paddingMap = {
   sm: '10px',
   md: '20px',
   lg: '30px',
   xl: '40px',
+} as const;
+
+const widthMap = {
+  sm: '300px',
+  md: '400px',
+  lg: '600px',
+  xl: '800px',
+} as const;
+const titleFontSizeMap = {
+  xs: '20px',
+  sm: '24px',
+  md: '28px',
+  lg: '32px',
+  xl: '36px',
+  '2xl': '40px',
+  '3xl': '48px',
+} as const;
+const postFontSizeMap = {
+  xs: '12px',
+  sm: '14px',
+  md: '16px',
+  lg: '18px',
+  xl: '20px',
+  '2xl': '24px',
+  '3xl': '32px',
+} as const;
+
+const commentFontSizeMap = {
+  xs: '10px',
+  sm: '12px',
+  md: '14px',
+  lg: '16px',
+  xl: '18px',
+  '2xl': '20px',
+  '3xl': '24px',
+} as const;
+
+type WidthSize = keyof typeof widthMap;
+type FontSize = keyof typeof postFontSizeMap;
+type CommentFontSize = keyof typeof commentFontSizeMap;
+type TitleFontSize = keyof typeof titleFontSizeMap;
+const config = ref({
+  width: 'md' as WidthSize,
+  padding: 'md',
+  format: 'png',
+  fontSize: 'md' as FontSize,
+  imageQuality: '2'
+});
+
+const detailCss = (newVal: typeof config.value)=>{
+  console.log("config", newVal);
+  const card = document.getElementById('card')
+  if (card) {
+    card.style.width = widthMap[newVal.width as WidthSize]
+    card.style.fontSize = postFontSizeMap[newVal.fontSize as FontSize]
+  }
+  const comments = document.querySelectorAll('#comment')
+  comments.forEach(comment => {
+    if (comment instanceof HTMLElement) {
+      comment.style.fontSize = commentFontSizeMap[newVal.fontSize as CommentFontSize]
+    }
+  })
+  const title = document.getElementById('title')
+  if (title) {
+    title.style.fontSize = titleFontSizeMap[newVal.fontSize as TitleFontSize]
+  }
 }
+watch(config, (newVal) => {
+  detailCss(newVal)
+}, { deep: true, immediate: true });
+ 
+onMounted(() => {
+  console.log("mounted");
+  detailCss(config.value)
+})
 
 const handleDownload = async () => {
   isDownloading.value = true;
@@ -57,7 +123,7 @@ const handleDownload = async () => {
   });
   const a = document.createElement("a");
   a.href = dataUrl;
-  a.download = `${currentTodo.value?.title ?? "image"}${new Date().toISOString().slice(0,10)}_${new Date().toLocaleTimeString().replace(/:/g, '-')}`;
+  a.download = `${currentTodo.value?.title ?? "image"}${new Date().toISOString().slice(0, 10)}_${new Date().toLocaleTimeString().replace(/:/g, '-')}`;
   a.click();
   isDownloading.value = false;
 };
@@ -83,7 +149,7 @@ const handleCopy = async () => {
       [mimeType]: blob
     })
   ]);
- 
+
   isCopying.value = false;
   successInfo.value = true;
   setTimeout(() => {
@@ -94,15 +160,17 @@ const successInfo = ref(false);
 </script>
 
 <template>
-  <div v-if="successInfo" class="toast toast-end"> 
-  <div class="alert alert-success">
-    <span>successfully.</span>
+  <div v-if="successInfo" class="toast toast-end">
+    <div class="alert alert-success">
+      <span>successfully.</span>
+    </div>
   </div>
-</div>
-  <div class="flex bg-cover px-[200px]">
-    <ul class="list bg-base-100 rounded-box shadow-md shrink-0">
+  <div class="flex bg-cover px-[100px] mt-2">
+    <ul class="list bg-base-100 rounded-box shadow-md shrink-0 h-auto">
       <li v-for="todo in todos" :key="todo.id" class="list-row">
-        <div><img class="size-10 rounded-box" :src="todo.avatarUrl" /></div>
+        <div class="mask mask-squircle w-10">
+          <img :src="todo.avatarUrl" />
+        </div>
         <div>
           <div>{{ todo.author }}</div>
           <div class="text-xs uppercase font-semibold opacity-60">
@@ -129,26 +197,32 @@ const successInfo = ref(false);
         </button>
       </li>
     </ul>
-    <main class="mx-auto w-[448px] bg-red-200   rounded-box p-2 m-2  " id="card">
+    <main class="mx-auto w-[448px] border rounded-box p-2 m-2" id="card">
       <header class="flex items-center gap-2 p-2">
-        <img :src="currentTodo?.avatarUrl" class="w-10 h-10 rounded-full object-cover ring-2 ring-gray-100" />
+        <div class="avatar">
+          <div class="mask mask-squircle w-10">
+            <img :src="currentTodo?.avatarUrl" />
+          </div>
+        </div>
         <span class="text-lg">{{ currentTodo?.author }}</span>
       </header>
-      <x-title class="text-2xl font-bold block my-2 p-2">{{
+      <x-title class="font-bold block my-2 p-2" id="title">{{
         currentTodo?.title
-        }}</x-title>
-      <div class="text-base p-2 cursor-pointer whitespace-pre-wrap break-words  " :contentEditable="true"
+      }}</x-title>
+      <div class="  p-2 cursor-pointer whitespace-pre-wrap break-words" :contentEditable="true"
         :innerHTML="currentTodo?.postContent" />
       <x-comment-list v-for="(comment, index) in currentTodo?.comments" :key="comment.id">
-        <x-comment class="px-2 block">
-          <div class="divider text-sm h-1 font-bold">
+        <x-comment id="comment" class="px-2 block">
+          <div class="divider  h-1 font-bold">
             {{ index === 0 ? "精选评论" : "" }}
           </div>
           <div class="flex items-center gap-2">
-            <img :src="comment.avatarUrl" alt="头像" class="w-8 h-8 rounded-full mr-1 mb-2 border border-gray-400" />
-            <span class="text-sm font-bold mb-1">{{ comment.author }}</span>
+            <div class="mask mask-squircle w-8">
+              <img :src="comment.avatarUrl" />
+            </div>
+            <span class=" font-bold mb-1">{{ comment.author }}</span>
           </div>
-          <div class="text-sm break-words whitespace-pre-wrap overflow-wrap-anywhere" v-html="comment.content" />
+          <div class=" break-words whitespace-pre-wrap overflow-wrap-anywhere" v-html="comment.content" />
         </x-comment>
       </x-comment-list>
     </main>

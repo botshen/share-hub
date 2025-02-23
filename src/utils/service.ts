@@ -2,7 +2,7 @@ import { defineProxyService, flattenPromise } from '@webext-core/proxy-service';
 import { IDBPDatabase } from 'idb';
 
 interface Todo {
-    id?: number;
+    id: number;
     postContent: string|null;
     title: string|null;
     author: string|null;

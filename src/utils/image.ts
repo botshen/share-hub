@@ -1,23 +1,6 @@
-import { domToPng, domToJpeg, domToSvg, type Options, createContext, destroyContext } from 'modern-screenshot'
+import { domToPng, domToJpeg, domToSvg, type Options } from 'modern-screenshot'
 
-
-
-// const waitForImages = () => {
-//   const images = cardEle.querySelectorAll('img');
-//   const imagePromises = Array.from(images).map(img => {
-//     if (img.complete) {
-//       return Promise.resolve();
-//     } else {
-//       return new Promise((resolve, reject) => {
-//         img.onload = resolve;
-//         img.onerror = reject;
-//       });
-//     }
-//   });
-//   return Promise.all(imagePromises);
-// };
-// await waitForImages();
-
+ 
 export const generateImage = async (options: {
     // data?: XConfig[],
     format: string
@@ -146,16 +129,4 @@ export const generateImage = async (options: {
     }
 }
 
-export const exportImage = async (format: string) => {
-    try {
-        const dataUrl = await generateImage({
-            format: format,
-        });
-        const link = document.createElement('a');
-        link.download = `export.${format}`;
-        link.href = dataUrl;
-        link.click();
-    } catch (err) {
-        console.error('Error exporting image:', err);
-    }
-};
+ 

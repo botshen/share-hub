@@ -23,7 +23,7 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
   const getTodos = async () => {
     const result = await todosRepo.getAll();
     console.log("result", result);
-    todos.value = result;
+    todos.value = result.sort((a, b) => b.id - a.id);
    };
   const clearAllTodos = () => {
     todosRepo.clear();
