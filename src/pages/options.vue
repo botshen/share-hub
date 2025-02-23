@@ -3,7 +3,7 @@ import { generateImage } from "@/utils/image";
 import { useOptionsStore } from "./use-options-store";
 import ColorPicker, { ColorPreset } from "@/components/ColorPicker.vue";
 import { onMessage } from "@/utils/message";
-
+ 
 const { todos, getTodos, deleteTodo,currentTodoId } =
   useOptionsStore();
 
@@ -150,6 +150,40 @@ const handleCopy = async () => {
   }, 2000);
 };
 const successInfo = ref(false);
+
+// 1. 添加状态管理
+const selectedComments = ref<Comment[]>([]);
+const isDragging = ref(false);
+
+// 2. 引入必要的库
+import VueDraggable from 'vuedraggable';
+
+// 3. 评论拖拽相关处理
+const onDragStart = () => {
+  isDragging.value = true;
+};
+
+const onDragEnd = () => {
+  isDragging.value = false;
+};
+
+// 4. 动画配置
+const commentMotion = {
+  initial: { scale: 1, rotate: 0 },
+  hover: { 
+    scale: 1.02,
+    transition: { duration: 200 }
+  },
+  dragging: { 
+    scale: 1.05, 
+    rotate: 3,
+    transition: { 
+      type: "spring",
+      stiffness: 300,
+      damping: 20 
+    }
+  }
+};
 </script>
 
 <template>
@@ -208,20 +242,65 @@ const successInfo = ref(false);
       }}</x-title>
       <div class="  p-2 cursor-pointer whitespace-pre-wrap break-words" :contentEditable="true"
         :innerHTML="currentTodo?.postContent" />
-      <x-comment-list v-for="(comment, index) in currentTodo?.comments" :key="comment.id">
-        <x-comment id="comment" class="px-2 block">
-          <div class="divider  h-1 font-bold">
-            {{ index === 0 ? "精选评论" : "" }}
+      <div class="comments-container">
+        <!-- 精选区域 -->
+        <div class="selected-zone" 
+             :class="{ 'is-active': isDragging }">
+          <div class="selected-zone-header flex items-center justify-between">
+            <span class="text-lg font-bold">精选评论</span>
+            <span class="text-sm text-gray-500">拖动评论到此处添加到精选</span>
           </div>
-          <div class="flex items-center gap-2">
-            <div class="mask mask-squircle w-8">
-              <img :src="comment.avatarUrl" />
+          <VueDraggable 
+            v-model="selectedComments"
+            group="comments"
+            @start="onDragStart"
+            @end="onDragEnd"
+            item-key="id"
+            class="selected-list">
+            <template #item="{ element }">
+              <div>
+                <div class="divider h-1"></div>
+                <div class="selected-comment" 
+                     v-motion="commentMotion">
+                  <div class="comment-content">
+                    <div class="flex items-center gap-2 mb-2">
+                      <div class="mask mask-squircle w-8">
+                        <img :src="element.avatarUrl" />
+                      </div>
+                      <span class="font-bold">{{ element.author }}</span>
+                    </div>
+                    <div class="ml-10" v-html="element.content" />
+                  </div>
+                </div>
+              </div>
+            </template>
+          </VueDraggable>
+        </div>
+
+        <!-- 普通评论区 -->
+        <VueDraggable 
+          :list="currentTodo?.comments"
+          group="comments"
+          @start="onDragStart"
+          @end="onDragEnd"
+          item-key="id"
+          class="comments-list">
+          <template #item="{ element }">
+            <div class="comment-item" 
+                 v-motion="commentMotion">
+              <x-comment id="comment" class="px-2 block">
+                <div class="flex items-center gap-2">
+                  <div class="mask mask-squircle w-8">
+                    <img :src="element.avatarUrl" />
+                  </div>
+                  <span class="font-bold">{{ element.author }}</span>
+                </div>
+                <div class="break-words whitespace-pre-wrap overflow-wrap-anywhere ml-10 mt-1" v-html="element.content" />
+              </x-comment>
             </div>
-            <span class=" font-bold mb-1">{{ comment.author }}</span>
-          </div>
-          <div class="break-words whitespace-pre-wrap overflow-wrap-anywhere ml-10 mt-1" v-html="comment.content" />
-        </x-comment>
-      </x-comment-list>
+          </template>
+        </VueDraggable>
+      </div>
       <footer class="text-center text-gray-500 bg-gray-100 p-2 mt-4 rounded-box text-sm">
         本图片由 ShareHub 浏览器插件生成
       </footer>
@@ -277,3 +356,115 @@ const successInfo = ref(false);
     </x-action-bar>
   </div>
 </template>
+
+<style scoped>
+.comments-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.selected-zone {
+  min-height: 100px;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.selected-zone::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(
+    90deg,
+    #4CAF50,
+    #2196F3,
+    #4CAF50
+  );
+  border-radius: 10px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background-size: 200% 100%;
+  animation: gradient 3s linear infinite;
+}
+
+.selected-zone.is-active {
+  border-color: transparent;
+  background-color: rgba(76, 175, 80, 0.05);
+  box-shadow: 0 0 30px rgba(76, 175, 80, 0.3);
+}
+
+.selected-zone.is-active::before {
+  opacity: 0.2;
+}
+
+.selected-comment, .comment-item {
+  position: relative;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: grab;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+.selected-comment:hover, .comment-item:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  transform: translateY(-2px) rotate(1deg);
+}
+
+.selected-comment:active, .comment-item:active {
+  cursor: grabbing;
+}
+
+.sortable-ghost {
+  opacity: 0.3;
+  background: #f5f5f5;
+  transform: scale(0.95);
+}
+
+.sortable-drag {
+  cursor: grabbing;
+  transform: scale(1.05) rotate(3deg) !important;
+  box-shadow: 0 12px 24px rgba(76, 175, 80, 0.3) !important;
+  animation: pulse 1s infinite;
+  background: white !important;
+}
+
+.selected-list, .comments-list {
+  min-height: 50px;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 12px 24px rgba(76, 175, 80, 0.3);
+    transform: scale(1.05) rotate(3deg);
+  }
+  50% {
+    box-shadow: 0 16px 32px rgba(76, 175, 80, 0.4);
+    transform: scale(1.08) rotate(3deg);
+  }
+  100% {
+    box-shadow: 0 12px 24px rgba(76, 175, 80, 0.3);
+    transform: scale(1.05) rotate(3deg);
+  }
+}
+</style>
