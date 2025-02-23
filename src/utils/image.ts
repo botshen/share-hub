@@ -1,4 +1,4 @@
-import { domToPng, domToJpeg, domToSvg, type Options } from 'modern-screenshot'
+import { domToPng, domToJpeg, domToSvg, type Options, domToWebp } from 'modern-screenshot'
 
  
 export const generateImage = async (options: {
@@ -119,6 +119,9 @@ export const generateImage = async (options: {
                 break;
             case 'svg':
                 dataUrl = await domToSvg(cardEle, exportOptions);
+                break;
+            case 'webp':
+                dataUrl = await domToWebp(cardEle, exportOptions);
                 break;
             default:
                 throw new Error('Unsupported format');

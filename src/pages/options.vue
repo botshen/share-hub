@@ -65,20 +65,11 @@ const postFontSizeMap = {
   '3xl': '32px',
 } as const;
 
-const commentFontSizeMap = {
-  xs: '10px',
-  sm: '12px',
-  md: '14px',
-  lg: '16px',
-  xl: '18px',
-  '2xl': '20px',
-  '3xl': '24px',
-} as const;
+ 
 
 type WidthSize = keyof typeof widthMap;
 type FontSize = keyof typeof postFontSizeMap;
-type CommentFontSize = keyof typeof commentFontSizeMap;
-type TitleFontSize = keyof typeof titleFontSizeMap;
+ type TitleFontSize = keyof typeof titleFontSizeMap;
 const config = ref({
   width: 'md' as WidthSize,
   padding: 'md',
@@ -97,7 +88,7 @@ const detailCss = (newVal: typeof config.value)=>{
   const comments = document.querySelectorAll('#comment')
   comments.forEach(comment => {
     if (comment instanceof HTMLElement) {
-      comment.style.fontSize = commentFontSizeMap[newVal.fontSize as CommentFontSize]
+      comment.style.fontSize = postFontSizeMap[newVal.fontSize as FontSize]
     }
   })
   const title = document.getElementById('title')
@@ -168,9 +159,10 @@ const successInfo = ref(false);
     </div>
   </div>
   <div class="flex bg-cover px-[100px] mt-2">
-    <ul class="list bg-base-100 rounded-box shadow-md shrink-0 h-auto">
-      <li v-for="todo in todos" :key="todo.id" class="list-row">
-        <div class="mask mask-squircle w-10">
+    <ul class="list bg-base-100 rounded-box shadow-md shrink-0 h-auto w-[300px]">
+      <li v-for="todo in todos" :key="todo.id" >
+        <div @click="handleSelectTodo(todo.id)" class="list-row cursor-pointer">
+          <div class="mask mask-squircle w-10 h-10">
           <img :src="todo.avatarUrl" />
         </div>
         <div>
@@ -179,14 +171,8 @@ const successInfo = ref(false);
             {{ todo.title }}
           </div>
         </div>
-        <button class="btn btn-square btn-ghost" @click="handleSelectTodo(todo.id)">
-          <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none" stroke="currentColor">
-              <path d="M6 3L20 12 6 21 6 3z"></path>
-            </g>
-          </svg>
-        </button>
-        <button class="btn btn-square btn-ghost" @click="handleDelete(todo.id)">
+ 
+        <button v-if="todos.length > 1" class="btn btn-square btn-ghost" @click="handleDelete(todo.id)">
           <svg t="1740274258800" class="icon size-[1.2em]" viewBox="0 0 1024 1024" version="1.1"
             xmlns="http://www.w3.org/2000/svg" p-id="7931" width="200" height="200">
             <path
@@ -197,16 +183,25 @@ const successInfo = ref(false);
               fill="#F61818" p-id="7933"></path>
           </svg>
         </button>
+        </div>
+        
+     
       </li>
     </ul>
-    <main class="mx-auto bg-white w-[448px] border rounded-box p-2 m-2" id="card">
-      <header class="flex items-center gap-2 p-2">
-        <div class="avatar">
+    <main class="mx-auto bg-white w-[448px] border rounded-box p-4 py-6 m-4" id="card">
+      <header class="flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2">
+          <div class="avatar">
           <div class="mask mask-squircle w-10">
             <img :src="currentTodo?.avatarUrl" />
           </div>
         </div>
         <span class="text-lg">{{ currentTodo?.author }}</span>
+        </div>
+        <div class="flex items-center gap-2 text-gray-500">
+          V2ex
+          <svg t="1740317552775" class="icon size-8 opacity-30" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2627" width="200" height="200"><path d="M46.08 47.616c-6.656 8.192-10.24 62.976-10.24 179.712v167.424h542.72l44.544 52.736c24.576 28.672 44.544 58.88 44.544 67.584 0 8.192-20.48 37.888-45.056 67.072l-45.056 51.712H35.84v160.768c0 90.624 3.584 168.448 8.704 179.712 8.704 17.92 21.504 18.944 298.496 18.944 158.72 0 295.424-3.072 302.08-6.144 7.68-3.072 92.16-104.96 188.416-224.256 149.504-186.368 175.104-222.208 175.104-248.32s-18.944-54.784-116.736-177.664C827.904 256 746.496 155.648 710.656 112.64L646.144 35.84H351.744C133.12 35.84 53.76 38.912 46.08 47.616z" fill="#707070" p-id="2628"></path></svg>
+        </div>
       </header>
       <x-title class="font-bold block my-2 p-2" id="title">{{
         currentTodo?.title
@@ -224,12 +219,15 @@ const successInfo = ref(false);
             </div>
             <span class=" font-bold mb-1">{{ comment.author }}</span>
           </div>
-          <div class=" break-words whitespace-pre-wrap overflow-wrap-anywhere" v-html="comment.content" />
+          <div class="break-words whitespace-pre-wrap overflow-wrap-anywhere ml-10 mt-1" v-html="comment.content" />
         </x-comment>
       </x-comment-list>
+      <footer class="text-center text-gray-500 bg-gray-100 p-2 mt-4 rounded-box text-sm">
+        本图片由 ShareHub 浏览器插件生成
+      </footer>
     </main>
     <x-action-bar class="shrink-0 flex flex-col w-[300px] ">
-      <ColorPicker class="shrink-0" @preset-selected="handlePresetSelect" />
+      <!-- <ColorPicker class="shrink-0" @preset-selected="handlePresetSelect" /> -->
       <legend class="fieldset-legend">WIDTH</legend>
       <div class="flex gap-2">
         <input type="radio" name="width" value="sm" v-model="config.width" aria-label="sm" class="btn" />
@@ -237,19 +235,19 @@ const successInfo = ref(false);
         <input type="radio" name="width" value="lg" v-model="config.width" aria-label="lg" class="btn" />
         <input type="radio" name="width" value="xl" v-model="config.width" aria-label="xl" class="btn" />
       </div>
-      <legend class="fieldset-legend">PADDING</legend>
+      <!-- <legend class="fieldset-legend">PADDING</legend>
       <div class="flex gap-2">
         <input type="radio" name="padding" value="sm" v-model="config.padding" aria-label="sm" class="btn" />
         <input type="radio" name="padding" value="md" v-model="config.padding" aria-label="md" class="btn" />
         <input type="radio" name="padding" value="lg" v-model="config.padding" aria-label="lg" class="btn" />
         <input type="radio" name="padding" value="xl" v-model="config.padding" aria-label="xl" class="btn" />
-      </div>
+      </div> -->
       <legend class="fieldset-legend">FORMAT</legend>
       <div class="flex gap-2">
         <input type="radio" name="format" value="png" v-model="config.format" aria-label="png" class="btn" />
         <input type="radio" name="format" value="jpeg" v-model="config.format" aria-label="jpeg" class="btn" />
         <input type="radio" name="format" value="svg" v-model="config.format" aria-label="svg" class="btn" />
-        <input type="radio" name="format" value="md" v-model="config.format" aria-label="md" class="btn" />
+        <input type="radio" name="format" value="webp" v-model="config.format" aria-label="webp" class="btn" />
       </div>
       <legend class="fieldset-legend">FONT SIZE</legend>
       <div class="flex gap-2 flex-wrap">
