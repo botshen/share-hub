@@ -3,17 +3,17 @@ import { IDBPDatabase } from 'idb';
 
 interface Todo {
     id?: number;
-    postContent: string;
-    title: string;
-    author: string;
-    avatarUrl: string;
+    postContent: string|null;
+    title: string|null;
+    author: string|null;
+    avatarUrl: string|null;
     comments:{
-        content: string;
-        author: string;
-        avatarUrl: string;
+        content: string|null;
+        author: string|null;
+        avatarUrl: string|null;
     }[];
     postscripts: {
-        content: string;
+        content: string|null;
     }[];
     url: string;
 }

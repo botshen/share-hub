@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 
-interface ColorPreset {
+ export interface ColorPreset {
   backgroundFillType: 'Linear' | 'Radial'
   backgroundStartColor: string
   backgroundEndColor: string

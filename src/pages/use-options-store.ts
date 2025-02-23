@@ -24,10 +24,13 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
     const result = await todosRepo.getAll();
     console.log("result", result);
     todos.value = result;
-    console.log(todos.value);
-  };
+   };
   const clearAllTodos = () => {
     todosRepo.clear();
+    getTodos();
+  };
+  const deleteTodo = (todoId: number) => {
+    todosRepo.delete(todoId);
     getTodos();
   };
 
@@ -36,5 +39,6 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
     getTodos,
     addTodo,
     clearAllTodos,
+    deleteTodo,
   };
 });
