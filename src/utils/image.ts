@@ -77,8 +77,10 @@ export const generateImage = async (options: {
             },
             fetchFn: async (url) => {
                 try {
-                    // Use Capacitor's HTTP plugin for native fetch
-                    const response = await fetch(url);
+                    const response = await fetch(url, {
+                        mode: 'cors',  // 明确指定cors模式
+                        credentials: 'omit'  // 不发送cookies
+                    });
 
                     if (!response.ok) {
                         throw new Error(`HTTP error, status = ${response.status}`);
@@ -99,7 +101,7 @@ export const generateImage = async (options: {
                     return dataUrl;
                 } catch (error) {
                     console.error('Error fetching image:', error);
-                    return false; // Fall back to normal fetch if there's an error
+                    return false;
                 }
             },
             // workerUrl: 'https://unpkg.com/modern-screenshot/dist/worker.js',

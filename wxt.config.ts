@@ -22,7 +22,12 @@ export default defineConfig({
     },
   }),
   manifest: {
-    permissions: ['storage'],
+    permissions: [
+      'storage',
+     ],
+    host_permissions: [
+     '<all_urls>'
+    ]
   },
   autoIcons: {
     grayscaleOnDevelopment: false,

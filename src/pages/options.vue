@@ -2,6 +2,8 @@
 import { generateImage } from "@/utils/image";
 import { useOptionsStore } from "./use-options-store";
 import ColorPicker, { ColorPreset } from "@/components/ColorPicker.vue";
+import { onMessage } from "@/utils/message";
+
 const { todos, getTodos, deleteTodo,currentTodoId } =
   useOptionsStore();
 
