@@ -19,6 +19,7 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
     });
     getTodos();
   };
+  const currentTodoId = ref<number | null>(null);
 
   const getTodos = async () => {
     const result = await todosRepo.getAll();
@@ -30,8 +31,9 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
     getTodos();
   };
   const deleteTodo = (todoId: number) => {
+    currentTodoId.value = null;
     todosRepo.delete(todoId);
-    getTodos();
+     getTodos();
   };
 
   return {
@@ -40,5 +42,6 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
     addTodo,
     clearAllTodos,
     deleteTodo,
+    currentTodoId,
   };
 });

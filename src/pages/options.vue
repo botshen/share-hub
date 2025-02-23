@@ -2,7 +2,7 @@
 import { generateImage } from "@/utils/image";
 import { useOptionsStore } from "./use-options-store";
 import ColorPicker, { ColorPreset } from "@/components/ColorPicker.vue";
-const { todos, getTodos, deleteTodo } =
+const { todos, getTodos, deleteTodo,currentTodoId } =
   useOptionsStore();
 
 onMounted(async () => {
@@ -22,10 +22,10 @@ const handleSelectTodo = (todoId: number) => {
 const handleDelete = (todoId: number) => {
   deleteTodo(todoId);
 };
-const currentTodoId = ref<number | null>(null);
 const currentTodo = computed(() => {
-  if (!todos.value) return null;
+   if (!todos.value) return null;
   console.log("todos.value", todos.value);
+  console.log('currentTodoId',currentTodoId)
   if (!currentTodoId.value) return todos.value?.[0];
   return todos.value?.find((todo) => todo.id === currentTodoId.value);
 });
@@ -197,7 +197,7 @@ const successInfo = ref(false);
         </button>
       </li>
     </ul>
-    <main class="mx-auto w-[448px] border rounded-box p-2 m-2" id="card">
+    <main class="mx-auto bg-white w-[448px] border rounded-box p-2 m-2" id="card">
       <header class="flex items-center gap-2 p-2">
         <div class="avatar">
           <div class="mask mask-squircle w-10">
