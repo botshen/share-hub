@@ -55,7 +55,8 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
     padding: 'md',
     format: 'png',
     fontSize: 'md',
-    imageQuality: '2'
+    imageQuality: '2',
+    theme: 'yellow'
   });
 
 

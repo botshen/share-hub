@@ -1,5 +1,7 @@
 <script lang="ts" setup>
+import { ColorPreset, transformPresetToTailwindcssClassName } from "@/utils/post-config";
 import { useOptionsStore } from "../use-options-store";
+import ColorPicker from "@/components/ColorPicker.vue";
 
 const { currentTodo, config, isCopying, isDownloading, successInfoVisible } = useOptionsStore();
 const handleCopy = async () => {
@@ -44,12 +46,18 @@ const handleDownload = async () => {
   a.click();
   isDownloading.value = false;
 };
+const handlePresetSelect = (preset: ColorPreset) => {
+  console.log('preset',preset)
+  const className = transformPresetToTailwindcssClassName(preset);
+  console.log('className',className)
+  config.value.theme = className;
+  };
 
 
 </script>
 <template>
   <x-action-bar class="shrink-0 flex flex-col w-[300px] ">
-    <!-- <ColorPicker class="shrink-0" @preset-selected="handlePresetSelect" /> -->
+    <ColorPicker class="shrink-0" @preset-selected="handlePresetSelect" />
     <legend class="fieldset-legend">WIDTH</legend>
     <div class="flex gap-2">
       <input type="radio" name="width" value="sm" v-model="config.width" aria-label="sm" class="btn" />
@@ -57,13 +65,24 @@ const handleDownload = async () => {
       <input type="radio" name="width" value="lg" v-model="config.width" aria-label="lg" class="btn" />
       <input type="radio" name="width" value="xl" v-model="config.width" aria-label="xl" class="btn" />
     </div>
-    <!-- <legend class="fieldset-legend">PADDING</legend>
+    <legend class="fieldset-legend">PADDING</legend>
       <div class="flex gap-2">
         <input type="radio" name="padding" value="sm" v-model="config.padding" aria-label="sm" class="btn" />
         <input type="radio" name="padding" value="md" v-model="config.padding" aria-label="md" class="btn" />
         <input type="radio" name="padding" value="lg" v-model="config.padding" aria-label="lg" class="btn" />
         <input type="radio" name="padding" value="xl" v-model="config.padding" aria-label="xl" class="btn" />
-      </div> -->
+      </div>
+      <legend class="fieldset-legend">THEME</legend>
+      <div class="flex gap-2 flex-wrap">
+        <input v-for="(value, key) in themeMapClassName" 
+          :key="key"
+          type="radio" 
+          name="theme"
+          :value="key"
+          v-model="config.theme"
+          :aria-label="key"
+          class="btn" />
+      </div>
     <legend class="fieldset-legend">FORMAT</legend>
     <div class="flex gap-2">
       <input type="radio" name="format" value="png" v-model="config.format" aria-label="png" class="btn" />
