@@ -70,7 +70,7 @@ function cleanHTMLContent(html: string): string {
   return container.innerHTML;
 }
 
-export async function sharePostContent() {
+export async function sharePostV2ex() {
   const postContentElement = document.querySelector(
     ".topic_content:not(.markdown_body)",
   );

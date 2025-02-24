@@ -4,7 +4,7 @@ import Button from './button.vue';
 
 
 export default defineContentScript({
-  matches: ['*://www.reddit.com/*','*://www.v2ex.com/t/*'],
+  matches: ['*://www.v2ex.com/t/*', '*://*.reddit.com/*'],
   // 2. Set cssInjectionMode
   cssInjectionMode: 'ui',
 
