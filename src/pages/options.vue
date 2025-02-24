@@ -248,7 +248,7 @@ const commentMotion = {
         }}</x-title>
       <div class="  p-2 cursor-pointer whitespace-pre-wrap break-words" :contentEditable="true"
         :innerHTML="currentTodo?.postContent" />
-      <div class="comments-container">
+      <div class="comments-container" v-if="!(isCopying || isDownloading) || selectedComments.length > 0">
         <!-- 精选区域 -->
         <div class="selected-zone" :class="{ 'is-active': isDragging }">
           <div class="selected-zone-header flex items-center justify-between">
@@ -334,10 +334,10 @@ const commentMotion = {
       </div>
       <legend class="fieldset-legend">IMAGE QUALITY</legend>
       <div class="flex gap-2">
-        <input type="radio" name="imageQuality" value="1" v-model="config.imageQuality" aria-label="1x" class="btn" />
-        <input type="radio" name="imageQuality" value="2" v-model="config.imageQuality" aria-label="2x" class="btn" />
-        <input type="radio" name="imageQuality" value="3" v-model="config.imageQuality" aria-label="3x" class="btn" />
-        <input type="radio" name="imageQuality" value="4" v-model="config.imageQuality" aria-label="4x" class="btn" />
+        <input type="radio" name="imageQuality" value="1" v-model="config.imageQuality" aria-label="normal" class="btn" />
+        <input type="radio" name="imageQuality" value="2" v-model="config.imageQuality" aria-label="high" class="btn" />
+        <input type="radio" name="imageQuality" value="3" v-model="config.imageQuality" aria-label="super" class="btn" />
+        <input type="radio" name="imageQuality" value="4" v-model="config.imageQuality" aria-label="ultra" class="btn" />
       </div>
       <button class="btn btn-block my-2" @click="handleDownload">
         <span v-if="isDownloading" class="loading loading-spinner">
