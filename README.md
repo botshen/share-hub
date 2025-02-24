@@ -1,7 +1,35 @@
-# WXT + Vue 3
+# todo
 
-This template should help get you started developing with Vue 3 in WXT.
+- pro 功能
+- 保留帖子的某部分的ui 选项
+- 评论的人的tag（比如作者）
+- 评论点赞数量显示
+- 帖子可编辑的交互css
+- 背景图和padding渐变
 
-## Recommended IDE Setup
+# 功能增强
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar).
+- 支持评论排序（按时间、点赞数等）
+- 支持多主题切换
+- 支持自定义字体
+- 支持导出时添加水印
+- 支持批量导出
+- 支持自定义评论过滤规则
+- 支持快捷键操作
+- 支持分享链接生成
+- 支持评论引用关系的可视化
+- 支持自定义评论模板
+- 支持多语言切换
+- 支持评论内容的统计分析
+- 支持导出为多种格式（PDF/Markdown/HTML）
+- 支持评论内容的关键词高亮
+
+# UI/UX
+
+- 添加加载状态动画
+- 添加拖拽调整布局功能
+- 添加深色模式支持
+- 添加评论预览功能
+- 添加操作引导提示
+- 添加快捷操作工具栏
+- 优化评论选择交互

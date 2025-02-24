@@ -259,9 +259,9 @@ const onlyEditorVisible = computed(() => {
           </div>
         </div>
       </div>
-      <footer class="text-center text-gray-500 bg-gray-100 p-2 mt-4 mx-3 rounded-box text-sm" v-if="!onlyEditorVisible">
+      <!-- <footer class="text-center text-gray-500 bg-gray-100 p-2 mt-4 mx-3 rounded-box text-sm" v-if="!onlyEditorVisible">
         本图片由 ShareHub 浏览器插件生成
-      </footer>
+      </footer> -->
     </main>
     <x-action-bar class="shrink-0 flex flex-col w-[300px] ">
       <!-- <ColorPicker class="shrink-0" @preset-selected="handlePresetSelect" /> -->
