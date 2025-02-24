@@ -24,6 +24,8 @@
     "gsap": "^3.12.7",
     "idb": "^8.0.2",
     "modern-screenshot": "^4.6.0",
+    "nanoid": "^5.1.2",
+    "uuid": "^11.1.0",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {

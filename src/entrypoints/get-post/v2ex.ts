@@ -1,3 +1,4 @@
+import { createNanoId } from "@/utils/id-helper";
 import { sendMessage } from "@/utils/message";
 
 let comments: NodeListOf<Element> | null = null;
@@ -114,9 +115,11 @@ export async function sharePostContent() {
 
 function collectCheckedComments() {
   const checkedComments: {
+    id: string;
     avatarUrl: string;
     author: string;
     content: string;
+    isChecked: boolean;
   }[] = [];
   if (comments) {
     comments.forEach((comment) => {
@@ -140,9 +143,11 @@ function collectCheckedComments() {
         content = cleanHTMLContent(content);
 
         checkedComments.push({
+          id: createNanoId("comment"),
           avatarUrl,
           author: author || "-",
           content: content || "-",
+          isChecked: false,
         });
       }
     });

@@ -156,6 +156,15 @@ const successInfo = ref(false);
 
 // 1. 添加状态管理
 const selectedComments = ref<Comment[]>([]);
+const handleCommentSelect = (commentId: number, checked: boolean) => {
+  const comment = currentTodo.value?.comments.find(c => c.id === commentId);
+  if (comment) {
+    comment.isChecked = checked;
+  }
+};
+const onlyEditorVisible = computed(() => {
+  return !(isCopying.value || isDownloading.value)
+})
 
 </script>
 
@@ -217,34 +226,34 @@ const selectedComments = ref<Comment[]>([]);
       </header>
       <x-title class="font-bold block my-2 p-2" id="title">{{
         currentTodo?.title
-        }}</x-title>
+      }}</x-title>
       <div class="  p-2 cursor-pointer whitespace-pre-wrap break-words" :contentEditable="true"
         :innerHTML="currentTodo?.postContent" />
-      <div class="comments-container" v-if="!(isCopying || isDownloading)">
+      <div>
         <div class="selected-zone">
           <div class="selected-zone-header">
-            <span class="text-lg font-bold">评论</span>
+            <span class="text-lg font-bold" v-if="onlyEditorVisible || currentTodo?.comments?.some(c => c.isChecked)">评论</span>
+            <span class="label-text text-xs text-gray-500 ml-2" v-if="onlyEditorVisible">勾选评论以在导出时显示</span>
           </div>
-          <div class="comments-list">
-            <div v-for="comment in currentTodo?.comments" :key="comment.id">
+          <div v-for="comment in currentTodo?.comments" :key="comment.id">
+            <x-comment id="comment" class="px-2 block" v-if="onlyEditorVisible || comment.isChecked">
               <div class="divider h-1"></div>
-              <div class="comment-item">
-                <x-comment id="comment" class="px-2 block">
-                  <div class="flex items-center gap-2">
-                    <div class="mask mask-squircle w-8">
-                      <img :src="comment.avatarUrl" />
-                    </div>
-                    <span class="font-bold">{{ comment.author }}</span>
-                  </div>
-                  <div class="break-words whitespace-pre-wrap overflow-wrap-anywhere ml-10 mt-1"
-                    v-html="comment.content" />
-                </x-comment>
+              <div class="flex items-center gap-2">
+                <div class="mask mask-squircle w-8">
+                  <img :src="comment.avatarUrl" />
+                </div>
+                <span class="font-bold">{{ comment.author }}</span>
+                <label class="cursor-pointer label" v-if="onlyEditorVisible">
+                  <input type="checkbox" :checked="comment.isChecked" class="checkbox checkbox-success"
+                    @change="(e) => handleCommentSelect(comment.id, (e.target as HTMLInputElement).checked)" />
+                </label>
               </div>
-            </div>
+              <div class="break-words whitespace-pre-wrap overflow-wrap-anywhere ml-10 mt-1" v-html="comment.content" />
+            </x-comment>
           </div>
         </div>
       </div>
-      <footer class="text-center text-gray-500 bg-gray-100 p-2 mt-4 mx-3 rounded-box text-sm">
+      <footer class="text-center text-gray-500 bg-gray-100 p-2 mt-4 mx-3 rounded-box text-sm" v-if="!onlyEditorVisible">
         本图片由 ShareHub 浏览器插件生成
       </footer>
     </main>
@@ -283,10 +292,13 @@ const selectedComments = ref<Comment[]>([]);
       </div>
       <legend class="fieldset-legend">IMAGE QUALITY</legend>
       <div class="flex gap-2">
-        <input type="radio" name="imageQuality" value="1" v-model="config.imageQuality" aria-label="normal" class="btn" />
+        <input type="radio" name="imageQuality" value="1" v-model="config.imageQuality" aria-label="normal"
+          class="btn" />
         <input type="radio" name="imageQuality" value="2" v-model="config.imageQuality" aria-label="high" class="btn" />
-        <input type="radio" name="imageQuality" value="3" v-model="config.imageQuality" aria-label="super" class="btn" />
-        <input type="radio" name="imageQuality" value="4" v-model="config.imageQuality" aria-label="ultra" class="btn" />
+        <input type="radio" name="imageQuality" value="3" v-model="config.imageQuality" aria-label="super"
+          class="btn" />
+        <input type="radio" name="imageQuality" value="4" v-model="config.imageQuality" aria-label="ultra"
+          class="btn" />
       </div>
       <button class="btn btn-block my-2" @click="handleDownload">
         <span v-if="isDownloading" class="loading loading-spinner">
@@ -299,4 +311,3 @@ const selectedComments = ref<Comment[]>([]);
     </x-action-bar>
   </div>
 </template>
- 
