@@ -18,9 +18,10 @@ const handlePresetSelect = (preset: ColorPreset) => {
   console.log("选中的预设:", preset);
 };
 
-const handleSelectTodo = (todoId: number) => {
+const handleSelectTodo = async (todoId: number) => {
   currentTodoId.value = todoId;
   selectedComments.value = [];
+  await getTodos();
 };
 const handleDelete = (todoId: number) => {
   deleteTodo(todoId);
