@@ -268,7 +268,7 @@ const commentMotion = {
                       </div>
                       <span class="font-bold">{{ element.author }}</span>
                     </div>
-                    <div class="ml-10" v-html="element.content" />
+                    <div class="ml-10 break-words whitespace-pre-wrap overflow-wrap-anywhere" v-html="element.content" />
                   </div>
                 </div>
               </div>
