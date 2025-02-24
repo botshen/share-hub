@@ -4,7 +4,7 @@ import { useOptionsStore } from "./use-options-store";
 import ColorPicker, { ColorPreset } from "@/components/ColorPicker.vue";
 import { onMessage } from "@/utils/message";
 
-const { todos, getTodos, deleteTodo, currentTodoId } =
+const { todos, getTodos, deleteTodo, currentTodoId,currentTodo } =
   useOptionsStore();
 
 onMounted(async () => {
@@ -19,20 +19,15 @@ const handlePresetSelect = (preset: ColorPreset) => {
 };
 
 const handleSelectTodo = async (todoId: number) => {
+  console.log('todoId',todoId)
   currentTodoId.value = todoId;
-  selectedComments.value = [];
-  await getTodos();
+ 
 };
 const handleDelete = (todoId: number) => {
   deleteTodo(todoId);
 };
-const currentTodo = computed(() => {
-  if (!todos.value) return null;
-  console.log("todos.value", todos.value);
-  console.log('currentTodoId', currentTodoId)
-  if (!currentTodoId.value) return todos.value?.[0];
-  return todos.value?.find((todo) => todo.id === currentTodoId.value);
-});
+
+ 
 
 // 添加配置选项的响应式变量
 const paddingMap = {
@@ -103,6 +98,18 @@ watch(config, (newVal) => {
   detailCss(newVal)
 }, { deep: true, immediate: true });
 
+
+watch(currentTodoId, (newVal) => {
+  console.log('newVal',newVal)
+  if (!todos.value) return;
+ 
+  if (newVal) {
+    currentTodo.value = todos.value?.find((todo) => todo.id === newVal);
+  }else{
+    console.log('todos.value',todos.value)
+    currentTodo.value= todos.value?.[0];
+  }
+ },{immediate:true,deep:true})
 onMounted(() => {
   console.log("mounted");
   detailCss(config.value)
@@ -154,9 +161,8 @@ const handleCopy = async () => {
 };
 const successInfo = ref(false);
 
-// 1. 添加状态管理
-const selectedComments = ref<Comment[]>([]);
-const handleCommentSelect = (commentId: number, checked: boolean) => {
+ 
+ const handleCommentSelect = (commentId: number, checked: boolean) => {
   const comment = currentTodo.value?.comments.find(c => c.id === commentId);
   if (comment) {
     comment.isChecked = checked;

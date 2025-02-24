@@ -20,20 +20,22 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
     getTodos();
   };
   const currentTodoId = ref<number | null>(null);
-
+  const currentTodo = ref<any>(null);
   const getTodos = async () => {
     const result = await todosRepo.getAll();
     console.log("result", result);
     todos.value = result.sort((a, b) => b.id - a.id);
-   };
+    if (todos.value.length > 0) {
+      currentTodo.value = todos.value[0];
+    }
+  };
   const clearAllTodos = () => {
     todosRepo.clear();
     getTodos();
   };
   const deleteTodo = (todoId: number) => {
-    currentTodoId.value = null;
     todosRepo.delete(todoId);
-     getTodos();
+    getTodos();
   };
 
   return {
@@ -43,5 +45,6 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
     clearAllTodos,
     deleteTodo,
     currentTodoId,
+    currentTodo,
   };
 });
