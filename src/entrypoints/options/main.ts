@@ -1,10 +1,8 @@
 import { createApp } from 'vue';
 import "@/assets/tailwind.css";
-import Options from "@/pages/options.vue";
+import App from "@/pages/App.vue";
 
-const app = createApp(Options);
+const app = createApp(App);
 
-// 配置忽略以 x- 开头的自定义元素
-app.config.compilerOptions.isCustomElement = (tag) => tag.startsWith('x-');
 
 app.mount('#app');

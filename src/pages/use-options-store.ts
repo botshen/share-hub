@@ -6,7 +6,7 @@ import { getTodosRepo } from "@/utils/service";
 export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
   const todosRepo = getTodosRepo();
   const todos = ref<any[]>([]);
-
+  const successInfoVisible = ref(false);
   const addTodo = () => {
     todosRepo.create({
       title: "test",
@@ -37,6 +37,28 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
     todosRepo.delete(todoId);
     getTodos();
   };
+  const handleSelectTodo = async (todoId: number) => {
+    console.log('todoId', todoId)
+    currentTodoId.value = todoId;
+
+  };
+  const handleDelete = (todoId: number) => {
+    deleteTodo(todoId);
+  };
+  const isCopying = ref(false);
+  const isDownloading = ref(false);
+  const onlyEditorVisible = computed(() => {
+    return !(isCopying.value || isDownloading.value)
+  })
+  const config = ref({
+    width: 'md',
+    padding: 'md',
+    format: 'png',
+    fontSize: 'md',
+    imageQuality: '2'
+  });
+
+
 
   return {
     todos,
@@ -46,5 +68,12 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
     deleteTodo,
     currentTodoId,
     currentTodo,
+    handleSelectTodo,
+    handleDelete,
+    successInfoVisible,
+    isCopying,
+    isDownloading,
+    onlyEditorVisible,
+    config
   };
 });
