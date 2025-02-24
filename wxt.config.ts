@@ -4,13 +4,13 @@ import Tailwindcss from "@tailwindcss/vite";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
-  srcDir: "src", 
+  srcDir: "src",
   extensionApi: 'chrome',
   modules: [
     "@wxt-dev/module-vue",
     "@wxt-dev/i18n/module",
     "@wxt-dev/auto-icons",
-  ],  
+  ],
   runner: {
     disabled: true,
   },
@@ -23,10 +23,10 @@ export default defineConfig({
   }),
   manifest: {
     permissions: [
-      'storage',
-     ],
+      // 'storage',
+    ],
     host_permissions: [
-     '<all_urls>'
+      '<all_urls>'
     ]
   },
   autoIcons: {

@@ -20,6 +20,7 @@ const handlePresetSelect = (preset: ColorPreset) => {
 
 const handleSelectTodo = (todoId: number) => {
   currentTodoId.value = todoId;
+  selectedComments.value = [];
 };
 const handleDelete = (todoId: number) => {
   deleteTodo(todoId);
