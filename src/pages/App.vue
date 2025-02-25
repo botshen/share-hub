@@ -71,8 +71,10 @@ onMounted(async () => {
 
 <template>
   <MessageTip />
-  <div class="flex bg-cover px-[100px] mt-2">
-    <PostList />
+  <div class="flex bg-cover px-[100px] mt-2 ">
+    <div class="sticky top-2 mr-4">
+      <PostList />
+    </div>
     <main :class="['yyy', paddingMap[config.padding as keyof typeof paddingMap]]"
       class="mx-auto m-4 block" id="card">
       <div class="drop p-4 rounded-box h-full">
@@ -106,8 +108,9 @@ onMounted(async () => {
         本图片由 ShareHub 浏览器插件生成
       </footer>
     </main>
-
-    <ActionBar />
+    <div class="sticky top-2 ml-4">
+      <ActionBar />
+    </div>
   </div>
 </template>
 <style>
@@ -128,4 +131,9 @@ onMounted(async () => {
   background: linear-gradient(to right, #2193b0, #6dd5ed); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 }
+.sticky {
+  position: sticky;
+  height: fit-content;
+}
+ 
 </style>
