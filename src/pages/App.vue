@@ -8,15 +8,14 @@ import ActionBar from "./action-bar/ActionBar.vue";
 import {
   FontSize,
   paddingMap,
-  postFontSizeMap,
-  themeMapClassName,
+  postFontSizeMap, 
   TitleFontSize,
   titleFontSizeMap,
   widthMap,
   WidthSize,
 } from "@/utils/post-config";
 
-const { todos, getTodos, currentTodoId, currentTodo, config } =
+const { todos, getTodos, currentTodoId, currentTodo, config,bgClass } =
   useOptionsStore();
 
 onMessage("openOptionsPage", async () => {
@@ -74,7 +73,7 @@ onMounted(async () => {
   <MessageTip />
   <div class="flex bg-cover px-[100px] mt-2">
     <PostList />
-    <main :class="themeMapClassName[config.theme as keyof typeof themeMapClassName],paddingMap[config.padding as keyof typeof paddingMap]"
+    <main :class="bgClass,paddingMap[config.padding as keyof typeof paddingMap]"
       class="mx-auto m-4 block" id="card">
       <div class="drop p-4 rounded-box h-full">
         <header class="flex items-center justify-between gap-2">
@@ -114,7 +113,7 @@ onMounted(async () => {
 </template>
 <style>
 .drop {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
 }
 

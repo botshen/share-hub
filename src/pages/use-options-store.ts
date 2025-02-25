@@ -2,7 +2,41 @@ import { Key } from "@/utils/cache";
 import { createCachedFn } from "@/utils/cache";
 import { ref } from "vue";
 import { getTodosRepo } from "@/utils/service";
+import { ColorPreset, transformObjToTailwindcss } from "@/utils/post-config";
+export const presetsMap: ColorPreset[] = [
+  {
+    backgroundStartColor: "#FFF8E1",
+    backgroundEndColor: "#FFE082",
+    backgroundViaColor: "#FFECB3"
+  },
+  {
+    backgroundStartColor: "#FF7DB4",
+    backgroundEndColor: "#654EA3",
+    backgroundViaColor: "#B91D73"
+  },
+  {
+    backgroundStartColor: "#8E2DE2",
+    backgroundEndColor: "#4A00E0",
+    backgroundViaColor: "#6A00E0"
+  },
+  {
+    backgroundStartColor: "#99F2C8",
+    backgroundEndColor: "#1F4037",
+    backgroundViaColor: "#4F8F6D"
+  },
 
+  {
+    backgroundStartColor: "#F5AF19",
+    backgroundEndColor: "#F12711",
+    backgroundViaColor: "#F33E11"
+  },
+
+  {
+    backgroundStartColor: "#A8C0FF",
+    backgroundEndColor: "#3F2B96",
+    backgroundViaColor: "#6E5AC7"
+  }
+];
 export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
   const todosRepo = getTodosRepo();
   const todos = ref<any[]>([]);
@@ -56,8 +90,10 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
     format: 'png',
     fontSize: 'md',
     imageQuality: '2',
-    theme: 'yellow'
+
   });
+
+  const bgClass = ref(transformObjToTailwindcss(presetsMap[0]))
 
 
 
@@ -75,6 +111,7 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
     isCopying,
     isDownloading,
     onlyEditorVisible,
-    config
+    config,
+    bgClass
   };
 });

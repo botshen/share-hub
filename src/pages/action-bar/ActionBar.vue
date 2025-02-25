@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { ColorPreset, transformPresetToTailwindcssClassName } from "@/utils/post-config";
+import { ColorPreset, transformObjToTailwindcss } from "@/utils/post-config";
 import { useOptionsStore } from "../use-options-store";
 import ColorPicker from "@/components/ColorPicker.vue";
 
-const { currentTodo, config, isCopying, isDownloading, successInfoVisible } = useOptionsStore();
+const { currentTodo, config, isCopying, isDownloading, successInfoVisible,bgClass } = useOptionsStore();
 const handleCopy = async () => {
   isCopying.value = true;
   const dataUrl = await generateImage({
@@ -48,9 +48,8 @@ const handleDownload = async () => {
 };
 const handlePresetSelect = (preset: ColorPreset) => {
   console.log('preset',preset)
-  const className = transformPresetToTailwindcssClassName(preset);
-  console.log('className',className)
-  config.value.theme = className;
+  const classname = transformObjToTailwindcss(preset)
+  bgClass.value=classname
   };
 
 
@@ -71,18 +70,7 @@ const handlePresetSelect = (preset: ColorPreset) => {
         <input type="radio" name="padding" value="md" v-model="config.padding" aria-label="md" class="btn" />
         <input type="radio" name="padding" value="lg" v-model="config.padding" aria-label="lg" class="btn" />
         <input type="radio" name="padding" value="xl" v-model="config.padding" aria-label="xl" class="btn" />
-      </div>
-      <legend class="fieldset-legend">THEME</legend>
-      <div class="flex gap-2 flex-wrap">
-        <input v-for="(value, key) in themeMapClassName" 
-          :key="key"
-          type="radio" 
-          name="theme"
-          :value="key"
-          v-model="config.theme"
-          :aria-label="key"
-          class="btn" />
-      </div>
+      </div> 
     <legend class="fieldset-legend">FORMAT</legend>
     <div class="flex gap-2">
       <input type="radio" name="format" value="png" v-model="config.format" aria-label="png" class="btn" />
