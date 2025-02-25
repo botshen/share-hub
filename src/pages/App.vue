@@ -75,8 +75,8 @@ onMounted(async () => {
   <div class="flex bg-cover px-[100px] mt-2">
     <PostList />
     <main :class="themeMapClassName[config.theme as keyof typeof themeMapClassName],paddingMap[config.padding as keyof typeof paddingMap]"
-      class="mx-auto bg-white w-[448px]  m-4" id="card">
-      <div class=" bg-white p-4  rounded-box">
+      class="mx-auto m-4 block" id="card">
+      <div class="drop p-4 rounded-box h-full">
         <header class="flex items-center justify-between gap-2">
           <div class="flex items-center gap-2">
             <div class="avatar">
@@ -109,7 +109,18 @@ onMounted(async () => {
       </footer> -->
     </main>
 
-
     <ActionBar />
   </div>
 </template>
+<style>
+.drop {
+  background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+/* 添加样式控制复制时的高度 */
+#card {
+  height: fit-content;
+  max-height: 100%;
+}
+</style>
