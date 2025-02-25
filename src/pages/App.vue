@@ -73,7 +73,7 @@ onMounted(async () => {
   <MessageTip />
   <div class="flex bg-cover px-[100px] mt-2">
     <PostList />
-    <main :class="bgClass,paddingMap[config.padding as keyof typeof paddingMap]"
+    <main :class="['yyy', paddingMap[config.padding as keyof typeof paddingMap]]"
       class="mx-auto m-4 block" id="card">
       <div class="drop p-4 rounded-box h-full">
         <header class="flex items-center justify-between gap-2">
@@ -95,17 +95,16 @@ onMounted(async () => {
             </svg>
           </div>
         </header>
-        <x-title class="font-bold block my-2 p-2" id="title">{{
+        <div class="font-bold block my-2 p-2" id="title">{{
           currentTodo?.title
-          }}</x-title>
+          }}</div>
         <div class="p-2 cursor-pointer whitespace-pre-wrap break-words" :contentEditable="true"
           :innerHTML="currentTodo?.postContent" />
         <CommentList />
       </div>
-
-      <!-- <footer class="text-center text-gray-500 bg-gray-100 p-2 mt-4 mx-3 rounded-box text-sm" v-if="!onlyEditorVisible">
+      <footer class="text-center text-gray-500 bg-gray-100 p-2 mt-4 mx-3 rounded-box text-sm" v-if="!onlyEditorVisible">
         本图片由 ShareHub 浏览器插件生成
-      </footer> -->
+      </footer>
     </main>
 
     <ActionBar />
@@ -121,5 +120,12 @@ onMounted(async () => {
 #card {
   height: fit-content;
   max-height: 100%;
+}
+.xxx{
+  background: linear-gradient(to right, #cc2b5e, #753a88); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.yyy{
+  background: linear-gradient(to right, #2193b0, #6dd5ed); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 </style>

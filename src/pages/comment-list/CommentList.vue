@@ -18,7 +18,7 @@ const handleCommentSelect = (commentId: number, checked: boolean) => {
     <span class="label-text text-xs text-gray-500 ml-2" v-if="onlyEditorVisible">勾选评论以在导出时显示</span>
 
     <div v-for="comment in currentTodo?.comments" :key="comment.id">
-      <x-comment id="comment" class="px-2 block" v-if="onlyEditorVisible || comment.isChecked">
+      <div id="comment" class="px-2 block" v-if="onlyEditorVisible || comment.isChecked">
         <div class="divider h-1"></div>
         <div class="flex items-center gap-2">
           <div class="mask mask-squircle w-8">
@@ -36,7 +36,7 @@ const handleCommentSelect = (commentId: number, checked: boolean) => {
           </label>
         </div>
         <div class="break-words whitespace-pre-wrap overflow-wrap-anywhere ml-10 mt-1" v-html="comment.content" />
-      </x-comment>
+      </div>
     </div>
   </div>
 </template>

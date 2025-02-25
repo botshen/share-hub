@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { ColorPreset, transformObjToTailwindcss } from "@/utils/post-config";
 import { useOptionsStore } from "../use-options-store";
-import ColorPicker from "@/components/ColorPicker.vue";
-
+ 
 const { currentTodo, config, isCopying, isDownloading, successInfoVisible,bgClass } = useOptionsStore();
 const handleCopy = async () => {
   isCopying.value = true;
@@ -55,9 +54,8 @@ const handlePresetSelect = (preset: ColorPreset) => {
 
 </script>
 <template>
-  <x-action-bar class="shrink-0 flex flex-col w-[300px] ">
-    <ColorPicker class="shrink-0" @preset-selected="handlePresetSelect" />
-    <legend class="fieldset-legend">WIDTH</legend>
+  <div class="shrink-0 flex flex-col w-[300px] ">
+     <legend class="fieldset-legend">WIDTH</legend>
     <div class="flex gap-2">
       <input type="radio" name="width" value="sm" v-model="config.width" aria-label="sm" class="btn" />
       <input type="radio" name="width" value="md" v-model="config.width" aria-label="md" class="btn" />
@@ -103,5 +101,5 @@ const handlePresetSelect = (preset: ColorPreset) => {
       <span v-if="isCopying && !isDownloading" class="loading loading-spinner">
       </span>
       Copy</button>
-  </x-action-bar>
+  </div>
 </template>

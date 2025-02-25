@@ -33,8 +33,8 @@ export const postFontSizeMap = {
 
 // {backgroundStartColor:"#99F2C8",backgroundViaColor:"#4F8F6D",backgroundEndColor:"#1F4037"} to bg-gradient-to-br from-[#99F2C8] via-[#4F8F6D] to-[#1F4037]
 export const transformObjToTailwindcss = (preset: ColorPreset) => {
-  const { backgroundStartColor, backgroundViaColor, backgroundEndColor } = preset;
-  return `bg-gradient-to-br from-[${backgroundStartColor}] via-[${backgroundViaColor}] to-[${backgroundEndColor}]`;
+  const { backgroundStartColor, backgroundEndColor } = preset;
+  return `bg-gradient-to-br from-[${backgroundStartColor}] to-[${backgroundEndColor}]`;
 };
 
 
@@ -45,7 +45,6 @@ export type TitleFontSize = keyof typeof titleFontSizeMap;
 export interface ColorPreset {
   backgroundStartColor: string
   backgroundEndColor: string
-  backgroundViaColor: string
 }
 
 
