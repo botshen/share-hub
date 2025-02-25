@@ -15,7 +15,7 @@ import {
   WidthSize,
 } from "@/utils/post-config";
 
-const { todos, getTodos, currentTodoId, currentTodo, config,bgClass } =
+const { todos, getTodos, currentTodoId, currentTodo, config,bgClass,onlyEditorVisible } =
   useOptionsStore();
 
 onMessage("openOptionsPage", async () => {

@@ -12,7 +12,7 @@ export default defineConfig({
     "@wxt-dev/auto-icons",
   ],
   runner: {
-    disabled: true,
+    chromiumArgs: ['--user-data-dir=./.wxt/chrome-data'],
   },
   vite: () => ({
     plugins: [Icons({ compiler: "vue3" }), Tailwindcss() as any],
