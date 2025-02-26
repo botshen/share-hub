@@ -28,6 +28,11 @@ const detailCss = (newVal: typeof config.value) => {
   if (card) {
     card.style.width = widthMap[newVal.width as WidthSize];
     card.style.fontSize = postFontSizeMap[newVal.fontSize as FontSize];
+      if( card.className.includes('bg-')){
+      card.className = card.className.replace(/bg-[^ ]+/, `bg-${newVal.color}`);
+     }else{
+      card.className = card.className + ` bg-${newVal.color}`;
+     }
   }
   const comments = document.querySelectorAll("#comment");
   comments.forEach((comment) => {
@@ -75,7 +80,7 @@ onMounted(async () => {
     <div class="sticky top-2 mr-4">
       <PostList />
     </div>
-    <main :class="['yyy', paddingMap[config.padding as keyof typeof paddingMap]]"
+    <main :class="[ paddingMap[config.padding as keyof typeof paddingMap]]"
       class="mx-auto m-4 block" id="card">
       <div class="drop p-4 rounded-box h-full">
         <header class="flex items-center justify-between gap-2">
@@ -124,13 +129,90 @@ onMounted(async () => {
   height: fit-content;
   max-height: 100%;
 }
-.xxx{
-  background: linear-gradient(to right, #cc2b5e, #753a88); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+.bg-default{
+  background: linear-gradient(to right, #ff8008, #ffc837); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-.yyy{
-  background: linear-gradient(to right, #2193b0, #6dd5ed); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+.bg-a{
+  background: linear-gradient(to right, #cc2b5e, #753a88); 
 }
+.bg-b{
+  background: linear-gradient(to right, #2193b0, #6dd5ed); 
+}
+.bg-c{
+  background: linear-gradient(to right, #00416a, #e4e5e6);
+}
+.bg-d{
+  background: linear-gradient(to top, #ffe259, #ffa751);
+}
+.bg-e{
+  background: linear-gradient(to top, #799f0c, #acbb78);
+}
+.bg-f{
+  background: linear-gradient(to top, #5433ff, #20bdff, #a5fecb);
+}
+.bg-g{
+  background: linear-gradient(to top, #0052d4, #4364f7, #6fb1fc);
+}
+.bg-h{
+  background: linear-gradient(to top, #00416a, #799f0c, #ffe000);
+}
+.bg-i{
+  background: linear-gradient(to top, #bdc3c7, #2c3e50);
+}
+.bg-j{
+  background: linear-gradient(to top, #ee9ca7, #ffdde1);
+}
+.bg-k{
+  background: linear-gradient(to top, #c6ffdd, #fbd786, #f7797d);
+}
+.bg-l{
+  background: linear-gradient(to top, #12c2e9, #c471ed, #f64f59);
+}
+.bg-m{
+  background: linear-gradient(to right, #b92b27, #1565c0);
+}
+/* Start of Selection */
+.bg-n {
+  background: #E68A00;  /* 深橙色 */
+}
+.bg-o {
+  background: #2E8B57;  /* 深海绿 */
+}
+.bg-p {
+  background: #4682B4;  /* 钢蓝色 */
+}
+.bg-q {
+  background: #CD5C5C;  /* 印度红 */
+}
+.bg-r {
+  background: #9370DB;  /* 中紫色 */
+}
+.bg-s {
+  background: #3CB371;  /* 中海绿 */
+}
+.bg-t {
+  background: #778899;  /* 亮石板灰 */
+}
+.bg-u {
+  background: #BDB76B;  /* 暗卡其色 */
+}
+.bg-v {
+  background: #DB7093;  /* 苍紫红 */
+}
+.bg-w {
+  background: #9999CC;  /* 淡紫色 */
+}
+.bg-x {
+  background: #DAA520;  /* 金菊色 */
+}
+.bg-y {
+  background: #20B2AA;  /* 亮海绿 */
+}
+.bg-z {
+  background: #BC8F8F;  /* 玫瑰褐色 */
+}
+ 
+ 
 .sticky {
   position: sticky;
   height: fit-content;

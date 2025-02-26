@@ -12,10 +12,10 @@ const handleCommentSelect = (commentId: number, checked: boolean) => {
 </script>
 <template>
   <div>
-    <span class="text-lg font-bold" v-if="
-      onlyEditorVisible || currentTodo?.comments?.some((c: any) => c.isChecked)
+     <span class="text-lg font-bold" v-if="
+      (onlyEditorVisible || currentTodo?.comments?.some((c: any) => c.isChecked)) && currentTodo?.comments?.length > 0
     ">评论</span>
-    <span class="label-text text-xs text-gray-500 ml-2" v-if="onlyEditorVisible">勾选评论以在导出时显示</span>
+    <span class="label-text text-xs text-gray-500 ml-2" v-if="onlyEditorVisible && currentTodo?.comments?.length > 0">勾选评论以在导出时显示</span>
 
     <div v-for="comment in currentTodo?.comments" :key="comment.id">
       <div id="comment" class="px-2 block" v-if="onlyEditorVisible || comment.isChecked">
