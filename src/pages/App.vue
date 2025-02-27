@@ -109,7 +109,7 @@ onMounted(async () => {
           :innerHTML="currentTodo?.postContent" />
         <CommentList />
       </div>
-      <footer class="text-center text-gray-500 bg-gray-100 p-2 mt-4 mx-3 rounded-box text-sm" v-if="!onlyEditorVisible">
+      <footer class="text-center text-white  mt-6   rounded-box text-base" >
         本图片由 ShareHub 浏览器插件生成
       </footer>
     </main>
