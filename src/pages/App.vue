@@ -105,7 +105,7 @@ onMounted(async () => {
         <div class="font-bold block my-2 p-2" id="title">{{
           currentTodo?.title
           }}</div>
-        <div class="p-2 cursor-pointer whitespace-pre-wrap break-words" :contentEditable="true"
+        <div class="p-2 cursor-pointer break-words" :contentEditable="true"
           :innerHTML="currentTodo?.postContent" />
         <CommentList />
       </div>

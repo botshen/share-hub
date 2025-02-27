@@ -2,7 +2,7 @@ import { createNanoId } from "@/utils/id-helper";
 import { sendMessage } from "@/utils/message";
 
 let comments: NodeListOf<Element> | null = null;
-const style = document.createElement("style");
+
 const todosRepo = getTodosRepo();
 
 // 初始查找所有评论元素
