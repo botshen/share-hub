@@ -23,7 +23,7 @@ onMessage("openOptionsPage", async () => {
 });
 
 const detailCss = (newVal: typeof config.value) => {
-  console.log("config", newVal);
+  console.log("theme-config", newVal);
   const card = document.getElementById("card");
   if (card) {
     card.style.width = widthMap[newVal.width as WidthSize];
@@ -33,6 +33,7 @@ const detailCss = (newVal: typeof config.value) => {
      }else{
       card.className = card.className + ` bg-${newVal.color}`;
      }
+     card.style.padding = paddingMap[newVal.padding as keyof typeof paddingMap];
   }
   const comments = document.querySelectorAll("#comment");
   comments.forEach((comment) => {
@@ -80,8 +81,7 @@ onMounted(async () => {
     <div class="sticky top-2 mr-4">
       <PostList />
     </div>
-    <main :class="[ paddingMap[config.padding as keyof typeof paddingMap]]"
-      class="mx-auto m-4 block" id="card">
+    <main class="mx-auto m-4 block" id="card">
       <div class="drop p-4 rounded-box h-full">
         <header class="flex items-center justify-between gap-2">
           <div class="flex items-center gap-2">

@@ -45,11 +45,11 @@ const handleDownload = async () => {
   a.click();
   isDownloading.value = false;
 };
-const handlePresetSelect = (preset: ColorPreset) => {
-  console.log('preset',preset)
-  const classname = transformObjToTailwindcss(preset)
-  bgClass.value=classname
-  };
+const handleReadMode = () => {
+   config.value.width='full'
+  config.value.padding='sm'
+  config.value.fontSize='lg'
+  }
 
 
 </script>
@@ -117,6 +117,7 @@ const handlePresetSelect = (preset: ColorPreset) => {
       <input type="radio" name="width" value="md" v-model="config.width" aria-label="md" class="btn" />
       <input type="radio" name="width" value="lg" v-model="config.width" aria-label="lg" class="btn" />
       <input type="radio" name="width" value="xl" v-model="config.width" aria-label="xl" class="btn" />
+      <input type="radio" name="width" value="full" v-model="config.width" aria-label="full" class="btn" />
     </div>
     <legend class="fieldset-legend">PADDING</legend>
       <div class="flex gap-2">
@@ -149,6 +150,8 @@ const handlePresetSelect = (preset: ColorPreset) => {
       <input type="radio" name="imageQuality" value="3" v-model="config.imageQuality" aria-label="super" class="btn" />
       <input type="radio" name="imageQuality" value="4" v-model="config.imageQuality" aria-label="ultra" class="btn" />
     </div>
+    <button class="btn btn-block mt-2" @click="handleReadMode">
+       Read Mode</button>
     <button class="btn btn-block my-2" @click="handleDownload">
       <span v-if="isDownloading" class="loading loading-spinner">
       </span>

@@ -3,13 +3,14 @@ export const widthMap = {
   md: "440px",
   lg: "640px",
   xl: "840px",
+  full: "100%",
 } as const;
 
 export const paddingMap = {
-  sm: "p-4",
-  md: "p-8",
-  lg: "p-12",
-  xl: "p-16",
+  sm: "16px",
+  md: "24px",
+  lg: "32px",
+  xl: "40px",
 } as const;
 
 export const titleFontSizeMap = {
