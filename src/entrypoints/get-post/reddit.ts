@@ -88,6 +88,7 @@ export async function sharePostReddit() {
     // console.log('commentText', commentText)
 
     return {
+      id: createNanoId("comment"),
       avatarUrl: avatarSrc,
       author: authorName,
       content: commentText,
