@@ -35,7 +35,8 @@ const handleCommentSelect = (commentId: number, checked: boolean) => {
             " />
           </label>
         </div>
-        <div class="break-words ml-10 mt-1" v-html="comment.content" />
+        <div class="break-words ml-10 p-2"   :contentEditable="true"
+        :innerHTML="comment.content" />
       </div>
     </div>
   </div>
