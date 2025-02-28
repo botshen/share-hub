@@ -1,3 +1,5 @@
+import { findImmersiveElements } from "@/utils/dom";
+
 const todosRepo = getTodosRepo();
 
 // 清理 HTML 内容的辅助函数
@@ -9,7 +11,7 @@ function cleanHtmlContent(html: string): string {
   const allElements = container.getElementsByTagName('*');
   for (let i = 0; i < allElements.length; i++) {
     const element = allElements[i];
-    element.removeAttribute('class');
+    // element.removeAttribute('class');
     element.removeAttribute('style');
     element.removeAttribute('id');
     element.removeAttribute('data-*');
@@ -41,6 +43,7 @@ export async function sharePostReddit() {
   // 获取主题 wrapper
   const post = document.querySelector("shreddit-post");
   if (!post) return;
+  findImmersiveElements(post as unknown as Document);
   // console.log("post", post);
 
   // 获取头像
