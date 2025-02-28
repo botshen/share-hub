@@ -1,53 +1,58 @@
+html,
 body {
-    padding: 0;
-    margin: 0;
-   }
-   
-   * {
-     box-sizing: border-box;
-   }
-   
-   #card {
-     ol li {
-       margin: 4px 0 4px 1rem;
-       list-style-type: decimal;
-     }
-     
-     ul li {
-       margin: 4px 0 4px 1rem;
-       list-style-type: disc;
-     }
-     
-     a {
-        color: #778087;
-       text-decoration: none;
-     }
-     
-     h1 {
-       font-size: 2rem;
-       font-weight: bold;
-     }
-     
-     h2 {
-       font-size: 1.5rem;
-       font-weight: bold;
-     }
-     
-     h3 {
-       font-size: 1.25rem;
-       font-weight: bold;
-     }
-     
-     h4 {
-       font-size: 1rem;
-       font-weight: bold;
-     }
-     p{
-      margin: 0.5rem 0;
-     }
-     .immersive {
-       color: #c35454;
-       font-weight: 500;
-     }
-   }
-    
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+}
+
+#card {
+  ol li {
+    margin: 4px 0 4px 1rem;
+    list-style-type: decimal;
+  }
+
+  ul li {
+    margin: 4px 0 4px 1rem;
+    list-style-type: disc;
+  }
+
+  a {
+    color: #778087;
+    text-decoration: none;
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  h4 {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  p {
+    margin: 0.5rem 0;
+  }
+  .immersive {
+    color: #c35454;
+    font-weight: 500;
+  }
+}

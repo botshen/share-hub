@@ -77,7 +77,7 @@ onMounted(async () => {
 
 <template>
   <MessageTip />
-  <div class="flex bg-pattern px-[100px]  ">
+  <div class="flex bg-pattern px-[100px] h-full ">
     <div class="sticky top-2 mr-4">
       <PostList />
     </div>
