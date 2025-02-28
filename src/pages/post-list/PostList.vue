@@ -5,7 +5,7 @@ const { todos, handleSelectTodo, handleDelete } = useOptionsStore();
 <template>
   <ul class="list bg-base-100 rounded-box shadow-md shrink-0 h-auto w-[300px]">
     <li v-for="todo in todos" :key="todo.id">
-      <div @click="handleSelectTodo(todo.id)" class="list-row cursor-pointer flex items-center gap-4 p-4">
+      <div @click="handleSelectTodo(todo.id)" class="list-row cursor-pointer flex items-center gap-4 p-2">
         <div class="mask mask-squircle w-10 h-10 flex-shrink-0">
           <img :src="todo.avatarUrl" />
         </div>

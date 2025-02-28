@@ -86,14 +86,14 @@ onMounted(async () => {
       <div class="drop p-4 rounded-box h-full">
         <header class="flex items-center justify-between gap-2">
           <div class="flex items-center gap-2">
-            <div class="avatar">
+            <div class="avatar" v-if="currentTodo?.avatarUrl">
               <div class="mask mask-squircle w-10">
                 <img :src="currentTodo?.avatarUrl" />
               </div>
             </div>
             <span class="text-lg">{{ currentTodo?.author }}</span>
           </div>
-          <PostLogo :source="currentTodo?.source" />
+          <PostLogo v-if="currentTodo?.source" :source="currentTodo?.source" />
         </header>
         <div class="text-2xl font-bold px-2 pt-2" :contentEditable="true" :innerHTML="currentTodo?.title" />
         <div class="p-2 cursor-pointer break-words" :contentEditable="true" :innerHTML="currentTodo?.postContent" />
