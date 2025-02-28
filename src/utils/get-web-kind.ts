@@ -6,6 +6,9 @@ export const getWebKind = () => {
   if (url.includes('reddit.com')) {
     return 'reddit';
   }
+  if (url.includes('news.ycombinator.com')) {
+    return 'hacknews';
+  }
   return 'unknown';
 };
 

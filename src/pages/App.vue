@@ -91,11 +91,11 @@ onMounted(async () => {
                 <img :src="currentTodo?.avatarUrl" />
               </div>
             </div>
-            <span class="text-lg">{{ currentTodo?.author }}</span>
+            <span class="text-lg ml-2">{{ currentTodo?.author }}</span>
           </div>
           <PostLogo v-if="currentTodo?.source" :source="currentTodo?.source" />
         </header>
-        <div class="text-2xl font-bold px-2 pt-2" :contentEditable="true" :innerHTML="currentTodo?.title" />
+        <div class="text-2xl font-bold px-2 pt-2 " :contentEditable="true" :innerHTML="currentTodo?.title" />
         <div class="p-2 cursor-pointer break-words" :contentEditable="true" :innerHTML="currentTodo?.postContent" />
         <CommentList />
       </div>

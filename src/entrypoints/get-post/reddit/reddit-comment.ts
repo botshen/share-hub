@@ -18,7 +18,7 @@ export function getComment() {
     const id = comment.getAttribute('thingid')
     const author = comment.getAttribute('author')
     const depth = comment.getAttribute('depth')
-    const parentId = comment.getAttribute('parentid')
+    // const parentId = comment.getAttribute('parentid')
     findImmersiveElements(comment as unknown as Document);
 
     const content = comment.querySelector('[slot="comment"]')?.innerHTML
@@ -30,7 +30,6 @@ export function getComment() {
       author,
       content,
       depth,
-      parentId,
     }
   })
   console.log('comments', comments)

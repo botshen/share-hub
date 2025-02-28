@@ -1,14 +1,18 @@
 <script lang="ts" setup>
 import { sharePostCommon } from './get-post/common';
 import { sharePostReddit } from './get-post/reddit/reddit';
-import { sharePostV2ex } from './get-post/v2ex';
+import { sharePostV2ex } from './get-post/v2ex/v2ex';
 import { getWebKind } from '@/utils/get-web-kind';
-  const onClick = () => {
-    const webKind = getWebKind();
-    if (webKind === 'v2ex') {
+import { sharePostHacknews } from './get-post/hacknews/hacknews';
+
+const onClick = () => {
+  const webKind = getWebKind();
+  if (webKind === 'v2ex') {
       sharePostV2ex()
     } else if (webKind === 'reddit') {
       sharePostReddit()
+    } else if (webKind === 'hacknews') {
+      sharePostHacknews()
     } else {
       sharePostCommon()    
     }
