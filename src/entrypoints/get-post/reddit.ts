@@ -77,6 +77,7 @@ export async function sharePostReddit() {
     avatarUrl: avatarUrl,
     comments: [],
     postscripts: [],
+    source: "reddit",
   };
   todosRepo.update(currentTodo);
   await sendMessage("openOptionsPage", undefined);

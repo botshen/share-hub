@@ -5,18 +5,18 @@ const { todos, handleSelectTodo, handleDelete } = useOptionsStore();
 <template>
   <ul class="list bg-base-100 rounded-box shadow-md shrink-0 h-auto w-[300px]">
     <li v-for="todo in todos" :key="todo.id">
-      <div @click="handleSelectTodo(todo.id)" class="list-row cursor-pointer">
-        <div class="mask mask-squircle w-10 h-10">
+      <div @click="handleSelectTodo(todo.id)" class="list-row cursor-pointer flex items-center gap-4 p-4">
+        <div class="mask mask-squircle w-10 h-10 flex-shrink-0">
           <img :src="todo.avatarUrl" />
         </div>
-        <div>
+        <div class="flex-grow min-w-0">
           <div>{{ todo.author }}</div>
-          <div class="text-xs uppercase font-semibold opacity-60">
+          <div class="text-xs uppercase font-semibold opacity-60 truncate max-w-[200px]">
             {{ todo.title }}
           </div>
         </div>
 
-        <button v-if="todos.length > 1" class="btn btn-square btn-ghost" @click="handleDelete(todo.id)">
+        <button v-if="todos.length > 1" class="btn btn-square btn-ghost flex-shrink-0" @click="handleDelete(todo.id)">
           <svg t="1740274258800" class="icon size-[1.2em]" viewBox="0 0 1024 1024" version="1.1"
             xmlns="http://www.w3.org/2000/svg" p-id="7931" width="200" height="200">
             <path

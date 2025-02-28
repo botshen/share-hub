@@ -108,6 +108,7 @@ export async function sharePostV2ex() {
     comments,
     postscripts,
     url,
+    source: "v2ex",
   };
   todosRepo.update(currentTodo);
   await sendMessage("openOptionsPage", undefined);
