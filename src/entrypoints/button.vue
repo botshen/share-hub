@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { sharePostCommon } from './get-post/common';
-import { sharePostReddit } from './get-post/reddit';
+import { sharePostReddit } from './get-post/reddit/reddit';
 import { sharePostV2ex } from './get-post/v2ex';
 import { getWebKind } from '@/utils/get-web-kind';
   const onClick = () => {
