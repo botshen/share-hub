@@ -59,23 +59,51 @@ export async function sharePostReddit() {
 
   // 获取帖子
   const contentElement = post.querySelector('[slot="text-body"]');
-  console.log("contentElement.innerHTML", contentElement?.innerHTML);
+  // console.log("contentElement.innerHTML", contentElement?.innerHTML);
   const _content = contentElement ? cleanHtmlContent(contentElement.innerHTML) : "";
-  console.log('_content', _content)
-  const postData = {
-    author,
-    title,
-    content: _content,
-  };
+  // console.log('_content', _content)
+  const commentElements = document.querySelectorAll('shreddit-comment');
+  console.log('commentElements', commentElements)
+  const comments = Array.from(commentElements).map(comment => {
+    // 尝试获取头像的不同方式
+    const avatar = comment.querySelector('img[alt*="avatar"]') as HTMLImageElement | null;
+    let avatarSrc = avatar?.src;
+
+    if (!avatarSrc) {
+      // 如果第一种方式失败，尝试第二种方式
+      const svgImage = comment.querySelector('svg image[href]');
+      avatarSrc = svgImage?.getAttribute('href') || undefined;
+    }
+
+    console.log('Found avatar URL:', avatarSrc);
+
+    const authorName = comment.querySelector('[aria-label*="profile"]:not([aria-label*="avatar"])')?.textContent?.trim()
+    console.log('Found author name:', authorName)
+
+    findImmersiveElements(comment as unknown as Document);
+
+    const commentText = comment.querySelector('[slot="comment"]')?.innerHTML
+
+    console.log('commentText', commentText)
+
+    return {
+      avatarUrl: avatarSrc,
+      author: authorName,
+      content: commentText,
+    }
+  })
+
+  console.log('comments', comments)
+
 
   const url = window.location.href;
   const currentTodo = {
-    postContent: postData.content,
-    title: postData.title,
-    author: postData.author,
+    postContent: _content,
+    title,
+    author,
     url,
-    avatarUrl: avatarUrl,
-    comments: [],
+    avatarUrl,
+    comments,
     postscripts: [],
     source: "reddit",
   };

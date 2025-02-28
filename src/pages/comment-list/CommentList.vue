@@ -35,7 +35,7 @@ const handleCommentSelect = (commentId: number, checked: boolean) => {
             " />
           </label>
         </div>
-        <div class="break-words whitespace-pre-wrap overflow-wrap-anywhere ml-10 mt-1" v-html="comment.content" />
+        <div class="break-words ml-10 mt-1" v-html="comment.content" />
       </div>
     </div>
   </div>
