@@ -65,6 +65,7 @@ export async function sharePostReddit() {
   const _content = contentElement ? cleanHtmlContent(contentElement.innerHTML) : "";
   // console.log('_content', _content)
   const comments = getComment();
+  // return
 
   // console.log('comments', comments)
 
