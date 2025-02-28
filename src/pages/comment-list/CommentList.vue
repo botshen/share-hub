@@ -2,7 +2,7 @@
 import { useOptionsStore } from "../use-options-store";
 const { onlyEditorVisible, currentTodo } = useOptionsStore();
 
-type DepthLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+type DepthLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20;
 
 // 添加 Comment 接口定义
 interface Comment {
@@ -22,6 +22,21 @@ const depthMap: Record<DepthLevel, string> = {
   4: 'ml-[64px]',
   5: 'ml-[80px]',
   6: 'ml-[96px]',
+  7: 'ml-[112px]',
+  8: 'ml-[128px]',
+  9: 'ml-[144px]',
+  10: 'ml-[160px]',
+  11: 'ml-[176px]',
+  12: 'ml-[192px]',
+  13: 'ml-[208px]',
+  14: 'ml-[224px]',
+  15: 'ml-[240px]',
+  16: 'ml-[256px]',
+  17: 'ml-[272px]',
+  18: 'ml-[288px]',
+  19: 'ml-[304px]',
+  20: 'ml-[320px]',
+  
 } as const;
 
 // 更新类型
