@@ -13,7 +13,9 @@ interface Comment {
   isChecked: boolean;
   depth: DepthLevel;
 }
-
+const props = defineProps<{
+  isClone: boolean;
+}>();
 const depthMap: Record<DepthLevel, string> = {
   0: 'ml-0',
   1: 'ml-[16px]',
@@ -48,23 +50,32 @@ const handleCommentSelect = (commentId: number, checked: boolean) => {
     comment.isChecked = checked;
   }
 };
+const commentVisible = (comment: Comment) => {
+  return props.isClone ? true : (onlyEditorVisible.value || comment.isChecked);
+};
+const commentTextVisible = computed(() => {
+  return props.isClone ? true : (onlyEditorVisible.value || currentTodo.value?.comments?.some((c: any) => c.isChecked)) && currentTodo.value?.comments?.length > 0
+});
+const commentTipVisible = computed(() => {
+  return props.isClone ? true :(onlyEditorVisible.value && currentTodo.value?.comments?.length > 0)
+});
 </script>
 <template>
   <div>
      <span class="text-lg font-bold ml-2" v-if="
-      (onlyEditorVisible || currentTodo?.comments?.some((c: any) => c.isChecked)) && currentTodo?.comments?.length > 0
+      commentTextVisible
     ">评论</span>
-    <span class="label-text text-xs text-gray-500 ml-2" v-if="onlyEditorVisible && currentTodo?.comments?.length > 0">勾选评论以在导出时显示</span>
+    <span class="label-text text-xs text-gray-500 ml-2" v-if="commentTipVisible">勾选评论以在导出时显示</span>
 
     <div v-for="comment in currentTodo?.comments" :key="comment.id">
-       <div id="comment" class="px-2 block" v-if="onlyEditorVisible || comment.isChecked" :class="depthMap[(comment.depth as DepthLevel)]">
+       <div id="comment" class="px-2 block" v-if="commentVisible(comment)" :class="depthMap[(comment.depth as DepthLevel)]">
         <div class="divider h-1" v-if="!comment.depth||comment.depth==='0'"></div>
         <div class="flex items-center gap-2">
           <div class="mask mask-squircle w-8" v-if="comment.avatarUrl">
             <img :src="comment.avatarUrl" />
           </div>
           <span class="font-bold">{{ comment.author }}</span>
-          <label class="cursor-pointer label" v-if="onlyEditorVisible">
+          <label class="cursor-pointer label" v-if="isClone?true:onlyEditorVisible">
             <input type="checkbox" :checked="comment.isChecked" class="checkbox checkbox-success" @change="
               (e) =>
                 handleCommentSelect(

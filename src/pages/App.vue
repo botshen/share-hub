@@ -15,8 +15,9 @@ import {
   WidthSize,
 } from "@/utils/post-config";
 import PostLogo from "@/components/PostLogo.vue";
+import Card from "./Card.vue";
 
-const { todos, getTodos, currentTodoId, currentTodo, config, bgClass, onlyEditorVisible } =
+const { todos, getTodos, currentTodoId, currentTodo, config, bgClass, onlyEditorVisible, isDownloading, isCopying } =
   useOptionsStore();
 
 onMessage("openOptionsPage", async () => {
@@ -24,17 +25,20 @@ onMessage("openOptionsPage", async () => {
 });
 
 const detailCss = (newVal: typeof config.value) => {
-  console.log("theme-config", newVal);
-  const card = document.getElementById("card");
+  const card = document.querySelectorAll("#card");
   if (card) {
-    card.style.width = widthMap[newVal.width as WidthSize];
-    card.style.fontSize = postFontSizeMap[newVal.fontSize as FontSize];
-    if (card.className.includes('bg-')) {
-      card.className = card.className.replace(/bg-[^ ]+/, `bg-${newVal.color}`);
+    card.forEach((card) => {
+      if (card instanceof HTMLElement) {
+        card.style.width = widthMap[newVal.width as WidthSize];
+        card.style.fontSize = postFontSizeMap[newVal.fontSize as FontSize];
+        if (card.className.includes('bg-')) {
+          card.className = card.className.replace(/bg-[^ ]+/, `bg-${newVal.color}`);
     } else {
       card.className = card.className + ` bg-${newVal.color}`;
-    }
-    card.style.padding = paddingMap[newVal.padding as keyof typeof paddingMap];
+        }
+        card.style.padding = paddingMap[newVal.padding as keyof typeof paddingMap];
+      }
+    });
   }
   const comments = document.querySelectorAll("#comment");
   comments.forEach((comment) => {
@@ -81,28 +85,11 @@ onMounted(async () => {
   <div class="flex bg-pattern px-[100px] h-full ">
     <div class="sticky top-2 mr-4">
       <PostList />
+    </div> 
+    <div class="card-container mx-auto m-4 block">
+      <Card elementId="card" :style="{ 'z-index': isDownloading || isCopying ? '-11' : 'auto' }" :isClone="false" />
+      <Card elementId="card" :style="{ 'z-index': isDownloading || isCopying ? 'auto' : '-11' }" :isClone="true"  />
     </div>
-    <main class="mx-auto m-4 block" id="card">
-      <div class="drop p-4 rounded-box h-full">
-        <header class="flex items-center justify-between gap-2">
-          <div class="flex items-center gap-2">
-            <div class="avatar" v-if="currentTodo?.avatarUrl">
-              <div class="mask mask-squircle w-10">
-                <img :src="currentTodo?.avatarUrl" />
-              </div>
-            </div>
-            <span class="text-lg ml-2">{{ currentTodo?.author }}</span>
-          </div>
-          <PostLogo v-if="currentTodo?.source" :source="currentTodo?.source" />
-        </header>
-        <div class="text-2xl font-bold px-2 pt-2 " :contentEditable="true" :innerHTML="currentTodo?.title" />
-        <div class="p-2 cursor-pointer break-words" :contentEditable="true" :innerHTML="currentTodo?.postContent" />
-        <CommentList />
-      </div>
-      <footer class="text-center text-white  mt-6   rounded-box text-base">
-        本图片由 ShareHub 浏览器插件生成
-      </footer>
-    </main>
     <div class="sticky top-2 ml-4 min-h-screen ">
       <ActionBar />
     </div>
@@ -119,6 +106,8 @@ onMounted(async () => {
   height: fit-content;
   max-height: 100%;
 }
+
+ 
 
 .bg-default {
   background: linear-gradient(to right, #ff8008, #ffc837);
@@ -273,5 +262,17 @@ onMounted(async () => {
 
 .wave-path {
   stroke-linecap: round;
+}
+
+/* 添加卡片容器样式 */
+.card-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.card-container > * {
+  grid-column: 1;
+  grid-row: 1;
 }
 </style>
