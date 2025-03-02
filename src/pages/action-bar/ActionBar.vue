@@ -49,7 +49,7 @@ const configOptions = {
 
 const handleCopy = async () => {
   isCopying.value = true;
-  const dataUrl = await generateImage({
+  const dataUrl = await generateImage(document.querySelector('#card') as HTMLElement, {
     format: config.value.format,
     width: 448,
     height: 600,
@@ -76,7 +76,7 @@ const handleCopy = async () => {
 };
 const handleDownload = async () => {
   isDownloading.value = true;
-  const dataUrl = await generateImage({
+  const dataUrl = await generateImage(document.querySelector('#card') as HTMLElement, {
     format: config.value.format,
     width: 448,
     height: 600,

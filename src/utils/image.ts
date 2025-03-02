@@ -1,7 +1,7 @@
 import { domToPng, domToJpeg, domToSvg, type Options, domToWebp } from 'modern-screenshot'
 
  
-export const generateImage = async (options: {
+export const generateImage = async (element: HTMLElement, options: {
     // data?: XConfig[],
     format: string
     width?: number,
@@ -10,7 +10,7 @@ export const generateImage = async (options: {
     fontFamily: false | string
 }) => {
 
-    const cardEle = document.querySelector('#card') as HTMLElement;
+    const cardEle = element;
     const { format, width, height, scale = 3, fontFamily = false } = options;
     // console.log('format', format, width, height, quality);
     // 存储原始尺寸
