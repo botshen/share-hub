@@ -1,7 +1,6 @@
 import { findImmersiveElements } from "@/utils/dom";
 import { getComment } from "./reddit-comment";
-
-const todosRepo = getTodosRepo();
+import { getTodosRepo } from "@/utils/service";
 
 // 清理 HTML 内容的辅助函数
 function cleanHtmlContent(html: string): string {
@@ -81,6 +80,8 @@ export async function sharePostReddit() {
     postscripts: [],
     source: "reddit",
   };
+  const todosRepo = getTodosRepo();
+
   todosRepo.update(currentTodo);
   await sendMessage("openOptionsPage", undefined);
 }

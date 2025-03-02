@@ -23,7 +23,14 @@ export default defineConfig({
   }),
   manifest: {
     permissions: [
-      // 'storage',
+      'sidePanel',
+      'storage',
+    ],
+    web_accessible_resources: [
+      {
+        resources: ['/injected.js'],
+        matches: ['https://x.com/*'],
+      },
     ],
     host_permissions: [
       '<all_urls>'

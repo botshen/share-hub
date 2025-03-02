@@ -1,7 +1,7 @@
 import { findImmersiveElements } from "@/utils/dom";
 import { getComment } from "./hacknews-comment";
+import { getTodosRepo } from "@/utils/service";
 
-const todosRepo = getTodosRepo();
 
 
 export async function sharePostHacknews() {
@@ -15,6 +15,8 @@ export async function sharePostHacknews() {
   const content = document.querySelector('.toptext')
   const comments = getComment()
   const url = window.location.href;
+  const todosRepo = getTodosRepo();
+
   const currentTodo = {
     postContent: content?.innerHTML,
     title,

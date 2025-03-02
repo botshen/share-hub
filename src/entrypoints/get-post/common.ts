@@ -1,6 +1,5 @@
 import { Readability } from "@mozilla/readability";
-
-const todosRepo = getTodosRepo();
+import { getTodosRepo } from "@/utils/service";
 
 
 export async function sharePostCommon() {
@@ -26,6 +25,8 @@ export async function sharePostCommon() {
     author: article?.byline,
     url,
   };
+  const todosRepo = getTodosRepo();
+
   todosRepo.update(currentTodo);
   await sendMessage("openOptionsPage", undefined);
 }

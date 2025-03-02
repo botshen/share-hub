@@ -1,19 +1,9 @@
 import { createNanoId } from "@/utils/id-helper";
 import { sendMessage } from "@/utils/message";
+import { getTodosRepo } from "@/utils/service";
 
-let comments: NodeListOf<Element> | null = null;
 
-const todosRepo = getTodosRepo();
 
-// 初始查找所有评论元素
-const mainElement = document.querySelector("#Main");
-if (mainElement) {
-  const boxes = mainElement.querySelectorAll(".box");
-  if (boxes.length > 1) {
-    const secondBox = boxes[1];
-    comments = secondBox.querySelectorAll("[id^='r_']");
-  }
-}
 
 // 清理HTML内容，删除所有具有指定class的元素
 function cleanHTMLContent(html: string): string {
@@ -110,11 +100,26 @@ export async function sharePostV2ex() {
     url,
     source: "v2ex",
   };
+  const todosRepo = getTodosRepo();
+
   todosRepo.update(currentTodo);
   await sendMessage("openOptionsPage", undefined);
 }
 
 function collectCheckedComments() {
+  let comments: NodeListOf<Element> | null = null;
+
+  // 初始查找所有评论元素
+const mainElement = document.querySelector("#Main");
+console.log('mainElement',mainElement)
+if (mainElement) {
+  const boxes = mainElement.querySelectorAll(".box");
+  if (boxes.length > 1) {
+    const secondBox = boxes[1];
+    comments = secondBox.querySelectorAll("[id^='r_']");
+  }
+}
+
   const checkedComments: {
     id: string;
     avatarUrl: string;
@@ -122,6 +127,7 @@ function collectCheckedComments() {
     content: string;
     isChecked: boolean;
   }[] = [];
+  console.log('comments-=--=-=',comments)
   if (comments) {
     comments.forEach((comment) => {
       const commentElement = comment.querySelector("table") as HTMLElement;

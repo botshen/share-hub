@@ -26,6 +26,9 @@ importers:
       '@wxt-dev/storage':
         specifier: ^1.1.0
         version: 1.1.0
+      ajax-hook:
+        specifier: ^3.0.3
+        version: 3.0.3
       async-mutex:
         specifier: ^0.5.0
         version: 0.5.0
@@ -1169,6 +1172,9 @@ packages:
   adm-zip@0.5.16:
     resolution: {integrity: sha512-TGw5yVi4saajsSEgz25grObGHEUaDrniwvA2qwSC060KfqGPdglhvPMA2lPIoxs3PQIItj2iag35fONcQqgUaQ==}
     engines: {node: '>=12.0'}
+
+  ajax-hook@3.0.3:
+    resolution: {integrity: sha512-pcVLNEG1f97++3UQQTIGFxYkBNjUDQS4gIOMIFYSUaTe4HklxjqJinR0WjeJaUD5RTBXvRivrssWO//Io/eaxA==}
 
   alien-signals@0.4.14:
     resolution: {integrity: sha512-itUAVzhczTmP2U5yX67xVpsbbOiquusbWVyA9N+sy6+r6YVbFkahXvNCeEPWEOMhwDYwbVbGHFkVL03N9I5g+Q==}
@@ -4328,6 +4334,8 @@ snapshots:
   acorn@8.14.0: {}
 
   adm-zip@0.5.16: {}
+
+  ajax-hook@3.0.3: {}
 
   alien-signals@0.4.14: {}
 

@@ -109,6 +109,7 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
     isDownloading,
     onlyEditorVisible,
     config,
-    bgClass
+    bgClass,
+    todosRepo
   };
 });
