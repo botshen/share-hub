@@ -7,11 +7,7 @@ export function injectScriptToPage() {
       console.log('🔍 script injected')
       script.remove()
     }
-    document.documentElement.appendChild(script)
-    const input = document.createElement('input')
-    input.setAttribute('id', 'xxxxxx')
-    input.setAttribute('style', 'display:none')
-    document.documentElement.appendChild(input)
+    document.documentElement.appendChild(script) 
   }
   catch (err) {
     console.error('err', err)

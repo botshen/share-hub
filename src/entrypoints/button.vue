@@ -17,6 +17,9 @@ const onClick = () => {
     sharePostCommon();
   }
 };
+onMessage("setTwitterData", (data) => {
+  console.log("data================", data);
+});
 </script>
 
 <template>

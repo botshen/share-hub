@@ -2,6 +2,7 @@
 import { createApp } from 'vue';
 import Button from './button.vue';
 import { injectScriptToPage } from '@/utils/inject-help';
+import { websiteMessenger } from '@/entrypoints/get-post/website-messenging';
 
 
 export default defineContentScript({
@@ -11,7 +12,7 @@ export default defineContentScript({
   runAt: 'document_start',
   async main(ctx) {
     injectScriptToPage()
-
+   
     // 3. Define your UI
     const ui = await createShadowRootUi(ctx, {
       name: 'share-ui',
@@ -34,5 +35,8 @@ export default defineContentScript({
 
     // 4. Mount the UI
     ui.mount();
+    // websiteMessenger.onMessage("setTwitterData", (data) => {
+    //   console.log('data34424324324324234 ',data)
+    // });
   },
 });
