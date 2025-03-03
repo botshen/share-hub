@@ -3,7 +3,7 @@ import { useOptionsStore } from "../use-options-store";
 const { todos, handleSelectTodo, handleDelete } = useOptionsStore();
 </script>
 <template>
-  <ul class="list bg-base-100 rounded-box shadow-md shrink-0 h-auto w-[300px]">
+  <ul class="list bg-base-100 rounded-box shadow-md shrink-0 h-auto w-[300px] overflow-auto max-h-[90vh] ">
     <li v-for="todo in todos" :key="todo.id">
       <div @click="handleSelectTodo(todo.id)" class="list-row cursor-pointer flex items-center gap-4 p-2">
         <div class="mask mask-squircle w-10 h-10 flex-shrink-0">
