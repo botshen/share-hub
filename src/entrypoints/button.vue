@@ -37,5 +37,6 @@ const onClick = () => {
   border-radius: 24px 0 0 24px;
   visibility: visible !important;
   z-index: 9999;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 </style>
