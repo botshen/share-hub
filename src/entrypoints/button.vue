@@ -36,5 +36,6 @@ const onClick = () => {
   cursor: pointer;
   border-radius: 24px 0 0 24px;
   visibility: visible !important;
+  z-index: 9999;
 }
 </style>
