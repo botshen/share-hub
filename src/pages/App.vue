@@ -87,9 +87,8 @@ onMounted(async () => {
       <PostList />
     </div> 
     <div class="card-container mx-auto m-4 block">
-      <Card elementId="card" :style="{ 'z-index': isDownloading || isCopying ? '-11' : 'auto' }" :isClone="false" />
-      <Card elementId="card" :style="{ 'z-index': isDownloading || isCopying ? 'auto' : '-11' }" :isClone="true"  />
-    </div>
+      <Card />
+     </div>
     <div class="sticky top-2 ml-4 min-h-screen ">
       <ActionBar />
     </div>
