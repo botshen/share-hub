@@ -16,7 +16,7 @@ export default defineContentScript({
     const ui = await createShadowRootUi(ctx, {
       name: 'share-ui',
       position: 'overlay',
-      mode: "open",
+      mode: "closed",
       anchor: 'html',
       append: "first",
 

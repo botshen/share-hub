@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import CommentList from "./comment-list/CommentList.vue";
 import { useOptionsStore } from "./use-options-store";
-
+import PostLogo from "@/components/PostLogo.vue";
 const { currentTodo } = useOptionsStore();
 
  
