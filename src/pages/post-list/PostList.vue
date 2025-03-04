@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { useOptionsStore } from "../use-options-store";
-const { todos, handleSelectTodo, handleDelete } = useOptionsStore();
+const { todos, handleSelectTodo, handleDelete,currentTodoId } = useOptionsStore();
 </script>
 <template>
   <ul class="list bg-base-100 rounded-box shadow-md shrink-0 h-auto w-[300px] overflow-auto max-h-[90vh] ">
-    <li v-for="todo in todos" :key="todo.id">
+    <li v-for="todo in todos" :key="todo.id" :class="{ 'bg-primary': currentTodoId === todo.id }">
       <div @click="handleSelectTodo(todo.id)" class="list-row cursor-pointer flex items-center gap-4 p-2">
         <div class="mask mask-squircle w-10 h-10 flex-shrink-0">
           <img :src="todo.avatarUrl" />

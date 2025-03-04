@@ -50,13 +50,17 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
     });
     getTodos();
   };
-  const currentTodoId = ref<number | null>(null);
+  const currentTodoId = ref<number | null | string>(null);
   const currentTodo = ref<any>(null);
   const getTodos = async () => {
     const result = await todosRepo.getAll();
     console.log("result", result);
-    todos.value = result.sort((a, b) => b.id - a.id);
-    if (todos.value.length > 0) {
+    todos.value = result
+    console.log('currentTodoId', currentTodoId.value)
+    console.log('todos', todos.value)
+    if (todos.value.length > 0 && currentTodoId.value) {
+      currentTodo.value = todos.value.find(todo => todo.id === currentTodoId.value);
+    } else {
       currentTodo.value = todos.value[0];
     }
   };
@@ -71,7 +75,7 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
   const handleSelectTodo = async (todoId: number) => {
     console.log('todoId', todoId)
     currentTodoId.value = todoId;
-
+    await getTodos();
   };
   const handleDelete = (todoId: number) => {
     deleteTodo(todoId);

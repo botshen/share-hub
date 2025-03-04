@@ -1,6 +1,7 @@
 import { createNanoId } from "@/utils/id-helper";
 import { sendMessage } from "@/utils/message";
 import { getTodosRepo } from "@/utils/service";
+import { currentIdStorage } from "@/utils/storage";
 
 
 
@@ -90,7 +91,10 @@ export async function sharePostV2ex() {
 
   const comments = collectCheckedComments();
   const url = window.location.href;
+  const _id = url.split('/').pop()?.split('#')[0] || url.split('/').pop();
+  const id = _id ? parseInt(_id) : createNanoId();
   const currentTodo = {
+    id,
     postContent,
     title,
     author,
@@ -101,7 +105,7 @@ export async function sharePostV2ex() {
     source: "v2ex",
   };
   const todosRepo = getTodosRepo();
-
+  currentIdStorage.setValue(id);
   todosRepo.update(currentTodo);
   await sendMessage("openOptionsPage", undefined);
 }
@@ -110,15 +114,15 @@ function collectCheckedComments() {
   let comments: NodeListOf<Element> | null = null;
 
   // 初始查找所有评论元素
-const mainElement = document.querySelector("#Main");
-console.log('mainElement',mainElement)
-if (mainElement) {
-  const boxes = mainElement.querySelectorAll(".box");
-  if (boxes.length > 1) {
-    const secondBox = boxes[1];
-    comments = secondBox.querySelectorAll("[id^='r_']");
+  const mainElement = document.querySelector("#Main");
+  console.log('mainElement', mainElement)
+  if (mainElement) {
+    const boxes = mainElement.querySelectorAll(".box");
+    if (boxes.length > 1) {
+      const secondBox = boxes[1];
+      comments = secondBox.querySelectorAll("[id^='r_']");
+    }
   }
-}
 
   const checkedComments: {
     id: string;
@@ -127,7 +131,7 @@ if (mainElement) {
     content: string;
     isChecked: boolean;
   }[] = [];
-  console.log('comments-=--=-=',comments)
+  console.log('comments-=--=-=', comments)
   if (comments) {
     comments.forEach((comment) => {
       const commentElement = comment.querySelector("table") as HTMLElement;

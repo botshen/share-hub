@@ -20,10 +20,15 @@ export async function sharePostCommon() {
 
   const url = window.location.href;
   const currentTodo = {
-    postContent: article?.textContent,
-    title: article?.title,
-    author: article?.byline,
+    id: createNanoId(),
+    postContent: article?.textContent || "",
+    title: article?.title || "",
+    author: article?.byline || "",
     url,
+    avatarUrl: "",
+    comments: [],
+    postscripts: [],
+    source: "common",
   };
   const todosRepo = getTodosRepo();
 

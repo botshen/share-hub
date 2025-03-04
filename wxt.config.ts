@@ -25,7 +25,7 @@ export default defineConfig({
   }),
   manifest: {
     permissions: [
-
+      "storage",
     ],
     web_accessible_resources: [
       {

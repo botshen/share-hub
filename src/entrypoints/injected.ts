@@ -3,7 +3,7 @@ import { extractTimelineTweet } from "@/entrypoints/api";
 import { isTimelineEntryTweet } from "@/entrypoints/api";
 import { TimelineAddEntriesInstruction, TimelineAddToModuleInstruction, TimelineInstructions, TimelineTweet, Tweet } from "@/entrypoints/types";
 import { proxy } from "ajax-hook";
-
+import { sendMessageToContentScript } from "@/utils/inject-help";
 
 interface TweetDetailResponse {
   data: {
@@ -15,10 +15,7 @@ interface TweetDetailResponse {
 function isMainTweet(tweet: Tweet): boolean {
   return tweet.legacy.conversation_id_str === tweet.legacy.id_str;
 }
-function sendMessageToContentScript<T>(message: T, eventName: string) {
-  const event = new CustomEvent(eventName, { detail: message })
-  window.dispatchEvent(event)
-}
+
 export default defineUnlistedScript(() => {
   proxy({
     onRequest: (config, handler) => {
@@ -113,6 +110,7 @@ export default defineUnlistedScript(() => {
           author: mainTweet?.core.user_results.result.legacy.screen_name,
           avatarUrl: mainTweet?.core.user_results.result.legacy.profile_image_url_https,
           source: "twitter",
+          id: mainTweet?.legacy.id_str,
         };
         console.log('currentTodo', currentTodo)
         sendMessageToContentScript(currentTodo, 'todo')

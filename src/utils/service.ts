@@ -2,20 +2,20 @@ import { defineProxyService, flattenPromise } from '@webext-core/proxy-service';
 import { IDBPDatabase } from 'idb';
 
 interface Todo {
-  id: number;
-  postContent: string | null;
-  title: string | null;
-  author: string | null;
-  avatarUrl: string | null;
+  id: number | string | null | undefined;
+  postContent: string | null | undefined;
+  title: string | null | undefined;
+  author: string | null | undefined;
+  avatarUrl: string | null | undefined;
   comments: {
-    content: string | null;
-    author: string | null;
-    avatarUrl: string | null;
+    content: string | null | undefined;
+    author: string | null | undefined;
+    avatarUrl: string | null | undefined;
   }[];
   postscripts: {
-    content: string | null;
+    content: string | null | undefined;
   }[];
-  url: string;
+  url: string | null | undefined;
 }
 export const [registerTodosRepo, getTodosRepo] = defineProxyService('TodosRepo', createTodosRepo);
 

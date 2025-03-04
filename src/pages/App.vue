@@ -2,7 +2,7 @@
 import { useOptionsStore } from "./use-options-store";
 import { onMessage } from "@/utils/message";
 import MessageTip from "@/components/MessageTip.vue";
- import PostList from "./post-list/PostList.vue";
+import PostList from "./post-list/PostList.vue";
 import ActionBar from "./action-bar/ActionBar.vue";
 import {
   FontSize,
@@ -13,14 +13,18 @@ import {
   widthMap,
   WidthSize,
 } from "@/utils/post-config";
- import Card from "./Card.vue";
+import Card from "./Card.vue";
+import { currentIdStorage } from "@/utils/storage";
+import { onMounted, watch, onUnmounted } from "vue";
 
 const { todos, getTodos, currentTodoId, currentTodo, config, bgClass, onlyEditorVisible, isDownloading, isCopying } =
   useOptionsStore();
 
-onMessage("openOptionsPage", async () => {
-  await getTodos();
-});
+// onMessage("openOptionsPage", async (message) => {
+//   console.log('message', message)
+//   currentTodoId.value = message.data;
+//   await getTodos();
+// });
 
 const detailCss = (newVal: typeof config.value) => {
   const card = document.querySelectorAll("#card");
@@ -31,8 +35,8 @@ const detailCss = (newVal: typeof config.value) => {
         card.style.fontSize = postFontSizeMap[newVal.fontSize as FontSize];
         if (card.className.includes('bg-')) {
           card.className = card.className.replace(/bg-[^ ]+/, `bg-${newVal.color}`);
-    } else {
-      card.className = card.className + ` bg-${newVal.color}`;
+        } else {
+          card.className = card.className + ` bg-${newVal.color}`;
         }
         card.style.padding = paddingMap[newVal.padding as keyof typeof paddingMap];
       }
@@ -57,29 +61,43 @@ watch(
   { deep: true, immediate: true },
 );
 
-watch(
-  currentTodoId,
-  (newVal) => {
-    console.log("newVal", newVal);
-    if (!todos.value) return;
+const updateCurrentId = async () => {
+  const id = await currentIdStorage.getValue();
+  if (id) {
+    currentTodoId.value = id;
+    await getTodos();
+  }
+};
 
-    if (newVal) {
-      currentTodo.value = todos.value?.find((todo) => todo.id === newVal);
-    } else {
-      console.log("todos.value", todos.value);
-      currentTodo.value = todos.value?.[0];
-    }
-  },
-  { immediate: true, deep: true },
-);
+// 处理标签页激活
+const handleVisibilityChange = () => {
+  if (document.visibilityState === 'visible') {
+    console.log('active')
+    updateCurrentId();
+  }
+};
+
 onMounted(async () => {
+  await updateCurrentId();
   await getTodos();
   detailCss(config.value);
+  
+  // 添加 visibilitychange 监听
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+});
+
+onUnmounted(() => {
+  // 清理监听器
+  document.removeEventListener('visibilitychange', handleVisibilityChange);
+});
+
+storage.watch<number>('local:currentId', (newCount, oldCount) => {
+  console.log('Count changed:', { newCount, oldCount });
 });
 </script>
 
 <template>
-  <MessageTip />
+  <MessageTip /> 
   <div class="flex bg-pattern px-[100px] h-full ">
     <div class="sticky top-2 mr-4">
       <PostList />
@@ -103,8 +121,6 @@ onMounted(async () => {
   height: fit-content;
   max-height: 100%;
 }
-
- 
 
 .bg-default {
   background: linear-gradient(to right, #ff8008, #ffc837);
@@ -228,7 +244,6 @@ onMounted(async () => {
   background: #BC8F8F;
   /* 玫瑰褐色 */
 }
-
 
 .sticky {
   position: sticky;

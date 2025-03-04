@@ -70,7 +70,9 @@ export async function sharePostReddit() {
 
 
   const url = window.location.href;
+  const id = createNanoId()
   const currentTodo = {
+    id,
     postContent: _content,
     title,
     author,

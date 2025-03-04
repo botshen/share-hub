@@ -18,7 +18,7 @@ export async function sharePostHacknews() {
   const todosRepo = getTodosRepo();
 
   const currentTodo = {
-    postContent: content?.innerHTML,
+    id: createNanoId(),
     title,
     author,
     url,
@@ -26,6 +26,7 @@ export async function sharePostHacknews() {
     comments,
     postscripts: [],
     source: "hacknews",
+    postContent: content?.innerHTML || "",
   };
   todosRepo.update(currentTodo);
   await sendMessage("openOptionsPage", undefined);

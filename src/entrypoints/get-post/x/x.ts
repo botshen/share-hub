@@ -3,9 +3,11 @@ import { sendMessage } from "@/utils/message";
 
 export function sharePostX(xData: any) {
   console.log('xData', xData)
-  const { postContent, title, comments, author, avatarUrl } = xData
+  const { postContent, title, comments, author, avatarUrl, id } = xData
   const url = window.location.href;
+  const _id = id || createNanoId()
   const currentTodo = {
+    id: _id,
     postContent,
     title,
     author,
@@ -18,5 +20,5 @@ export function sharePostX(xData: any) {
   const todosRepo = getTodosRepo();
 
   todosRepo.update(currentTodo);
-  sendMessage("openOptionsPage", undefined);
+  sendMessage("openOptionsPage", _id);
 }

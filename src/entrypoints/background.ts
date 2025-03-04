@@ -12,14 +12,12 @@ export default defineBackground(() => {
       if (!db.objectStoreNames.contains("todos")) {
         db.createObjectStore("todos", {
           keyPath: "id",
-          autoIncrement: true,
         });
       }
     },
   });
   registerTodosRepo(db);
-  onMessage("openOptionsPage", async (message) => {
-    console.log("openOptionsPage", message);
+  onMessage("openOptionsPage", async () => {
     const url = browser.runtime.getURL("/options.html");
 
     // 查找所有已打开的选项页面
