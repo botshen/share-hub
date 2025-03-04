@@ -110,10 +110,10 @@ export default defineUnlistedScript(() => {
           author: mainTweet?.core.user_results.result.legacy.screen_name,
           avatarUrl: mainTweet?.core.user_results.result.legacy.profile_image_url_https,
           source: "twitter",
-          id: mainTweet?.legacy.id_str,
+          id: mainTweet?.legacy.conversation_id_str,
         };
         console.log('currentTodo', currentTodo)
-        sendMessageToContentScript(currentTodo, 'todo')
+        sendMessageToContentScript(currentTodo, 'x-data')
       } catch (err) {
         console.error(err);
 

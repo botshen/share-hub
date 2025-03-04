@@ -4,10 +4,11 @@ import { sharePostReddit } from "./get-post/reddit/reddit";
 import { sharePostV2ex } from "./get-post/v2ex/v2ex";
 import { getWebKind } from "@/utils/get-web-kind";
 import { sharePostHacknews } from "./get-post/hacknews/hacknews";
+import { getTodosRepo } from "@/utils/service";
+
 import logo from "./logo.svg";
 import { sharePostX } from "./get-post/x/x";
- import { shallowRef} from 'vue';
- const xData = shallowRef(null)
+const xId = ref<string | null>(null);
 const onClick = () => {
   const webKind = getWebKind();
   if (webKind === "v2ex") {
@@ -16,20 +17,31 @@ const onClick = () => {
     sharePostReddit();
   } else if (webKind === "hacknews") {
     sharePostHacknews();
-  } else if (webKind === "x") {
-    sharePostX(xData.value);
-  } else  {
+  } else if (webKind === "x" && xId.value) {
+    sharePostX(xId.value);
+  } else {
     sharePostCommon();
   }
 };
 
-window.addEventListener('todo', ((event: Event) => {
-      const customEvent = event as CustomEvent
-      console.log('customEvent.detail22222', customEvent.detail)
-      // 添加类型检查和错误处理
-      xData.value = customEvent.detail
-    }) as EventListener)
- 
+window.addEventListener("x-data", ((event: Event) => {
+  const customEvent = event as CustomEvent;
+  console.log("customEvent.detail22222", customEvent.detail);
+  const currentTodo = {
+    id: customEvent.detail.id,
+    postContent: customEvent.detail.postContent,
+    title: customEvent.detail.title,
+    author: customEvent.detail.author,
+    url: customEvent.detail.url,
+    avatarUrl: customEvent.detail.avatarUrl,
+    comments: customEvent.detail.comments,
+    postscripts: [],
+    source: "x",
+  };
+  const todosRepo = getTodosRepo();
+  todosRepo.update(currentTodo);
+  xId.value = currentTodo.id;
+}) as EventListener);
 </script>
 
 <template>
