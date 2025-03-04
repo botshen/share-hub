@@ -20,7 +20,7 @@ const { currentTodo } = useOptionsStore();
         </div>
         <PostLogo v-if="currentTodo?.source" :source="currentTodo?.source" />
       </header>
-      <div class="text-2xl font-bold px-2 pt-2" :contentEditable="true" :innerHTML="currentTodo?.title" />
+      <div class="text-2xl font-bold px-2 pt-2" :contentEditable="true" :innerHTML="currentTodo?.title" v-if="currentTodo?.title" />
       <div class="p-2 cursor-pointer break-words" :contentEditable="true" :innerHTML="currentTodo?.postContent" />
       <CommentList   />
     </div>

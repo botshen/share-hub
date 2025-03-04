@@ -2,8 +2,7 @@
 import { useOptionsStore } from "./use-options-store";
 import { onMessage } from "@/utils/message";
 import MessageTip from "@/components/MessageTip.vue";
-import CommentList from "./comment-list/CommentList.vue";
-import PostList from "./post-list/PostList.vue";
+ import PostList from "./post-list/PostList.vue";
 import ActionBar from "./action-bar/ActionBar.vue";
 import {
   FontSize,
@@ -14,8 +13,7 @@ import {
   widthMap,
   WidthSize,
 } from "@/utils/post-config";
-import PostLogo from "@/components/PostLogo.vue";
-import Card from "./Card.vue";
+ import Card from "./Card.vue";
 
 const { todos, getTodos, currentTodoId, currentTodo, config, bgClass, onlyEditorVisible, isDownloading, isCopying } =
   useOptionsStore();

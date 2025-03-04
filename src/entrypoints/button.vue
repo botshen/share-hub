@@ -5,6 +5,9 @@ import { sharePostV2ex } from "./get-post/v2ex/v2ex";
 import { getWebKind } from "@/utils/get-web-kind";
 import { sharePostHacknews } from "./get-post/hacknews/hacknews";
 import logo from "./logo.svg";
+import { sharePostX } from "./get-post/x/x";
+ import { shallowRef} from 'vue';
+ const xData = shallowRef(null)
 const onClick = () => {
   const webKind = getWebKind();
   if (webKind === "v2ex") {
@@ -13,13 +16,20 @@ const onClick = () => {
     sharePostReddit();
   } else if (webKind === "hacknews") {
     sharePostHacknews();
-  } else {
+  } else if (webKind === "x") {
+    sharePostX(xData.value);
+  } else  {
     sharePostCommon();
   }
 };
-onMessage("setTwitterData", (data) => {
-  console.log("data================", data);
-});
+
+window.addEventListener('todo', ((event: Event) => {
+      const customEvent = event as CustomEvent
+      console.log('customEvent.detail22222', customEvent.detail)
+      // 添加类型检查和错误处理
+      xData.value = customEvent.detail
+    }) as EventListener)
+ 
 </script>
 
 <template>

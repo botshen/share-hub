@@ -9,6 +9,9 @@ export const getWebKind = () => {
   if (url.includes('news.ycombinator.com')) {
     return 'hacknews';
   }
+  if (url.includes('x.com')) {
+    return 'x'
+  }
   return 'unknown';
 };
 

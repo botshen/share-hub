@@ -23,7 +23,7 @@ export default defineConfig({
   }),
   manifest: {
     permissions: [
-      
+
     ],
     web_accessible_resources: [
       {

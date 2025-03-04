@@ -7,14 +7,14 @@ export function injectScriptToPage() {
       console.log('🔍 script injected')
       script.remove()
     }
-    document.documentElement.appendChild(script) 
+    document.documentElement.appendChild(script)
   }
   catch (err) {
     console.error('err', err)
   }
 }
- 
- 
+
+
 
 export function tryParseJson<T>(data: string, defaultValue: T) {
   try {
@@ -25,4 +25,8 @@ export function tryParseJson<T>(data: string, defaultValue: T) {
   }
 }
 
- 
+
+export function sendMessageToContentScript<T>(message: T, eventName: string) {
+  const event = new CustomEvent(eventName, { detail: message })
+  window.dispatchEvent(event)
+}
