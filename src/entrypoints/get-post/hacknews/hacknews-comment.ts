@@ -1,6 +1,6 @@
 
 import { findImmersiveElements } from "@/utils/dom";
-
+import { createNanoId } from "@/utils/id-helper";
 export function getComment() {
   const commentElements = document.querySelectorAll('.comtr');
   console.log('commentElements', commentElements)
