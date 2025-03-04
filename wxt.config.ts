@@ -4,6 +4,7 @@ import Tailwindcss from "@tailwindcss/vite";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
+  debug: false,
   srcDir: "src",
   extensionApi: 'chrome',
   modules: [
@@ -13,6 +14,7 @@ export default defineConfig({
   ],
   runner: {
     chromiumArgs: ['--user-data-dir=./.wxt/chrome-data'],
+    // disabled: true,
   },
   vite: () => ({
     plugins: [Icons({ compiler: "vue3" }), Tailwindcss() as any],

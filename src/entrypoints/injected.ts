@@ -3,8 +3,7 @@ import { extractTimelineTweet } from "@/entrypoints/api";
 import { isTimelineEntryTweet } from "@/entrypoints/api";
 import { TimelineAddEntriesInstruction, TimelineAddToModuleInstruction, TimelineInstructions, TimelineTweet, Tweet } from "@/entrypoints/types";
 import { proxy } from "ajax-hook";
-import { sendMessage } from "@/utils/message";
-import { websiteMessenger } from "@/entrypoints/get-post/website-messenging";
+
 
 interface TweetDetailResponse {
   data: {
