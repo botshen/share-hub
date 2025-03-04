@@ -1,7 +1,7 @@
 import { Readability } from "@mozilla/readability";
 import { getTodosRepo } from "@/utils/service";
-
-
+import { sendMessage } from "@/utils/message";
+import { createNanoId } from "@/utils/id-helper";
 export async function sharePostCommon() {
   // 克隆整个文档以避免修改原始文档
   var documentClone = document.cloneNode(true);

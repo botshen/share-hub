@@ -1,8 +1,10 @@
 import { findImmersiveElements } from "@/utils/dom";
 import { getComment } from "./hacknews-comment";
 import { getTodosRepo } from "@/utils/service";
+import { currentIdStorage } from "@/utils/storage";
 
-
+import { sendMessage } from "@/utils/message";
+import { createNanoId } from "@/utils/id-helper";
 
 export async function sharePostHacknews() {
   findImmersiveElements(document);
@@ -28,6 +30,7 @@ export async function sharePostHacknews() {
     source: "hacknews",
     postContent: content?.innerHTML || "",
   };
+  currentIdStorage.setValue(currentTodo.id);
   todosRepo.update(currentTodo);
   await sendMessage("openOptionsPage", undefined);
 }

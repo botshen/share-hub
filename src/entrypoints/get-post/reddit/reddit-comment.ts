@@ -1,3 +1,4 @@
+import { findImmersiveElements } from "@/utils/dom";
 
 export function getComment() {
   const commentElements = document.querySelectorAll('shreddit-comment');

@@ -1,6 +1,12 @@
 import { findImmersiveElements } from "@/utils/dom";
 import { getComment } from "./reddit-comment";
 import { getTodosRepo } from "@/utils/service";
+import { createNanoId } from "@/utils/id-helper";
+import { sendMessage } from "@/utils/message";
+import { currentIdStorage } from "@/utils/storage";
+
+
+
 
 // 清理 HTML 内容的辅助函数
 function cleanHtmlContent(html: string): string {
@@ -83,7 +89,7 @@ export async function sharePostReddit() {
     source: "reddit",
   };
   const todosRepo = getTodosRepo();
-
+  currentIdStorage.setValue(id);
   todosRepo.update(currentTodo);
   await sendMessage("openOptionsPage", undefined);
 }

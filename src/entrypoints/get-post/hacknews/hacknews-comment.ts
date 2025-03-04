@@ -1,4 +1,6 @@
 
+import { findImmersiveElements } from "@/utils/dom";
+
 export function getComment() {
   const commentElements = document.querySelectorAll('.comtr');
   console.log('commentElements', commentElements)
