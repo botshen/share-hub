@@ -87,6 +87,7 @@ export default defineUnlistedScript(() => {
         const url = window.location.href;
         const checkedComments: {
           id: string;
+          conversationId: string;
           avatarUrl: string;
           author: string;
           content: string;
@@ -95,12 +96,14 @@ export default defineUnlistedScript(() => {
         comments.forEach((comment) => {
           checkedComments.push({
             id: comment.legacy.id_str,
+            conversationId: comment.legacy.conversation_id_str,
             avatarUrl: comment.core.user_results.result.legacy.profile_image_url_https,
             author: comment.core.user_results.result.legacy.screen_name,
             content: comment.legacy.full_text,
             isChecked: false,
           });
         });
+        
         const currentTodo = {
           url,
           postContent: mainTweet?.legacy.full_text,
@@ -110,7 +113,7 @@ export default defineUnlistedScript(() => {
           author: mainTweet?.core.user_results.result.legacy.screen_name,
           avatarUrl: mainTweet?.core.user_results.result.legacy.profile_image_url_https,
           source: "twitter",
-          id: mainTweet?.legacy.conversation_id_str,
+          id: mainTweet?.legacy.conversation_id_str||checkedComments?.[0]?.conversationId,
         };
         console.log('currentTodo', currentTodo)
         sendMessageToContentScript(currentTodo, 'x-data')
