@@ -24,9 +24,17 @@ const onClick = () => {
   }
 };
 
-window.addEventListener("x-data", ((event: Event) => {
+// 更新评论接口定义以匹配 Todo 类型中的评论结构
+interface Comment {
+  id: string | number | null | undefined;
+  content: string | null | undefined;
+  author: string | null | undefined;
+  avatarUrl: string | null | undefined;
+  replyId: string | number | null | undefined;
+}
+
+window.addEventListener("x-data", (async (event: Event) => {
   const customEvent = event as CustomEvent;
-  console.log("customEvent.detail22222", customEvent.detail);
   const currentTodo = {
     id: customEvent.detail.id,
     postContent: customEvent.detail.postContent,
@@ -39,7 +47,50 @@ window.addEventListener("x-data", ((event: Event) => {
     source: "x",
   };
   const todosRepo = getTodosRepo();
-  todosRepo.update(currentTodo);
+  const todo = await todosRepo.getOne(currentTodo.id);
+  
+  if (!todo) {
+    todosRepo.create(currentTodo);
+  } else {
+    // 合并现有评论和新评论
+    const existingComments = todo.comments || [];
+    const newComments = currentTodo.comments || [];
+    
+    // 使用Map来存储评论，以id为键避免重复
+    const commentMap = new Map();
+    [...existingComments, ...newComments].forEach(comment => {
+      commentMap.set(comment.id, comment);
+    });
+    
+    // 将评论转换回数组并按照回复关系排序
+    const mergedComments = Array.from(commentMap.values());
+    const sortedComments: Comment[] = [];
+    
+    // 先添加没有回复ID的评论
+    mergedComments.forEach(comment => {
+      if (!comment.replyId) {
+        sortedComments.push(comment);
+      }
+    });
+    
+    // 然后处理有回复ID的评论 
+    mergedComments.forEach(comment => {
+      if (comment.replyId) {
+        const parentIndex = sortedComments.findIndex(c => c.id === comment.replyId);
+        if (parentIndex !== -1) {
+          sortedComments.splice(parentIndex + 1, 0, comment);
+        } else {
+          sortedComments.push(comment); // 如果找不到父评论，就加到最后
+        }
+      }
+    });
+
+    todosRepo.update({
+      ...todo,
+      comments: sortedComments,
+    });
+  }
+
   xId.value = currentTodo.id;
 }) as EventListener);
 </script>

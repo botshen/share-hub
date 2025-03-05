@@ -8,9 +8,11 @@ interface Todo {
   author: string | null | undefined;
   avatarUrl: string | null | undefined;
   comments: {
+    id: number | string | null | undefined;
     content: string | null | undefined;
     author: string | null | undefined;
     avatarUrl: string | null | undefined;
+    replyId: number | string | null | undefined;
   }[];
   postscripts: {
     content: string | null | undefined;
@@ -26,7 +28,7 @@ function createTodosRepo(idbPromise: Promise<IDBPDatabase>) {
     async create(todo: Omit<Todo, 'id'>): Promise<void> {
       await idb.add('todos', todo);
     },
-    getOne(id: number): Promise<Todo> {
+    getOne(id: number | string): Promise<Todo> {
       return idb.get('todos', id);
     },
     getAll(): Promise<Todo[]> {
