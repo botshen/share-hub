@@ -67,7 +67,35 @@ export interface Tweet {
   };
   has_birdwatch_notes?: boolean;
   // Usually used by advertisers.
-  card?: unknown;
+  card?: {
+    legacy: {
+      binding_values: {
+        key: string;
+        value: {
+          string_value: string;
+          type: string;
+          scribe_key?: string;
+          image_value?: {
+            url: string;
+          };
+        };
+      }[];
+      card_platform: {
+        platform: {
+          audience: {
+            name: string;
+          };
+          device: {
+            name: string;
+            version: string;
+          };
+        };
+      };
+      name: string;
+      url: string;
+      user_refs_results: unknown[];
+    };
+  };
   unified_card?: unknown;
   edit_control: {
     edit_tweet_ids: string[];

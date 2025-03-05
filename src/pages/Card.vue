@@ -10,10 +10,10 @@ const { currentTodo } = useOptionsStore();
   <main class="mx-auto m-4 block " id="card">
     <div class="drop p-4 rounded-box h-full">
       <header class="flex items-center justify-between gap-2">
-        <div class="flex items-center gap-2">
-          <div class="avatar" v-if="currentTodo?.avatarUrl">
-            <div class="mask mask-squircle w-10">
-              <img :src="currentTodo?.avatarUrl" />
+        <div class="flex items-center gap-2"> 
+          <div class="avatar">
+            <div class="w-8 rounded-full" v-if="currentTodo?.avatarUrl">
+              <img :src="currentTodo.avatarUrl" />
             </div>
           </div>
           <span class="text-lg ml-2">{{ currentTodo?.author }}</span>

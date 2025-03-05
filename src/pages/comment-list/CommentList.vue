@@ -85,47 +85,40 @@ const commentTipVisible = computed(() => {
 <template>
   <div>
     <span class="text-lg font-bold ml-2" v-if="commentTextVisible">评论</span>
-    <span class="label-text text-xs text-gray-500 ml-2" v-if="commentTipVisible"
-      >勾选评论以在导出时显示</span
-    >
+    <span class="label-text text-xs text-gray-500 ml-2" v-if="commentTipVisible">勾选评论以在导出时显示</span>
 
     <div v-for="comment in currentTodo?.comments" :key="comment.id">
-      <div
-        id="comment"
-        class="px-2 block"
-        v-if="commentVisible(comment)"
-        :class="depthMap[comment.depth as DepthLevel]"
-      >
-        <div
-          class="divider h-1"
-          v-if="!comment.depth || comment.depth === '0'"
-        ></div>
+      <div id="comment" class="px-2 block" v-if="commentVisible(comment)"
+        :class="depthMap[comment.depth as DepthLevel]">
+        <div class="divider h-1" v-if="!comment.depth || comment.depth === '0'"></div>
         <div class="flex items-center gap-2">
-          <div class="mask mask-squircle w-8" v-if="comment.avatarUrl">
-            <img :src="comment.avatarUrl" />
+          <div class="avatar">
+            <div class="w-8 rounded-full" v-if="comment.avatarUrl">
+              <img :src="comment.avatarUrl" />
+            </div>
           </div>
           <span class="font-bold">{{ comment.author }}</span>
+          <span class="text-gray-500" v-if="comment.replayUser" >@{{ comment.replayUser }}</span>
           <label class="cursor-pointer label" v-if="onlyEditorVisible">
-            <input
-              type="checkbox"
-              :checked="comment.isChecked"
-              class="checkbox checkbox-success"
-              @change="
-                (e) =>
-                  handleCommentSelect(
-                    comment.id,
-                    (e.target as HTMLInputElement).checked,
-                  )
-              "
-            />
+            <input type="checkbox" :checked="comment.isChecked" class="checkbox checkbox-success" @change="
+              (e) =>
+                handleCommentSelect(
+                  comment.id,
+                  (e.target as HTMLInputElement).checked,
+                )
+            " />
           </label>
         </div>
-        <div
-          class="break-words p-2"
-          :class="comment.avatarUrl ? 'ml-10' : ''"
-          :contentEditable="true"
-          :innerHTML="comment.content"
-        />
+        <!-- <div class="text-xs text-red-500">{{ comment.id }}</div> -->
+
+        <div class="break-words p-2" :class="comment.avatarUrl ? 'ml-10' : ''" :contentEditable="true"
+          :innerHTML="comment.content" />
+        <div v-if="comment.imageUrl" :class="comment.avatarUrl ? 'pl-10 w-full' : 'w-full'">
+          <img :src="comment.imageUrl" />
+        </div>
+        <div v-if="comment.mediaPhotosUrl" :class="comment.avatarUrl ? 'pl-10 w-full' : 'w-full'">
+          <img :src="comment.mediaPhotosUrl" />
+        </div>
       </div>
     </div>
   </div>
