@@ -21,7 +21,7 @@ const { currentTodo } = useOptionsStore();
         <PostLogo v-if="currentTodo?.source" :source="currentTodo?.source" />
       </header>
       <div class="text-2xl font-bold px-2 pt-2" :contentEditable="true" :innerHTML="currentTodo?.title" v-if="currentTodo?.title" />
-      <div class="p-2 cursor-pointer break-words" :contentEditable="true" :innerHTML="currentTodo?.postContent" />
+       <div class="p-2 cursor-pointer break-words whitespace-pre-wrap" :contentEditable="true" :innerHTML="currentTodo?.postContent" />
       <CommentList   />
     </div>
     <footer class="text-center text-white mt-6 rounded-box text-base">
