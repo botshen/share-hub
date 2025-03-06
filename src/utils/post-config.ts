@@ -48,5 +48,21 @@ export interface ColorPreset {
   backgroundEndColor: string
 }
 
+export interface Config {
+  width: WidthSize;
+  fontSize: FontSize;
+  color: string;
+  padding: string;
+  customCSS: string;
+}
+
+export const defaultConfig: Config = {
+  width: 'md',
+  fontSize: "md",
+  color: 'default',
+  padding: 'normal',
+  customCSS: ''
+};
+
 
 

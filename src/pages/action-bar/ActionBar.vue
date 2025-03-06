@@ -173,5 +173,15 @@ const handleReadMode = () => {
         Read Mode
       </button>
     </div>
+
+    <!-- 添加自定义CSS输入区域 -->
+    <div class="form-control w-full">
+      <legend class="fieldset-legend">Custom CSS</legend>
+      <textarea 
+        v-model="config.customCSS"
+        class="textarea textarea-bordered h-24 text-sm font-mono"
+        placeholder="#card { /* your styles */ }"
+      />
+    </div>
   </div>
 </template>

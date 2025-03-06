@@ -52,6 +52,19 @@ const detailCss = (newVal: typeof config.value) => {
   if (title) {
     title.style.fontSize = titleFontSizeMap[newVal.fontSize as TitleFontSize];
   }
+
+  // 应用自定义CSS
+  const styleId = 'custom-card-style';
+  let styleEl = document.getElementById(styleId);
+  
+  if (!styleEl) {
+    styleEl = document.createElement('style');
+    styleEl.id = styleId;
+    document.head.appendChild(styleEl);
+  }
+
+  // 更新自定义样式内容
+  styleEl.textContent = newVal.customCSS || '';
 };
 watch(
   config,

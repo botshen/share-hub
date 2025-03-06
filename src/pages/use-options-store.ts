@@ -92,6 +92,7 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
     fontSize: 'md',
     imageQuality: '2',
     color: 'j',
+    customCSS: ''
   });
 
   const bgClass = ref(transformObjToTailwindcss(presetsMap[0]))
