@@ -143,6 +143,14 @@ export default defineUnlistedScript(() => {
             "",
           );
           console.log("replayUser", replayUser);
+          if(comment.quoted_status_result?.result?.legacy?.full_text){
+            const quotedContent=comment.quoted_status_result?.result?.legacy?.full_text;
+            const quotedUser=comment.quoted_status_result?.result?.core?.user_results?.result?.legacy?.name;
+            const quotedUserImage=comment.quoted_status_result?.result?.core?.user_results?.result?.legacy?.profile_image_url_https;
+            console.log('quotedContent==============================================================',quotedContent)
+            console.log('quotedUser',quotedUser)
+            console.log('quotedUserImage',quotedUserImage)
+          }
           checkedComments.push({
             id: comment.rest_id,
             conversationId: comment.legacy.conversation_id_str,

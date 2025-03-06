@@ -109,7 +109,7 @@ const commentTipVisible = computed(() => {
             " />
           </label>
         </div>
-        <!-- <div class="text-xs text-red-500">{{ comment.id }}</div> -->
+        <div class="text-xs text-red-500">{{ comment.id }}</div>
 
         <div class="break-words p-2" :class="comment.avatarUrl ? 'ml-10' : ''" :contentEditable="true"
           :innerHTML="comment.content" />
