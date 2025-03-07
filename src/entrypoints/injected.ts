@@ -7,6 +7,7 @@ import {
   TimelineInstructions,
   TimelineTweet,
   Tweet,
+  TweetUnion,
 } from "@/entrypoints/types";
 import { proxy } from "ajax-hook";
 import { sendMessageToContentScript } from "@/utils/inject-help";
@@ -19,7 +20,11 @@ interface TweetDetailResponse {
     };
   };
 }
-function isMainTweet(tweet: Tweet): boolean {
+
+function isMainTweet(tweet: TweetUnion): tweet is Tweet {
+  if (tweet.__typename !== 'Tweet') {
+    return false;
+  }
   return tweet.legacy.conversation_id_str === tweet.legacy.id_str;
 }
 
@@ -55,12 +60,12 @@ export default defineUnlistedScript(() => {
         for (const entry of timelineAddEntriesInstructionEntries) {
           // The main tweet.
           if (isTimelineEntryTweet(entry)) {
-            const tweet = extractTimelineTweet(entry.content.itemContent);
-            if (tweet) {
-              if (isMainTweet(tweet)) {
-                mainTweet = tweet;
+            const tweetUnion = extractTimelineTweet(entry.content.itemContent);
+            if (tweetUnion && tweetUnion.__typename === 'Tweet') {
+              if (isMainTweet(tweetUnion)) {
+                mainTweet = tweetUnion;
               } else {
-                comments.push(tweet);
+                comments.push(tweetUnion);
               }
             }
           }
@@ -143,13 +148,13 @@ export default defineUnlistedScript(() => {
             "",
           );
           console.log("replayUser", replayUser);
-          if(comment.quoted_status_result?.result?.legacy?.full_text){
-            const quotedContent=comment.quoted_status_result?.result?.legacy?.full_text;
-            const quotedUser=comment.quoted_status_result?.result?.core?.user_results?.result?.legacy?.name;
-            const quotedUserImage=comment.quoted_status_result?.result?.core?.user_results?.result?.legacy?.profile_image_url_https;
-            console.log('quotedContent==============================================================',quotedContent)
-            console.log('quotedUser',quotedUser)
-            console.log('quotedUserImage',quotedUserImage)
+          if (comment.quoted_status_result?.result?.legacy?.full_text) {
+            const quotedContent = comment.quoted_status_result?.result?.legacy?.full_text;
+            const quotedUser = comment.quoted_status_result?.result?.core?.user_results?.result?.legacy?.name;
+            const quotedUserImage = comment.quoted_status_result?.result?.core?.user_results?.result?.legacy?.profile_image_url_https;
+            console.log('quotedContent==============================================================', quotedContent)
+            console.log('quotedUser', quotedUser)
+            console.log('quotedUserImage', quotedUserImage)
           }
           checkedComments.push({
             id: comment.rest_id,
@@ -195,6 +200,10 @@ export default defineUnlistedScript(() => {
           avatarUrl:
             mainTweet?.core.user_results.result.legacy.profile_image_url_https,
           source: "twitter",
+          mediaPhotosUrl:
+            mainTweet?.legacy?.extended_entities?.media
+              ?.filter((m) => m.type === "photo")
+              .map((m) => m.media_url_https) || [],
           id:
             mainTweet?.legacy.conversation_id_str ||
             checkedComments?.[0]?.conversationId,

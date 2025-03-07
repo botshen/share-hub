@@ -43,6 +43,7 @@ window.addEventListener("x-data", (async (event: Event) => {
     url: customEvent.detail.url,
     avatarUrl: customEvent.detail.avatarUrl,
     comments: customEvent.detail.comments,
+    mediaPhotosUrl: customEvent.detail.mediaPhotosUrl,
     postscripts: [],
     source: "x",
   };
