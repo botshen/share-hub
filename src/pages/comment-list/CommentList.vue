@@ -111,7 +111,7 @@ const commentTipVisible = computed(() => {
         </div>
         <div class="text-xs text-red-500">{{ comment.id }}</div>
 
-        <div class="break-words p-2" :class="comment.avatarUrl ? 'ml-10' : ''" :contentEditable="true"
+        <div class="break-words p-2 whitespace-pre-wrap" :class="comment.avatarUrl ? 'ml-10' : ''" :contentEditable="true"
           :innerHTML="comment.content" />
         <div v-if="comment.imageUrl" :class="comment.avatarUrl ? 'pl-10 w-full' : 'w-full'">
           <img :src="comment.imageUrl" />

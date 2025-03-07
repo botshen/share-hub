@@ -7,10 +7,10 @@ const { currentTodo } = useOptionsStore();
 <template>
   <main class="mx-auto m-4 block" id="card">
     <div class="drop p-4 rounded-box h-full">
-      <header class="flex items-center justify-between gap-2">
+      <header class="flex items-center justify-between gap-2 mb-4">
         <div class="flex items-center gap-2">
           <div class="avatar">
-            <div class="w-8 rounded-full" v-if="currentTodo?.avatarUrl">
+            <div class="w-12 rounded-full" v-if="currentTodo?.avatarUrl">
               <img :src="currentTodo.avatarUrl" />
             </div>
           </div>
@@ -32,9 +32,9 @@ const { currentTodo } = useOptionsStore();
       />
      
       <div v-for="mediaPhotoUrl in currentTodo?.mediaPhotosUrl" :key="mediaPhotoUrl">
-        <img :src="mediaPhotoUrl" />
+        <img class="px-2" :src="mediaPhotoUrl" />
       </div>
-      <CommentList />
+      <CommentList class="mt-4" />
     </div>
     <footer class="text-center text-white mt-6 rounded-box text-base">
       本图片由 ShareHub 浏览器插件生成
