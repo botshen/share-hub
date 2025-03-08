@@ -1,8 +1,8 @@
-import { Key } from "@/utils/cache";
+import type { Key } from "@/utils/cache";
 import { createCachedFn } from "@/utils/cache";
 import { ref } from "vue";
 import { getTodosRepo } from "@/utils/service";
-import { ColorPreset, transformObjToTailwindcss } from "@/utils/post-config";
+import { type ColorPreset, transformObjToTailwindcss } from "@/utils/post-config";
 export const presetsMap: ColorPreset[] = [
   {
     backgroundStartColor: "#FFF8E1",
@@ -54,8 +54,8 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
   const currentTodo = ref<any>(null);
   const getTodos = async () => {
     const result = await todosRepo.getAll();
-     todos.value = result
-     if (todos.value.length > 0 && currentTodoId.value) {
+    todos.value = result
+    if (todos.value.length > 0 && currentTodoId.value) {
       currentTodo.value = todos.value.find(todo => todo.id === currentTodoId.value);
     } else {
       currentTodo.value = todos.value[0];
@@ -70,7 +70,7 @@ export const useOptionsStore = createCachedFn((cacheKey?: Key) => {
     getTodos();
   };
   const handleSelectTodo = async (todoId: number) => {
-     currentTodoId.value = todoId;
+    currentTodoId.value = todoId;
     await getTodos();
   };
   const handleDelete = (todoId: number) => {

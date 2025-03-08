@@ -2,7 +2,6 @@
 import { createApp } from 'vue';
 import Button from './button.vue';
 import { injectScriptToPage } from '@/utils/inject-help';
-import { websiteMessenger } from '@/entrypoints/get-post/website-messenging';
 
 
 export default defineContentScript({

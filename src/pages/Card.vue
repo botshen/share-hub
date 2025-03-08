@@ -15,22 +15,15 @@ const { currentTodo } = useOptionsStore();
             </div>
           </div>
           <span class="text-lg ml-2">{{ currentTodo?.author }}</span>
-          <x-id class="text-xs text-red-500">{{ currentTodo?.id }}</x-id>
+          <div class="text-xs text-red-500">{{ currentTodo?.id }}</div>
         </div>
         <PostLogo v-if="currentTodo?.source" :source="currentTodo?.source" />
       </header>
-      <div
-        class="text-2xl font-bold px-2 pt-2"
-        :contentEditable="true"
-        :innerHTML="currentTodo?.title"
-        v-if="currentTodo?.title"
-      />
-      <div
-        class="p-2 cursor-pointer break-words whitespace-pre-wrap"
-        :contentEditable="true"
-        :innerHTML="currentTodo?.postContent"
-      />
-     
+      <div class="text-2xl font-bold px-2 pt-2" :contentEditable="true" :innerHTML="currentTodo?.title"
+        v-if="currentTodo?.title" />
+      <div class="p-2 cursor-pointer break-words whitespace-pre-wrap" :contentEditable="true"
+        :innerHTML="currentTodo?.postContent" />
+
       <div v-for="mediaPhotoUrl in currentTodo?.mediaPhotosUrl" :key="mediaPhotoUrl">
         <img class="px-2" :src="mediaPhotoUrl" />
       </div>

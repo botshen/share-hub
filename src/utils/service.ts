@@ -1,5 +1,5 @@
 import { defineProxyService, flattenPromise } from '@webext-core/proxy-service';
-import { IDBPDatabase } from 'idb';
+import type { IDBPDatabase } from 'idb';
 
 interface Todo {
   id: number | string | null | undefined;

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { ColorPreset, transformObjToTailwindcss } from "@/utils/post-config";
 import { useOptionsStore } from "../use-options-store";
 const {
   currentTodo,
@@ -101,17 +100,11 @@ const handleReadMode = () => {
     <legend class="fieldset-legend">COLOR</legend>
     <div class="grid grid-cols-7 gap-2">
       <template v-for="color in configOptions.color" :key="color">
-        <input
-          type="radio"
-          name="color"
-          :value="color"
-          v-model="config.color"
-          :class="[
-            'btn w-8 h-8',
-            `bg-${color}`,
-            { 'ring-2 ring-blue-500': config.color === color },
-          ]"
-        />
+        <input type="radio" name="color" :value="color" v-model="config.color" :class="[
+          'btn w-8 h-8',
+          `bg-${color}`,
+          { 'ring-2 ring-blue-500': config.color === color },
+        ]" />
       </template>
     </div>
 
@@ -120,55 +113,27 @@ const handleReadMode = () => {
       <template v-if="key !== 'color'">
         <legend class="fieldset-legend">{{ key.toUpperCase() }}</legend>
         <div class="flex gap-2" :class="{ 'flex-wrap': key === 'fontSize' }">
-          <input
-            v-for="value in options"
-            :key="value"
-            type="radio"
-            :name="key"
-            :value="value"
-            v-model="config[key]"
-            :aria-label="value"
-            class="btn btn-neutral"
-            :class="{
+          <input v-for="value in options" :key="value" type="radio" :name="key" :value="value" v-model="config[key]"
+            :aria-label="value" class="btn btn-neutral" :class="{
               'bg-blue-500 text-white border-blue-500': config[key] === value,
-            }"
-          />
+            }" />
         </div>
       </template>
     </template>
     <div class="flex gap-2 items-center mt-2">
-      <button
-        class="btn bg-[#0967C2] text-white border-[#0059b3]"
-        @click="handleDownload"
-      >
+      <button class="btn bg-[#0967C2] text-white border-[#0059b3]" @click="handleDownload">
         <span v-if="isDownloading" class="loading loading-spinner"></span>
         Download
       </button>
-      <button
-        class="btn bg-[#622069] text-white border-[#591660]"
-        @click="handleCopy"
-      >
-        <span
-          v-if="isCopying && !isDownloading"
-          class="loading loading-spinner"
-        ></span>
+      <button class="btn bg-[#622069] text-white border-[#591660]" @click="handleCopy">
+        <span v-if="isCopying && !isDownloading" class="loading loading-spinner"></span>
         Copy
       </button>
-      <button
-        @click="handleReadMode"
-        class="btn bg-[#FEE502] text-[#181600] border-[#f1d800]"
-      >
-        <svg
-          aria-label="Kakao logo"
-          width="16"
-          height="16"
-          viewBox="0 0 512 512"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill="#181600"
-            d="M255.5 48C299.345 48 339.897 56.5332 377.156 73.5996C414.415 90.666 443.871 113.873 465.522 143.22C487.174 172.566 498 204.577 498 239.252C498 273.926 487.174 305.982 465.522 335.42C443.871 364.857 414.46 388.109 377.291 405.175C340.122 422.241 299.525 430.775 255.5 430.775C241.607 430.775 227.262 429.781 212.467 427.795C148.233 472.402 114.042 494.977 109.892 495.518C107.907 496.241 106.012 496.15 104.208 495.248C103.486 494.706 102.945 493.983 102.584 493.08C102.223 492.177 102.043 491.365 102.043 490.642V489.559C103.126 482.515 111.335 453.169 126.672 401.518C91.8486 384.181 64.1974 361.2 43.7185 332.575C23.2395 303.951 13 272.843 13 239.252C13 204.577 23.8259 172.566 45.4777 143.22C67.1295 113.873 96.5849 90.666 133.844 73.5996C171.103 56.5332 211.655 48 255.5 48Z"
-          ></path>
+      <button @click="handleReadMode" class="btn bg-[#FEE502] text-[#181600] border-[#f1d800]">
+        <svg aria-label="Kakao logo" width="16" height="16" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#181600"
+            d="M255.5 48C299.345 48 339.897 56.5332 377.156 73.5996C414.415 90.666 443.871 113.873 465.522 143.22C487.174 172.566 498 204.577 498 239.252C498 273.926 487.174 305.982 465.522 335.42C443.871 364.857 414.46 388.109 377.291 405.175C340.122 422.241 299.525 430.775 255.5 430.775C241.607 430.775 227.262 429.781 212.467 427.795C148.233 472.402 114.042 494.977 109.892 495.518C107.907 496.241 106.012 496.15 104.208 495.248C103.486 494.706 102.945 493.983 102.584 493.08C102.223 492.177 102.043 491.365 102.043 490.642V489.559C103.126 482.515 111.335 453.169 126.672 401.518C91.8486 384.181 64.1974 361.2 43.7185 332.575C23.2395 303.951 13 272.843 13 239.252C13 204.577 23.8259 172.566 45.4777 143.22C67.1295 113.873 96.5849 90.666 133.844 73.5996C171.103 56.5332 211.655 48 255.5 48Z">
+          </path>
         </svg>
         Read Mode
       </button>
@@ -177,11 +142,8 @@ const handleReadMode = () => {
     <!-- 添加自定义CSS输入区域 -->
     <div class="form-control w-full">
       <legend class="fieldset-legend">Custom CSS</legend>
-      <textarea 
-        v-model="config.customCSS"
-        class="textarea textarea-bordered h-24 text-sm font-mono"
-        placeholder="#card { /* your styles */ }"
-      />
+      <textarea v-model="config.customCSS" class="textarea textarea-bordered h-24 text-sm font-mono"
+        placeholder="#card { /* your styles */ }" />
     </div>
   </div>
 </template>
