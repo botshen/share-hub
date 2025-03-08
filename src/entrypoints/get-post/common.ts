@@ -16,8 +16,7 @@ export async function sharePostCommon() {
       .trim();
   }
 
-  console.log('article', article)
-
+ 
   const url = window.location.href;
   const currentTodo = {
     id: createNanoId(),

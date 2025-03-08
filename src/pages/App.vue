@@ -20,11 +20,7 @@ import { onMounted, watch, onUnmounted } from "vue";
 const { todos, getTodos, currentTodoId, currentTodo, config, bgClass, onlyEditorVisible, isDownloading, isCopying } =
   useOptionsStore();
 
-// onMessage("openOptionsPage", async (message) => {
-//   console.log('message', message)
-//   currentTodoId.value = message.data;
-//   await getTodos();
-// });
+ 
 
 const detailCss = (newVal: typeof config.value) => {
   const card = document.querySelectorAll("#card");
@@ -85,8 +81,7 @@ const updateCurrentId = async () => {
 // 处理标签页激活
 const handleVisibilityChange = () => {
   if (document.visibilityState === 'visible') {
-    console.log('active')
-    updateCurrentId();
+     updateCurrentId();
   }
 };
 
@@ -104,9 +99,9 @@ onUnmounted(() => {
   document.removeEventListener('visibilitychange', handleVisibilityChange);
 });
 
-storage.watch<number>('local:currentId', (newCount, oldCount) => {
-  console.log('Count changed:', { newCount, oldCount });
-});
+// storage.watch<number>('local:currentId', (newCount, oldCount) => {
+//   console.log('Count changed:', { newCount, oldCount });
+// });
 </script>
 
 <template>

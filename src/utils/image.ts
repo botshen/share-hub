@@ -16,8 +16,7 @@ export const generateImage = async (element: HTMLElement, options: {
     // 存储原始尺寸
     const originalWidth = cardEle.style.width;
     const originalHeight = cardEle.style.height;
-    console.log('fontFamily', fontFamily);
-
+ 
     const cssText = `
  @font-face {
   font-family: 'Font Awesome 6 Free';

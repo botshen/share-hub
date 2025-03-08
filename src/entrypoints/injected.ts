@@ -1,4 +1,4 @@
-import { isTimelineEntryConversationThread } from "@/entrypoints/api";
+import { extractTweetFullText, isTimelineEntryConversationThread } from "@/entrypoints/api";
 import { extractTimelineTweet } from "@/entrypoints/api";
 import { isTimelineEntryTweet } from "@/entrypoints/api";
 import {
@@ -41,12 +41,12 @@ export default defineUnlistedScript(() => {
         handler.resolve(response);
         return;
       }
-      console.log("response.config.url", response.config.url);
+      // console.log("response.config.url", response.config.url);
       try {
         const json: TweetDetailResponse = JSON.parse(response.response);
         const instructions =
           json.data.threaded_conversation_with_injections_v2.instructions;
-        let mainTweet: Tweet | null = null;
+        let mainTweet!: Tweet;
         const comments: Tweet[] = [];
 
         const timelineAddEntriesInstruction = instructions.find(
@@ -62,8 +62,8 @@ export default defineUnlistedScript(() => {
           if (isTimelineEntryTweet(entry)) {
             const tweetUnion = extractTimelineTweet(entry.content.itemContent);
             if (tweetUnion && tweetUnion.__typename === 'Tweet') {
-              if (isMainTweet(tweetUnion)) {
-                mainTweet = tweetUnion;
+              if (isMainTweet!(tweetUnion)) {
+                mainTweet! = tweetUnion;
               } else {
                 comments.push(tweetUnion);
               }
@@ -99,8 +99,8 @@ export default defineUnlistedScript(() => {
           comments.push(...tweetsInConversation);
         }
         console.log("comments", comments);
-        console.log("mainTweet", mainTweet);
-        // Add captured tweets to the database.
+        console.log("mainTweet!", mainTweet!);
+         // Add captured tweets to the database.
         const url = window.location.href;
         const checkedComments: {
           id: string;
@@ -132,14 +132,9 @@ export default defineUnlistedScript(() => {
           )
             return;
           if (!okCommentsSource.includes(comment.source)) {
-            console.log(
-              "comment.source==================================",
-              comment.source,
-            );
-            return;
+            // return;
           }
-          console.log("comment.legacy.full_text", comment.legacy.full_text);
-          // comment.legacy.full_text @szac19851 firefox今天出了个事，你去搜一下 隐私相关的
+           // comment.legacy.full_text @szac19851 firefox今天出了个事，你去搜一下 隐私相关的
           // 提取出@szac19851 后面的内容（匹配第一个@和后面连着的字符）
           // @szac19851 firefox今天出了个事，你去搜一下 隐私相关的   => @szac19851 firefox今天出了个事，你去搜一下 隐私相关的
           const replayUser = comment.legacy.full_text.match(/@([^\s]+)/)?.[1];
@@ -147,14 +142,13 @@ export default defineUnlistedScript(() => {
             `@${replayUser}`,
             "",
           );
-          console.log("replayUser", replayUser);
-          if (comment.quoted_status_result?.result?.legacy?.full_text) {
+           if (comment.quoted_status_result?.result?.legacy?.full_text) {
             const quotedContent = comment.quoted_status_result?.result?.legacy?.full_text;
             const quotedUser = comment.quoted_status_result?.result?.core?.user_results?.result?.legacy?.name;
             const quotedUserImage = comment.quoted_status_result?.result?.core?.user_results?.result?.legacy?.profile_image_url_https;
-            console.log('quotedContent==============================================================', quotedContent)
-            console.log('quotedUser', quotedUser)
-            console.log('quotedUserImage', quotedUserImage)
+            // console.log('quotedContent==============================================================', quotedContent)
+            // console.log('quotedUser', quotedUser)
+            // console.log('quotedUserImage', quotedUserImage)
           }
           checkedComments.push({
             id: comment.rest_id,
@@ -189,10 +183,11 @@ export default defineUnlistedScript(() => {
               )?.value.image_value?.url || "",
           });
         });
-
+     
+        
         const currentTodo = {
           url,
-          postContent: mainTweet?.legacy.full_text,
+          postContent: extractTweetFullText(mainTweet!),
           title: "",
           comments: checkedComments,
           postscripts: [],
@@ -207,7 +202,12 @@ export default defineUnlistedScript(() => {
           id:
             mainTweet?.legacy.conversation_id_str ||
             checkedComments?.[0]?.conversationId,
+          isInitialLoad: false,
         };
+        if(mainTweet){
+          // 添加一个标记表示这是页面加载的初始数据
+          currentTodo.isInitialLoad = true;
+        }
         console.log("currentTodo", currentTodo);
         sendMessageToContentScript(currentTodo, "x-data");
       } catch (err) {

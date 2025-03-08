@@ -46,50 +46,55 @@ window.addEventListener("x-data", (async (event: Event) => {
     mediaPhotosUrl: customEvent.detail.mediaPhotosUrl,
     postscripts: [],
     source: "x",
+    isInitialLoad: customEvent.detail.isInitialLoad
   };
   const todosRepo = getTodosRepo();
   const todo = await todosRepo.getOne(currentTodo.id);
-  
-  if (!todo) {
+  if (currentTodo.isInitialLoad) {
+    await todosRepo.delete(currentTodo.id);
     todosRepo.create(currentTodo);
   } else {
-    // 合并现有评论和新评论
-    const existingComments = todo.comments || [];
-    const newComments = currentTodo.comments || [];
-    
-    // 使用Map来存储评论，以id为键避免重复
-    const commentMap = new Map();
-    [...existingComments, ...newComments].forEach(comment => {
-      commentMap.set(comment.id, comment);
-    });
-    
-    // 将评论转换回数组并按照回复关系排序
-    const mergedComments = Array.from(commentMap.values());
-    const sortedComments: Comment[] = [];
-    
-    // 先添加没有回复ID的评论
-    mergedComments.forEach(comment => {
-      if (!comment.replyId) {
-        sortedComments.push(comment);
-      }
-    });
-    
-    // 然后处理有回复ID的评论 
-    mergedComments.forEach(comment => {
-      if (comment.replyId) {
-        const parentIndex = sortedComments.findIndex(c => c.id === comment.replyId);
-        if (parentIndex !== -1) {
-          sortedComments.splice(parentIndex + 1, 0, comment);
-        } else {
-          sortedComments.push(comment); // 如果找不到父评论，就加到最后
-        }
-      }
-    });
+    if (!todo) {
+      todosRepo.create(currentTodo);
+    } else {
+      // 合并现有评论和新评论
+      const existingComments = todo.comments || [];
+      const newComments = currentTodo.comments || [];
 
-    todosRepo.update({
-      ...todo,
-      comments: sortedComments,
-    });
+      // 使用Map来存储评论，以id为键避免重复
+      const commentMap = new Map();
+      [...existingComments, ...newComments].forEach(comment => {
+        commentMap.set(comment.id, comment);
+      });
+
+      // 将评论转换回数组并按照回复关系排序
+      const mergedComments = Array.from(commentMap.values());
+      const sortedComments: Comment[] = [];
+
+      // 先添加没有回复ID的评论
+      mergedComments.forEach(comment => {
+        if (!comment.replyId) {
+          sortedComments.push(comment);
+        }
+      });
+
+      // 然后处理有回复ID的评论 
+      mergedComments.forEach(comment => {
+        if (comment.replyId) {
+          const parentIndex = sortedComments.findIndex(c => c.id === comment.replyId);
+          if (parentIndex !== -1) {
+            sortedComments.splice(parentIndex + 1, 0, comment);
+          } else {
+            sortedComments.push(comment); // 如果找不到父评论，就加到最后
+          }
+        }
+      });
+
+      todosRepo.update({
+        ...todo,
+        comments: sortedComments,
+      });
+    } 
   }
 
   xId.value = currentTodo.id;

@@ -115,8 +115,7 @@ function collectCheckedComments() {
 
   // 初始查找所有评论元素
   const mainElement = document.querySelector("#Main");
-  console.log('mainElement', mainElement)
-  if (mainElement) {
+   if (mainElement) {
     const boxes = mainElement.querySelectorAll(".box");
     if (boxes.length > 1) {
       const secondBox = boxes[1];
@@ -131,8 +130,7 @@ function collectCheckedComments() {
     content: string;
     isChecked: boolean;
   }[] = [];
-  console.log('comments-=--=-=', comments)
-  if (comments) {
+   if (comments) {
     comments.forEach((comment) => {
       const commentElement = comment.querySelector("table") as HTMLElement;
       if (commentElement) {
@@ -163,6 +161,5 @@ function collectCheckedComments() {
       }
     });
   }
-  console.log("checkedComments", checkedComments);
-  return checkedComments;
+   return checkedComments;
 }

@@ -9,12 +9,9 @@ import { createNanoId } from "@/utils/id-helper";
 export async function sharePostHacknews() {
   findImmersiveElements(document);
   const title = document.querySelector('.titleline')?.innerHTML?.replace(/Ask HN:|问 HN：/g, '');
-  console.log('title', title)
-  const fatitem = document.querySelector('.fatitem')
-  console.log('fatitem', fatitem)
-  const author = fatitem?.querySelector('.hnuser')?.textContent
-  console.log('author', author)
-  const content = document.querySelector('.toptext')
+   const fatitem = document.querySelector('.fatitem')
+   const author = fatitem?.querySelector('.hnuser')?.textContent
+   const content = document.querySelector('.toptext')
   const comments = getComment()
   const url = window.location.href;
   const todosRepo = getTodosRepo();

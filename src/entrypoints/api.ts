@@ -252,7 +252,7 @@ import {
   }
   
   export function extractTweetFullText(tweet: Tweet): string {
-    return tweet.note_tweet?.note_tweet_results.result.text ?? tweet.legacy.full_text;
+     return tweet?.note_tweet?.note_tweet_results?.result?.text ?? tweet?.legacy?.full_text;
   }
   
   export function filterEmptyTweet(tweet: Tweet): Tweet | null {

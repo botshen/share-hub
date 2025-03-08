@@ -4,8 +4,7 @@ export function getComment() {
   const commentElements = document.querySelectorAll('shreddit-comment');
   // console.log('commentElements', commentElements)
   const comments = Array.from(commentElements).map(comment => {
-    console.log('comment', comment)
-    // 先找commentAvatar
+     // 先找commentAvatar
     const commentAvatar = comment.querySelector('[slot="commentAvatar"]')
     const avatar = commentAvatar?.querySelector('img[alt*="avatar"]') as HTMLImageElement | null;
     let avatarUrl = avatar?.src;
@@ -33,6 +32,5 @@ export function getComment() {
       depth,
     }
   })
-  console.log('comments', comments)
-  return comments;
+   return comments;
 }

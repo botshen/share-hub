@@ -3,7 +3,7 @@ import { registerTodosRepo } from "@/utils/service";
 import { openDB } from "idb";
 
 export default defineBackground(() => {
-  console.log("Hello background!", { id: browser.runtime.id });
+  // console.log("Hello background!", { id: browser.runtime.id });
 
   // Open the database and register your service
   const db = openDB("todos", 1, {
