@@ -16,7 +16,7 @@ import {
 import Card from "./Card.vue";
 import { currentIdStorage } from "@/utils/storage";
 import { onMounted, watch, onUnmounted } from "vue";
-
+import Tiptap from "@/components/Tiptap.vue";
 const { todos, getTodos, currentTodoId, currentTodo, config, bgClass, onlyEditorVisible, isDownloading, isCopying } =
   useOptionsStore();
 
@@ -111,6 +111,7 @@ onUnmounted(() => {
       <PostList />
     </div>
     <div class="card-container mx-auto m-4 block">
+      <!-- <Tiptap /> -->
       <Card />
     </div>
     <div class="sticky top-2 ml-4 min-h-screen ">

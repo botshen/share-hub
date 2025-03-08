@@ -17,7 +17,9 @@
   "dependencies": {
     "@mozilla/readability": "^0.5.0",
     "@tanstack/vue-query": "^5.59.13",
-     "@webext-core/messaging": "^2.0.2",
+    "@tiptap/starter-kit": "^2.11.5",
+    "@tiptap/vue-3": "^2.11.5",
+    "@webext-core/messaging": "^2.0.2",
     "@webext-core/proxy-service": "^1.2.1",
     "@wxt-dev/storage": "^1.1.0",
     "ajax-hook": "^3.0.3",
@@ -27,7 +29,7 @@
     "modern-screenshot": "^4.6.0",
     "nanoid": "^5.1.2",
     "uuid": "^11.1.0"
-   },
+  },
   "devDependencies": {
     "@iconify/json": "^2.2.261",
     "@tailwindcss/vite": "^4.0.6",
