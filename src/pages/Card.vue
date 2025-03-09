@@ -3,28 +3,13 @@ import Tiptap from "@/components/Tiptap.vue";
 import CommentList from "./comment-list/CommentList.vue";
 import { useOptionsStore } from "./use-options-store";
 import PostLogo from "@/components/PostLogo.vue";
+import CommentDetail from "@/components/CommentDetail.vue";
 const { currentTodo } = useOptionsStore();
 </script>
 <template>
   <main class="mx-auto m-4 block" id="card">
     <div class="drop p-4 rounded-box h-full">
-      <header class="flex items-center justify-between gap-2 mb-4">
-        <div class="flex items-center gap-2">
-          <div class="avatar">
-            <div class="w-12 rounded-full" v-if="currentTodo?.avatarUrl">
-              <img :src="currentTodo.avatarUrl" />
-            </div>
-          </div>
-          <span class="text-lg ml-2">{{ currentTodo?.author }}</span>
-          <!-- <div class="text-xs text-red-500">{{ currentTodo?.id }}</div> -->
-        </div>
-        <PostLogo v-if="currentTodo?.source" :url="currentTodo?.url" :source="currentTodo?.source" />
-      </header>
-      <Tiptap v-if="currentTodo?.title" class="text-2xl font-bold px-2 pt-2" :content="currentTodo?.title" />
-      <Tiptap v-if="currentTodo?.postContent" class="p-2 cursor-pointer" :content="currentTodo?.postContent" />
-      <div v-for="mediaPhotoUrl in currentTodo?.mediaPhotosUrl" :key="mediaPhotoUrl">
-        <img class="px-2" :src="mediaPhotoUrl" />
-      </div>
+      <CommentDetail :comment="currentTodo" />
       <CommentList class="mt-4" />
     </div>
     <footer class="text-center text-white mt-6 rounded-box text-base">

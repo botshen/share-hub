@@ -46,12 +46,18 @@ window.addEventListener("x-data", (async (event: Event) => {
     mediaPhotosUrl: customEvent.detail.mediaPhotosUrl,
     postscripts: [],
     source: "x",
-    isInitialLoad: customEvent.detail.isInitialLoad
+    isInitialLoad: customEvent.detail.isInitialLoad,
+    mainQuotedContent: customEvent.detail.mainQuotedContent,
+    mainQuotedUser: customEvent.detail.mainQuotedUser,
+    mainQuotedUserImage: customEvent.detail.mainQuotedUserImage,
+    mainQuotedImg: customEvent.detail.mainQuotedImg,
   };
   const todosRepo = getTodosRepo();
   const todo = await todosRepo.getOne(currentTodo.id);
   if (currentTodo.isInitialLoad) {
+    console.log('11111', 11111)
     await todosRepo.delete(currentTodo.id);
+    console.log('currentTodo', currentTodo)
     todosRepo.create(currentTodo);
   } else {
     if (!todo) {
@@ -94,7 +100,7 @@ window.addEventListener("x-data", (async (event: Event) => {
         ...todo,
         comments: sortedComments,
       });
-    } 
+    }
   }
 
   xId.value = currentTodo.id;

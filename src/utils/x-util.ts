@@ -88,7 +88,6 @@ export function transformXData(data: any) {
   }
   console.log("comments", comments);
   console.log("mainTweet!", mainTweet!);
-  // Add captured tweets to the database.
   const url = window.location.href;
   const checkedComments: {
     id: string;
@@ -107,14 +106,8 @@ export function transformXData(data: any) {
     quotedUserImage: string;
     quotedImg: string;
   }[] = [];
-  const okCommentsSource: string[] = [
-    '<a href="https://mobile.twitter.com" rel="nofollow">Twitter Web App</a>',
-    '<a href="http://twitter.com/download/android" rel="nofollow">Twitter for Android</a>',
-    '<a href="http://twitter.com/download/iphone" rel="nofollow">Twitter for iPhone</a>',
-  ];
+
   comments.forEach((comment) => {
-    console.log('comment.rest_id', comment.rest_id)
-    console.log('comment.legacy.full_text', comment)
     if (
       comment?.core?.user_results?.result?.professional
         ?.professional_type === "Business"
@@ -193,8 +186,26 @@ export function transformXData(data: any) {
       quotedImg: quotedImg,
     });
   });
-
-
+  let mainQuotedContent = "";
+  let mainQuotedUser = "";
+  let mainQuotedUserImage = "";
+  let mainQuotedImg = "";
+  console.log('mainTweet', mainTweet)
+  if (mainTweet.quoted_status_result?.result) {
+    const [start, end] = mainTweet.quoted_status_result?.result.legacy?.display_text_range;
+    const _MainQuotedContent = mainTweet.quoted_status_result?.result.legacy?.full_text.substring(start, end);
+    const _MainQuotedUser = mainTweet.quoted_status_result?.result.core.user_results.result.legacy.name;
+    const _MainQuotedUserImage = mainTweet.quoted_status_result?.result.core.user_results.result.legacy.profile_image_url_https;
+    const _MainQuotedImg = mainTweet.quoted_status_result?.result.legacy?.extended_entities?.media?.find(m => m.type === 'photo')?.media_url_https;
+    console.log('mainQuotedContent==============================================================', mainQuotedContent)
+    console.log('mainQuotedUser', mainQuotedUser)
+    console.log('mainQuotedUserImage', mainQuotedUserImage)
+    console.log('mainQuotedImg', mainQuotedImg)
+    mainQuotedContent = _MainQuotedContent;
+    mainQuotedUser = _MainQuotedUser;
+    mainQuotedUserImage = _MainQuotedUserImage;
+    mainQuotedImg = _MainQuotedImg;
+  }
   const currentTodo = {
     url,
     postContent: extractTweetFullText(mainTweet!),
@@ -213,6 +224,10 @@ export function transformXData(data: any) {
       mainTweet?.legacy.conversation_id_str ||
       checkedComments?.[0]?.conversationId,
     isInitialLoad: false,
+    mainQuotedContent: mainQuotedContent,
+    mainQuotedUser: mainQuotedUser,
+    mainQuotedUserImage: mainQuotedUserImage,
+    mainQuotedImg: mainQuotedImg,
   };
   if (mainTweet) {
     // 添加一个标记表示这是页面加载的初始数据

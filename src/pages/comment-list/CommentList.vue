@@ -25,7 +25,7 @@
             " />
           </label>
         </div>
-        <!-- <span class="text-xs text-red-500">{{ comment.id }}</span> -->
+        <span class="text-xs text-red-500">{{ comment.id }}</span>
         <Tiptap :class="comment.avatarUrl ? 'ml-10' : ''" :content="comment.content"
           class="  cursor-pointer break-words whitespace-pre-wrap" />
         <div v-if="comment.imageUrl" :class="comment.avatarUrl ? 'pl-10 w-full' : 'w-full'">
