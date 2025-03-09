@@ -16,12 +16,13 @@ const { currentTodo } = useOptionsStore();
             </div>
           </div>
           <span class="text-lg ml-2">{{ currentTodo?.author }}</span>
-          <div class="text-xs text-red-500">{{ currentTodo?.id }}</div>
+          <!-- <div class="text-xs text-red-500">{{ currentTodo?.id }}</div> -->
         </div>
         <PostLogo v-if="currentTodo?.source" :source="currentTodo?.source" />
       </header>
-      <Tiptap class="text-2xl font-bold px-2 pt-2" :content="currentTodo?.title" />
-      <Tiptap class="p-2 cursor-pointer break-words whitespace-pre-wrap" :content="currentTodo?.postContent" />
+      <Tiptap v-if="currentTodo?.title" class="text-2xl font-bold px-2 pt-2" :content="currentTodo?.title" />
+      <Tiptap v-if="currentTodo?.postContent" class="p-2 cursor-pointer break-words whitespace-pre-wrap"
+        :content="currentTodo?.postContent" />
       <div v-for="mediaPhotoUrl in currentTodo?.mediaPhotosUrl" :key="mediaPhotoUrl">
         <img class="px-2" :src="mediaPhotoUrl" />
       </div>
