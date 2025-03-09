@@ -3,13 +3,13 @@ import Tiptap from "@/components/Tiptap.vue";
 import CommentList from "./comment-list/CommentList.vue";
 import { useOptionsStore } from "./use-options-store";
 import PostLogo from "@/components/PostLogo.vue";
-import CommentDetail from "@/components/CommentDetail.vue";
+import PostDetail from "@/components/PostDetail.vue";
 const { currentTodo } = useOptionsStore();
 </script>
 <template>
   <main class="mx-auto m-4 block" id="card">
     <div class="drop p-4 rounded-box h-full">
-      <CommentDetail :comment="currentTodo" />
+      <PostDetail :comment="currentTodo" />
       <CommentList class="mt-4" />
     </div>
     <footer class="text-center text-white mt-6 rounded-box text-base">
