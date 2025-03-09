@@ -18,7 +18,7 @@ const { currentTodo } = useOptionsStore();
           <span class="text-lg ml-2">{{ currentTodo?.author }}</span>
           <!-- <div class="text-xs text-red-500">{{ currentTodo?.id }}</div> -->
         </div>
-        <PostLogo v-if="currentTodo?.source" :source="currentTodo?.source" />
+        <PostLogo v-if="currentTodo?.source" :url="currentTodo?.url" :source="currentTodo?.source" />
       </header>
       <Tiptap v-if="currentTodo?.title" class="text-2xl font-bold px-2 pt-2" :content="currentTodo?.title" />
       <Tiptap v-if="currentTodo?.postContent" class="p-2 cursor-pointer break-words whitespace-pre-wrap"
