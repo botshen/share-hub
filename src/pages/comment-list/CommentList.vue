@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import Tiptap from "@/components/Tiptap.vue";
 import { useOptionsStore } from "../use-options-store";
 const { onlyEditorVisible, currentTodo } = useOptionsStore();
 
@@ -98,7 +99,7 @@ const commentTipVisible = computed(() => {
             </div>
           </div>
           <span class="font-bold">{{ comment.author }}</span>
-          <span class="text-gray-500" v-if="comment.replayUser" >@{{ comment.replayUser }}</span>
+          <span class="text-gray-500" v-if="comment.replayUser">@{{ comment.replayUser }}</span>
           <label class="cursor-pointer label" v-if="onlyEditorVisible">
             <input type="checkbox" :checked="comment.isChecked" class="checkbox checkbox-success" @change="
               (e) =>
@@ -109,10 +110,9 @@ const commentTipVisible = computed(() => {
             " />
           </label>
         </div>
-        <div class="text-xs text-red-500">{{ comment.id }}</div>
-
-        <div class="break-words p-2 whitespace-pre-wrap" :class="comment.avatarUrl ? 'ml-10' : ''" :contentEditable="true"
-          :innerHTML="comment.content" />
+        <span class="text-xs text-gray-500">{{ comment.id }}</span>
+        <Tiptap :class="comment.avatarUrl ? 'ml-10' : ''" :content="comment.content"
+          class="p-2 cursor-pointer break-words whitespace-pre-wrap" />
         <div v-if="comment.imageUrl" :class="comment.avatarUrl ? 'pl-10 w-full' : 'w-full'">
           <img :src="comment.imageUrl" />
         </div>

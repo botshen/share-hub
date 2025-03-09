@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import Tiptap from "@/components/Tiptap.vue";
 import CommentList from "./comment-list/CommentList.vue";
 import { useOptionsStore } from "./use-options-store";
 import PostLogo from "@/components/PostLogo.vue";
@@ -19,11 +20,8 @@ const { currentTodo } = useOptionsStore();
         </div>
         <PostLogo v-if="currentTodo?.source" :source="currentTodo?.source" />
       </header>
-      <div class="text-2xl font-bold px-2 pt-2" :contentEditable="true" :innerHTML="currentTodo?.title"
-        v-if="currentTodo?.title" />
-      <div class="p-2 cursor-pointer break-words whitespace-pre-wrap" :contentEditable="true"
-        :innerHTML="currentTodo?.postContent" />
-
+      <Tiptap class="text-2xl font-bold px-2 pt-2" :content="currentTodo?.title" />
+      <Tiptap class="p-2 cursor-pointer break-words whitespace-pre-wrap" :content="currentTodo?.postContent" />
       <div v-for="mediaPhotoUrl in currentTodo?.mediaPhotosUrl" :key="mediaPhotoUrl">
         <img class="px-2" :src="mediaPhotoUrl" />
       </div>

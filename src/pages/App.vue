@@ -111,7 +111,6 @@ onUnmounted(() => {
       <PostList />
     </div>
     <div class="card-container mx-auto m-4 block">
-      <!-- <Tiptap /> -->
       <Card />
     </div>
     <div class="sticky top-2 ml-4 min-h-screen ">
