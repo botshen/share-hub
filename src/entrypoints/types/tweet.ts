@@ -20,7 +20,7 @@ export interface TimelineTweet {
   };
 }
 
-export type TweetUnion = Tweet | TweetWithVisibilityResults | TweetTombstone | TweetUnavailable;
+export type TweetUnion = Tweet | TweetWithVisibilityResults | TweetTombstone | TweetUnavailable | TweetWithQuotedStatus;
 
 export interface TweetWithVisibilityResults {
   __typename: 'TweetWithVisibilityResults';
@@ -57,6 +57,9 @@ export interface TweetUnavailable {
   __typename: 'TweetUnavailable';
 }
 
+export interface TweetWithQuotedStatus {
+  tweet: Tweet;
+}
 export interface Tweet {
   __typename: 'Tweet';
   rest_id: string;
@@ -105,7 +108,9 @@ export interface Tweet {
   };
   is_translatable: boolean;
   quoted_status_result?: {
-    result: TweetUnion;
+    result: TweetUnion | {
+      tweet: Tweet;
+    };
   };
   quotedRefResult?: {
     result: Partial<TweetUnion>;

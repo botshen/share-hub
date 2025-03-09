@@ -69,9 +69,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss">
-/* Basic editor styles */
 .tiptap {
-  // font-size: 32px;
   width: 100%;
   padding: 4px;
   border: 2px solid transparent;

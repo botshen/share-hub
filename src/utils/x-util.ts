@@ -40,7 +40,6 @@ export function transformXData(data: any) {
   const timelineAddEntriesInstruction = instructions.find(
     (i) => i.type === "TimelineAddEntries",
   ) as TimelineAddEntriesInstruction<TimelineTweet>;
-
   // When loading more tweets in conversation, the "TimelineAddEntries" instruction may not exist.
   const timelineAddEntriesInstructionEntries =
     timelineAddEntriesInstruction?.entries ?? [];
@@ -53,6 +52,7 @@ export function transformXData(data: any) {
         if (isMainTweet!(tweetUnion)) {
           mainTweet! = tweetUnion;
         } else {
+          console.log('tweetUnion', tweetUnion)
           comments.push(tweetUnion);
         }
       }
@@ -102,6 +102,10 @@ export function transformXData(data: any) {
     card: unknown;
     imageUrl: string;
     replayUser: string;
+    quotedContent: string;
+    quotedUser: string;
+    quotedUserImage: string;
+    quotedImg: string;
   }[] = [];
   const okCommentsSource: string[] = [
     '<a href="https://mobile.twitter.com" rel="nofollow">Twitter Web App</a>',
@@ -109,6 +113,8 @@ export function transformXData(data: any) {
     '<a href="http://twitter.com/download/iphone" rel="nofollow">Twitter for iPhone</a>',
   ];
   comments.forEach((comment) => {
+    console.log('comment.rest_id', comment.rest_id)
+    console.log('comment.legacy.full_text', comment)
     if (
       comment?.core?.user_results?.result?.professional
         ?.professional_type === "Business"
@@ -119,24 +125,36 @@ export function transformXData(data: any) {
         ?.label?.userLabelType === "BusinessLabel"
     )
       return;
-    if (!okCommentsSource.includes(comment.source)) {
-      // return;
+    if (comment.legacy.display_text_range) {
+      // 根据display_text_range 提取出实际显示的内容
+      const [start, end] = comment.legacy.display_text_range;
+      comment.legacy.full_text = comment.legacy.full_text.substring(start, end);
     }
     // comment.legacy.full_text @szac19851 firefox今天出了个事，你去搜一下 隐私相关的
     // 提取出@szac19851 后面的内容（匹配第一个@和后面连着的字符）
     // @szac19851 firefox今天出了个事，你去搜一下 隐私相关的   => @szac19851 firefox今天出了个事，你去搜一下 隐私相关的
     const replayUser = comment.legacy.full_text.match(/@([^\s]+)/)?.[1];
-    const replayContent = comment.legacy.full_text.replace(
-      `@${replayUser}`,
-      "",
-    );
-    if (comment.quoted_status_result?.result?.legacy?.full_text) {
-      const quotedContent = comment.quoted_status_result?.result?.legacy?.full_text;
-      const quotedUser = comment.quoted_status_result?.result?.core?.user_results?.result?.legacy?.name;
-      const quotedUserImage = comment.quoted_status_result?.result?.core?.user_results?.result?.legacy?.profile_image_url_https;
-      // console.log('quotedContent==============================================================', quotedContent)
-      // console.log('quotedUser', quotedUser)
-      // console.log('quotedUserImage', quotedUserImage)
+    const replayContent = comment.legacy.full_text
+      .replace(`@${replayUser}`, "")
+      .replace(/https:\/\/t\.co\/\w+/g, "");
+    let quotedContent = "";
+    let quotedUser = "";
+    let quotedUserImage = "";
+    let quotedImg = "";
+    if (comment.quoted_status_result?.result?.tweet) {
+      const [start, end] = comment.quoted_status_result?.result?.tweet.legacy?.display_text_range;
+      const _quotedContent = comment.quoted_status_result?.result?.tweet.legacy?.full_text.substring(start, end);
+      const _quotedUser = comment.quoted_status_result?.result?.tweet.core?.user_results?.result?.legacy?.name;
+      const _quotedUserImage = comment.quoted_status_result?.result?.tweet.core?.user_results?.result?.legacy?.profile_image_url_https;
+      const _quotedImg = comment.quoted_status_result?.result?.tweet.legacy?.extended_entities?.media?.find(m => m.type === 'photo')?.media_url_https;
+      console.log('quotedContent==============================================================', quotedContent)
+      console.log('quotedUser', quotedUser)
+      console.log('quotedUserImage', quotedUserImage)
+      console.log('quotedImg', quotedImg)
+      quotedContent = _quotedContent;
+      quotedUser = _quotedUser;
+      quotedUserImage = _quotedUserImage;
+      quotedImg = _quotedImg;
     }
     checkedComments.push({
       id: comment.rest_id,
@@ -169,6 +187,10 @@ export function transformXData(data: any) {
         comment.card?.legacy?.binding_values.find(
           (item) => item.key === "photo_image_full_size_large",
         )?.value.image_value?.url || "",
+      quotedContent: quotedContent,
+      quotedUser: quotedUser,
+      quotedUserImage: quotedUserImage,
+      quotedImg: quotedImg,
     });
   });
 

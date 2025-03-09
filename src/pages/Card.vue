@@ -21,8 +21,7 @@ const { currentTodo } = useOptionsStore();
         <PostLogo v-if="currentTodo?.source" :url="currentTodo?.url" :source="currentTodo?.source" />
       </header>
       <Tiptap v-if="currentTodo?.title" class="text-2xl font-bold px-2 pt-2" :content="currentTodo?.title" />
-      <Tiptap v-if="currentTodo?.postContent" class="p-2 cursor-pointer break-words whitespace-pre-wrap"
-        :content="currentTodo?.postContent" />
+      <Tiptap v-if="currentTodo?.postContent" class="p-2 cursor-pointer" :content="currentTodo?.postContent" />
       <div v-for="mediaPhotoUrl in currentTodo?.mediaPhotosUrl" :key="mediaPhotoUrl">
         <img class="px-2" :src="mediaPhotoUrl" />
       </div>
