@@ -16,7 +16,7 @@ type Post = {
   quotedContent: string
   quotedUserImage: string
   quotedImg: string
- 
+
   conversationId: string
   replyId: string
 }
@@ -56,8 +56,7 @@ defineProps<{
         <span class="font-medium">{{ post?.quotedUser }}</span>
       </div>
       <Tiptap v-if="post?.quotedContent" :content="post?.quotedContent" />
-      <img v-if="post?.quotedImg" :src="post?.quotedImg" class="mt-2 rounded-lg w-full object-cover"
-        alt="引用图片" />
+      <img v-if="post?.quotedImg" :src="post?.quotedImg" class="mt-2 rounded-lg w-full object-cover" alt="引用图片" />
     </div>
   </div>
 </template>

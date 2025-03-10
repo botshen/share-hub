@@ -26,6 +26,7 @@
 <script lang="ts" setup>
 import StarterKit from '@tiptap/starter-kit'
 import Highlight from '@tiptap/extension-highlight'
+import Image from '@tiptap/extension-image'
 import { BubbleMenu, Editor, EditorContent } from '@tiptap/vue-3'
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 
@@ -56,8 +57,10 @@ onMounted(() => {
     extensions: [
       StarterKit,
       Highlight,
+      Image.configure({ inline: true }),
     ],
     content: props.content || '',
+    editable: true,
   })
 })
 
