@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { useOptionsStore } from '@/pages/use-options-store';
 import Tiptap from "@/components/Tiptap.vue";
+import { useOptionsStore } from '@/pages/use-options-store';
 
 type Comment = {
   id: number | string
@@ -16,6 +16,7 @@ type Comment = {
   content: string
   imageUrl: string
   mediaPhotosUrl: string[]
+  cardInfo: Record<string, any>
   quotedContent: string
   quotedUser: string
   quotedUserImage: string
@@ -107,9 +108,10 @@ const commentVisible = (comment: Comment) => {
             )
         " />
       </label>
+      <span class="text-xs text-red-500">{{ comment.id }}</span>
+
     </div>
-    <span class="text-xs text-red-500">{{ comment.id }}</span>
-    <Tiptap :class="comment.avatarUrl ? 'ml-10' : ''" :content="comment.content"
+    <Tiptap v-if="comment.content" :class="comment.avatarUrl ? 'ml-10' : ''" :content="comment.content"
       class="  cursor-pointer break-words whitespace-pre-wrap" />
     <div v-if="comment.imageUrl" :class="comment.avatarUrl ? 'pl-10 w-full' : 'w-full'">
       <img :src="comment.imageUrl" />
@@ -117,23 +119,35 @@ const commentVisible = (comment: Comment) => {
     <div v-if="comment.mediaPhotosUrl" :class="comment.avatarUrl ? 'pl-10 w-full' : 'w-full'">
       <img v-for="mediaPhotoUrl in comment.mediaPhotosUrl" :key="mediaPhotoUrl" :src="mediaPhotoUrl" />
     </div>
-    <div v-if="comment.quotedContent">
-      <span class="text-gray-500">{{ comment.quotedContent }}</span>
+    <div v-if="comment?.cardInfo?.thumbnailUrl" class="mt-4 flex items-center gap-4 rounded-lg shadow-md   transition-shadow p-2 bg-white/80 backdrop-blur">
+      <div v-if="comment?.cardInfo?.thumbnailUrl" class="shrink-0">
+        <img :src="comment?.cardInfo?.thumbnailUrl" :alt="comment?.cardInfo?.title"
+          class="rounded-md object-cover w-12 h-12" />
+      </div>
+      <div class="flex-1 min-w-0">
+        <span class="font-medium text-gray-900 truncate">{{ comment?.cardInfo?.title }}</span>
+        <div class="flex items-center gap-3 text-sm text-gray-500">
+          <span class="truncate">{{ comment?.cardInfo?.appName }}</span>
+        </div>
+      </div>
+    </div>
+    <div v-if="comment?.quotedContent">
+      <span class="text-gray-500">{{ comment?.quotedContent }}</span>
     </div>
     <div class="border border-gray-400 rounded-md p-3 bg-[rgba(0,0,0,0.00)]"
       :class="comment.avatarUrl ? 'ml-10 ' : 'w-full'" v-if="comment.quotedUser">
       <div class="flex items-center gap-2 mb-2">
         <div class="avatar">
           <div class="w-8 rounded-full" v-if="comment.quotedUserImage">
-            <img :src="comment.quotedUserImage" />
+            <img :src="comment?.quotedUserImage" />
           </div>
         </div>
-        <div v-if="comment.quotedUser">
-          <span class="text-gray-500">{{ comment.quotedUser }}</span>
+        <div v-if="comment?.quotedUser">
+          <span class="text-gray-500">{{ comment?.quotedUser }}</span>
         </div>
       </div>
-      <div v-if="comment.quotedImg">
-        <img :src="comment.quotedImg" class="rounded-md" />
+      <div v-if="comment?.quotedImg">
+        <img :src="comment?.quotedImg" class="rounded-md" />
       </div>
     </div>
 

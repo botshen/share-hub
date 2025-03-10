@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { generateImage } from "@/utils/image";
 import { useOptionsStore } from "../use-options-store";
 const {
   currentTodo,
@@ -8,7 +9,6 @@ const {
   successInfoVisible,
   bgClass,
 } = useOptionsStore();
-import { generateImage } from "@/utils/image";
 // 定义配置选项
 const configOptions = {
   color: [

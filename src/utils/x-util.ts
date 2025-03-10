@@ -1,13 +1,10 @@
-import { extractTweetFullText, isTimelineEntryConversationThread } from "@/entrypoints/api";
-import { extractTimelineTweet } from "@/entrypoints/api";
-import { isTimelineEntryTweet } from "@/entrypoints/api";
+import { extractTimelineTweet, isTimelineEntryConversationThread, isTimelineEntryTweet } from "@/entrypoints/api";
 import type {
   TimelineAddEntriesInstruction,
   TimelineAddToModuleInstruction,
-  TimelineInstructions,
   TimelineTweet,
   Tweet,
-  TweetUnion,
+  TweetUnion
 } from "@/entrypoints/types";
 
 import { strEntitiesToHTML } from "@/utils/x";
@@ -19,8 +16,8 @@ export function transformXData(data: any) {
   const json: TweetDetailResponse = JSON.parse(data);
   const instructions =
     json.data.threaded_conversation_with_injections_v2.instructions;
-  const comments: Tweet[] = [];
-
+  const originComments: Tweet[] = [];
+  console.log('instructions', instructions)
   const timelineAddEntriesInstruction = instructions.find(
     (i) => i.type === "TimelineAddEntries",
   ) as TimelineAddEntriesInstruction<TimelineTweet>;
@@ -33,7 +30,7 @@ export function transformXData(data: any) {
     if (isTimelineEntryTweet(entry)) {
       const tweetUnion = extractTimelineTweet(entry.content.itemContent);
       if (tweetUnion && tweetUnion.__typename === 'Tweet') {
-        comments.push(tweetUnion);
+        originComments.push(tweetUnion);
       }
     }
 
@@ -46,7 +43,7 @@ export function transformXData(data: any) {
         }
       });
 
-      comments.push(
+      originComments.push(
         ...tweetsInConversation.filter((t): t is Tweet => !!t),
       );
     }
@@ -63,9 +60,9 @@ export function transformXData(data: any) {
         .map((i) => extractTimelineTweet(i.item.itemContent))
         .filter((t): t is Tweet => !!t);
 
-    comments.push(...tweetsInConversation);
+    originComments.push(...tweetsInConversation);
   }
-  console.log("comments", comments);
+  console.log("originComments", originComments);
   const url = window.location.href;
   const checkedComments: {
     id: string;
@@ -76,7 +73,7 @@ export function transformXData(data: any) {
     content: string;
     isChecked: boolean;
     mediaPhotosUrl: string[];
-    card: unknown;
+    cardInfo: Record<string, any>;
     imageUrl: string;
     replayUser: string;
     quotedContent: string;
@@ -85,10 +82,22 @@ export function transformXData(data: any) {
     quotedImg: string;
   }[] | TweetUnion = [];
 
-  comments.forEach((comment) => {
+  originComments.forEach((comment) => {
     if (comment.legacy.display_text_range) {
       const [start, end] = comment.legacy.display_text_range;
-      comment.legacy.full_text = comment.legacy.full_text.substring(start, end);
+      const text = comment.legacy.full_text;
+      let safeStart = start;
+      let safeEnd = end;
+
+      if (text.codePointAt(start)?.toString(16).length === 5) {
+        safeStart = start - 1;
+      }
+
+      if (text.codePointAt(end - 1)?.toString(16).length === 5) {
+        safeEnd = end + 1;
+      }
+
+      comment.legacy.full_text = text.substring(safeStart, safeEnd);
     }
 
     const replayUser = comment.legacy.full_text.match(/@([^\s]+)/)?.[1];
@@ -99,20 +108,47 @@ export function transformXData(data: any) {
     let quotedUser = "";
     let quotedUserImage = "";
     let quotedImg = "";
-    if (comment.quoted_status_result?.result?.tweet) {
-      const [start, end] = comment.quoted_status_result?.result?.tweet.legacy?.display_text_range;
-      const _quotedContent = comment.quoted_status_result?.result?.tweet.legacy?.full_text.substring(start, end);
-      const _quotedUser = comment.quoted_status_result?.result?.tweet.core?.user_results?.result?.legacy?.name;
-      const _quotedUserImage = comment.quoted_status_result?.result?.tweet.core?.user_results?.result?.legacy?.profile_image_url_https;
-      const _quotedImg = comment.quoted_status_result?.result?.tweet.legacy?.extended_entities?.media?.find(m => m.type === 'photo')?.media_url_https;
-      console.log('quotedContent==============================================================', quotedContent)
-      console.log('quotedUser', quotedUser)
-      console.log('quotedUserImage', quotedUserImage)
-      console.log('quotedImg', quotedImg)
+    if (comment.quoted_status_result?.result) {
+      const [start, end] = comment.quoted_status_result?.result?.legacy?.display_text_range;
+      const _quotedContent = comment.quoted_status_result?.result?.legacy?.full_text.substring(start, end);
+      const _quotedUser = comment.quoted_status_result?.result?.core?.user_results?.result?.legacy?.name;
+      const _quotedUserImage = comment.quoted_status_result?.result?.core?.user_results?.result?.legacy?.profile_image_url_https;
+      const _quotedImg = comment.quoted_status_result?.result?.legacy?.extended_entities?.media?.find(m => m.type === 'photo')?.media_url_https;
       quotedContent = _quotedContent;
       quotedUser = _quotedUser;
       quotedUserImage = _quotedUserImage;
       quotedImg = _quotedImg;
+    }
+    const card = comment.card?.legacy?.binding_values?.reduce(
+      (acc: Record<string, any>, item: { key: string; value: any }) => {
+        // 根据不同的 value type 提取实际值
+        const value = item.value.string_value ||
+          item.value.image_value ||
+          item.value.image_color_value;
+        acc[item.key] = value;
+        return acc;
+      },
+      {},
+    );
+
+    const cardInfo = {
+      title: card?.title,
+      domain: card?.domain,
+      appName: card?.app_name,
+      // 使用最大尺寸的缩略图
+      thumbnailUrl: card?.thumbnail_image_x_large?.url,
+      // App 相关信息
+      appStarRating: card?.app_star_rating,
+      appNumRatings: card?.app_num_ratings,
+      appIsFree: card?.app_is_free === 'true',
+      // 颜色信息，用于UI渲染
+      themeColor: card?.thumbnail_image_color?.palette?.[0]?.rgb,
+      // 链接
+      cardUrl: card?.card_url
+    };
+
+    if (comment.rest_id === "1765246490946277488") {
+      console.log('cardInfo', cardInfo)
     }
     checkedComments.push({
       id: comment.rest_id,
@@ -131,16 +167,7 @@ export function transformXData(data: any) {
         comment.legacy?.extended_entities?.media
           ?.filter((m) => m.type === "photo")
           .map((m) => m.media_url_https) || [],
-      card: comment.card?.legacy?.binding_values?.reduce(
-        (
-          acc: Record<string, string>,
-          item: { key: string; value: any },
-        ) => {
-          acc[item.key] = item.value;
-          return acc;
-        },
-        {},
-      ),
+      cardInfo,
       imageUrl:
         comment.card?.legacy?.binding_values.find(
           (item) => item.key === "photo_image_full_size_large",
@@ -151,57 +178,37 @@ export function transformXData(data: any) {
       quotedImg: quotedImg,
     });
   });
-  // let mainQuotedContent = "";
-  // let mainQuotedUser = "";
-  // let mainQuotedUserImage = "";
-  // let mainQuotedImg = "";
-  // if (mainTweet.quoted_status_result?.result) {
-  //   const [start, end] = mainTweet.quoted_status_result?.result.legacy?.display_text_range;
-  //   const _MainQuotedContent = mainTweet.quoted_status_result?.result.legacy?.full_text.substring(start, end);
-  //   const _MainQuotedUser = mainTweet.quoted_status_result?.result.core.user_results.result.legacy.name;
-  //   const _MainQuotedUserImage = mainTweet.quoted_status_result?.result.core.user_results.result.legacy.profile_image_url_https;
-  //   const _MainQuotedImg = mainTweet.quoted_status_result?.result.legacy?.extended_entities?.media?.find(m => m.type === 'photo')?.media_url_https;
 
-  //   mainQuotedContent = _MainQuotedContent;
-  //   mainQuotedUser = _MainQuotedUser;
-  //   mainQuotedUserImage = _MainQuotedUserImage;
-  //   mainQuotedImg = _MainQuotedImg;
-  // }
   console.log('checkedComments', checkedComments)
   const mainTweet = findMainTweet(checkedComments);
+  const realComments = checkedComments.filter((c) => c.id !== mainTweet?.id);
   console.log('mainTweet', mainTweet)
-  const { quotedContent, quotedUser, quotedUserImage, quotedImg } = mainTweet
+  const { quotedContent = "", quotedUser = "", quotedUserImage = "", quotedImg = "" } = mainTweet
   const currentTodo = {
     url,
-    postContent: extractTweetFullText(mainTweet!),
     title: "",
-    comments: checkedComments,
+    content: mainTweet?.content,
+    comments: realComments,
     postscripts: [],
-    author: mainTweet?.core.user_results.result.legacy.screen_name,
+    author: mainTweet?.author,
     avatarUrl:
-      mainTweet?.core.user_results.result.legacy.profile_image_url_https,
+      mainTweet?.avatarUrl,
     source: "x",
     mediaPhotosUrl:
-      mainTweet?.legacy?.extended_entities?.media
-        ?.filter((m) => m.type === "photo")
-        .map((m) => m.media_url_https) || [],
+      mainTweet?.mediaPhotosUrl,
     id:
-      mainTweet?.legacy.conversation_id_str ||
-      checkedComments?.[0]?.conversationId,
+      mainTweet?.id,
     isInitialLoad: false,
     quotedContent,
     quotedUser,
     quotedUserImage,
     quotedImg,
-    // mainQuotedContent: mainQuotedContent,
-    // mainQuotedUser: mainQuotedUser,
-    // mainQuotedUserImage: mainQuotedUserImage,
-    // mainQuotedImg: mainQuotedImg,
+
   };
   if (mainTweet) {
     // 添加一个标记表示这是页面加载的初始数据
     currentTodo.isInitialLoad = true;
   }
-  console.log("currentTodo", currentTodo);
+  console.log("currentTodo-inject", currentTodo);
   return currentTodo;
 }

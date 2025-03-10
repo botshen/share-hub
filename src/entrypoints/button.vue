@@ -1,13 +1,13 @@
 <script lang="ts" setup>
+import { getWebKind } from "@/utils/get-web-kind";
+import { getTodosRepo } from "@/utils/service";
 import { sharePostCommon } from "./get-post/common";
+import { sharePostHacknews } from "./get-post/hacknews/hacknews";
 import { sharePostReddit } from "./get-post/reddit/reddit";
 import { sharePostV2ex } from "./get-post/v2ex/v2ex";
-import { getWebKind } from "@/utils/get-web-kind";
-import { sharePostHacknews } from "./get-post/hacknews/hacknews";
-import { getTodosRepo } from "@/utils/service";
 
-import logo from "./logo.svg";
 import { sharePostX } from "./get-post/x/x";
+import logo from "./logo.svg";
 const xId = ref<string | null>(null);
 const onClick = () => {
   const webKind = getWebKind();
@@ -35,23 +35,7 @@ interface Comment {
 
 window.addEventListener("x-data", (async (event: Event) => {
   const customEvent = event as CustomEvent;
-  const currentTodo = {
-    id: customEvent.detail.id,
-    postContent: customEvent.detail.postContent,
-    title: customEvent.detail.title,
-    author: customEvent.detail.author,
-    url: customEvent.detail.url,
-    avatarUrl: customEvent.detail.avatarUrl,
-    comments: customEvent.detail.comments,
-    mediaPhotosUrl: customEvent.detail.mediaPhotosUrl,
-    postscripts: [],
-    source: "x",
-    isInitialLoad: customEvent.detail.isInitialLoad,
-    quotedContent: customEvent.detail.quotedContent,
-    quotedUser: customEvent.detail.quotedUser,
-    quotedUserImage: customEvent.detail.quotedUserImage,
-    quotedImg: customEvent.detail.quotedImg,
-  };
+  const currentTodo = customEvent.detail;
   const todosRepo = getTodosRepo();
   const todo = await todosRepo.getOne(currentTodo.id);
   if (currentTodo.isInitialLoad) {

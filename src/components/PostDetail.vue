@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import Tiptap from './Tiptap.vue'
 import PostLogo from './PostLogo.vue'
+import Tiptap from './Tiptap.vue'
 
 type LogoSource = 'v2ex' | 'reddit' | 'hacknews' | 'x'
 type Post = {
@@ -10,12 +10,13 @@ type Post = {
   source: string
   url: string
   title: string
-  postContent: string
+  content: string
   mediaPhotosUrl: string[]
-  mainQuotedUserImage: string
-  mainQuotedUser: string
-  mainQuotedContent: string
-  mainQuotedImg: string
+  quotedUser: string
+  quotedContent: string
+  quotedUserImage: string
+  quotedImg: string
+ 
   conversationId: string
   replyId: string
 }
@@ -42,20 +43,20 @@ defineProps<{
 
   <div class="post-content">
     <Tiptap v-if="post?.title" class="text-2xl font-bold mb-3" :content="post?.title" />
-    <Tiptap v-if="post?.postContent" class="mb-4 cursor-pointer" :content="post?.postContent" />
+    <Tiptap v-if="post?.content" class="mb-4 cursor-pointer" :content="post?.content" />
 
     <div v-if="post?.mediaPhotosUrl?.length" class="media-gallery grid gap-2 mb-4">
       <img v-for="mediaPhotoUrl in post?.mediaPhotosUrl" :key="mediaPhotoUrl" :src="mediaPhotoUrl"
         class="rounded-lg w-full object-cover" alt="媒体图片" />
     </div>
 
-    <div v-if="post?.mainQuotedUser || post?.mainQuotedContent" class="quoted-content p-3 border rounded-lg mb-4">
-      <div v-if="post?.mainQuotedUserImage" class="flex items-center mb-2">
-        <img class="w-8 h-8 rounded-full mr-2" :src="post?.mainQuotedUserImage" alt="引用用户头像" />
-        <span class="font-medium">{{ post?.mainQuotedUser }}</span>
+    <div v-if="post?.quotedUser || post?.quotedContent" class="quoted-content p-3 border rounded-lg mb-4">
+      <div v-if="post?.quotedUserImage" class="flex items-center mb-2">
+        <img class="w-8 h-8 rounded-full mr-2" :src="post?.quotedUserImage" alt="引用用户头像" />
+        <span class="font-medium">{{ post?.quotedUser }}</span>
       </div>
-      <Tiptap v-if="post?.mainQuotedContent" :content="post?.mainQuotedContent" />
-      <img v-if="post?.mainQuotedImg" :src="post?.mainQuotedImg" class="mt-2 rounded-lg w-full object-cover"
+      <Tiptap v-if="post?.quotedContent" :content="post?.quotedContent" />
+      <img v-if="post?.quotedImg" :src="post?.quotedImg" class="mt-2 rounded-lg w-full object-cover"
         alt="引用图片" />
     </div>
   </div>

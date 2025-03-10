@@ -1,9 +1,5 @@
 <script lang="ts" setup>
-import { useOptionsStore } from "./use-options-store";
-import { onMessage } from "@/utils/message";
 import MessageTip from "@/components/MessageTip.vue";
-import PostList from "./post-list/PostList.vue";
-import ActionBar from "./action-bar/ActionBar.vue";
 import {
   type FontSize,
   paddingMap,
@@ -13,12 +9,13 @@ import {
   widthMap,
   type WidthSize,
 } from "@/utils/post-config";
-import Card from "./Card.vue";
 import { currentIdStorage } from "@/utils/storage";
-import { onMounted, watch, onUnmounted } from "vue";
-import Tiptap from "@/components/Tiptap.vue";
-const { todos, getTodos, currentTodoId, currentTodo, config, bgClass, onlyEditorVisible, isDownloading, isCopying } =
-  useOptionsStore();
+import { onMounted, onUnmounted, watch } from "vue";
+import ActionBar from "./action-bar/ActionBar.vue";
+import Card from "./Card.vue";
+import PostList from "./post-list/PostList.vue";
+import { useOptionsStore } from "./use-options-store";
+const { getTodos, currentTodoId, config } =  useOptionsStore();
 
 
 
