@@ -1,7 +1,7 @@
 import { proxy } from "ajax-hook";
 import { sendMessageToContentScript } from "@/utils/inject-help";
-import { isXTweetDetailUrl, transformXData } from "@/utils/x-util";
-
+import { transformXData } from "@/utils/x-util";
+import { isXTweetDetailUrl } from "@/utils/x-api";
 
 
 export default defineUnlistedScript(() => {

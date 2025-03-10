@@ -47,10 +47,10 @@ window.addEventListener("x-data", (async (event: Event) => {
     postscripts: [],
     source: "x",
     isInitialLoad: customEvent.detail.isInitialLoad,
-    mainQuotedContent: customEvent.detail.mainQuotedContent,
-    mainQuotedUser: customEvent.detail.mainQuotedUser,
-    mainQuotedUserImage: customEvent.detail.mainQuotedUserImage,
-    mainQuotedImg: customEvent.detail.mainQuotedImg,
+    quotedContent: customEvent.detail.quotedContent,
+    quotedUser: customEvent.detail.quotedUser,
+    quotedUserImage: customEvent.detail.quotedUserImage,
+    quotedImg: customEvent.detail.quotedImg,
   };
   const todosRepo = getTodosRepo();
   const todo = await todosRepo.getOne(currentTodo.id);

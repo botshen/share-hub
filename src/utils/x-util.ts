@@ -11,30 +11,14 @@ import type {
 } from "@/entrypoints/types";
 
 import { strEntitiesToHTML } from "@/utils/x";
-function isMainTweet(tweet: TweetUnion): tweet is Tweet {
-  if (tweet.__typename !== 'Tweet') {
-    return false;
-  }
-  return tweet.legacy.conversation_id_str === tweet.legacy.id_str;
-}
+import { findMainTweet, type TweetDetailResponse } from "@/utils/x-api";
 
-export function isXTweetDetailUrl(url: string) {
-  return /\/graphql\/.+\/TweetDetail/.test(url)
-}
-interface TweetDetailResponse {
-  data: {
-    threaded_conversation_with_injections_v2: {
-      instructions: TimelineInstructions;
-    };
-  };
-}
 
 
 export function transformXData(data: any) {
   const json: TweetDetailResponse = JSON.parse(data);
   const instructions =
     json.data.threaded_conversation_with_injections_v2.instructions;
-  let mainTweet!: Tweet;
   const comments: Tweet[] = [];
 
   const timelineAddEntriesInstruction = instructions.find(
@@ -49,12 +33,7 @@ export function transformXData(data: any) {
     if (isTimelineEntryTweet(entry)) {
       const tweetUnion = extractTimelineTweet(entry.content.itemContent);
       if (tweetUnion && tweetUnion.__typename === 'Tweet') {
-        if (isMainTweet!(tweetUnion)) {
-          mainTweet! = tweetUnion;
-        } else {
-          console.log('tweetUnion', tweetUnion)
-          comments.push(tweetUnion);
-        }
+        comments.push(tweetUnion);
       }
     }
 
@@ -87,7 +66,6 @@ export function transformXData(data: any) {
     comments.push(...tweetsInConversation);
   }
   console.log("comments", comments);
-  console.log("mainTweet!", mainTweet!);
   const url = window.location.href;
   const checkedComments: {
     id: string;
@@ -105,27 +83,14 @@ export function transformXData(data: any) {
     quotedUser: string;
     quotedUserImage: string;
     quotedImg: string;
-  }[] = [];
+  }[] | TweetUnion = [];
 
   comments.forEach((comment) => {
-    if (
-      comment?.core?.user_results?.result?.professional
-        ?.professional_type === "Business"
-    )
-      return;
-    if (
-      comment?.core?.user_results?.result?.affiliates_highlighted_label
-        ?.label?.userLabelType === "BusinessLabel"
-    )
-      return;
     if (comment.legacy.display_text_range) {
-      // 根据display_text_range 提取出实际显示的内容
       const [start, end] = comment.legacy.display_text_range;
       comment.legacy.full_text = comment.legacy.full_text.substring(start, end);
     }
-    // comment.legacy.full_text @szac19851 firefox今天出了个事，你去搜一下 隐私相关的
-    // 提取出@szac19851 后面的内容（匹配第一个@和后面连着的字符）
-    // @szac19851 firefox今天出了个事，你去搜一下 隐私相关的   => @szac19851 firefox今天出了个事，你去搜一下 隐私相关的
+
     const replayUser = comment.legacy.full_text.match(/@([^\s]+)/)?.[1];
     const replayContent = comment.legacy.full_text
       .replace(`@${replayUser}`, "")
@@ -186,26 +151,26 @@ export function transformXData(data: any) {
       quotedImg: quotedImg,
     });
   });
-  let mainQuotedContent = "";
-  let mainQuotedUser = "";
-  let mainQuotedUserImage = "";
-  let mainQuotedImg = "";
+  // let mainQuotedContent = "";
+  // let mainQuotedUser = "";
+  // let mainQuotedUserImage = "";
+  // let mainQuotedImg = "";
+  // if (mainTweet.quoted_status_result?.result) {
+  //   const [start, end] = mainTweet.quoted_status_result?.result.legacy?.display_text_range;
+  //   const _MainQuotedContent = mainTweet.quoted_status_result?.result.legacy?.full_text.substring(start, end);
+  //   const _MainQuotedUser = mainTweet.quoted_status_result?.result.core.user_results.result.legacy.name;
+  //   const _MainQuotedUserImage = mainTweet.quoted_status_result?.result.core.user_results.result.legacy.profile_image_url_https;
+  //   const _MainQuotedImg = mainTweet.quoted_status_result?.result.legacy?.extended_entities?.media?.find(m => m.type === 'photo')?.media_url_https;
+
+  //   mainQuotedContent = _MainQuotedContent;
+  //   mainQuotedUser = _MainQuotedUser;
+  //   mainQuotedUserImage = _MainQuotedUserImage;
+  //   mainQuotedImg = _MainQuotedImg;
+  // }
+  console.log('checkedComments', checkedComments)
+  const mainTweet = findMainTweet(checkedComments);
   console.log('mainTweet', mainTweet)
-  if (mainTweet.quoted_status_result?.result) {
-    const [start, end] = mainTweet.quoted_status_result?.result.legacy?.display_text_range;
-    const _MainQuotedContent = mainTweet.quoted_status_result?.result.legacy?.full_text.substring(start, end);
-    const _MainQuotedUser = mainTweet.quoted_status_result?.result.core.user_results.result.legacy.name;
-    const _MainQuotedUserImage = mainTweet.quoted_status_result?.result.core.user_results.result.legacy.profile_image_url_https;
-    const _MainQuotedImg = mainTweet.quoted_status_result?.result.legacy?.extended_entities?.media?.find(m => m.type === 'photo')?.media_url_https;
-    console.log('mainQuotedContent==============================================================', mainQuotedContent)
-    console.log('mainQuotedUser', mainQuotedUser)
-    console.log('mainQuotedUserImage', mainQuotedUserImage)
-    console.log('mainQuotedImg', mainQuotedImg)
-    mainQuotedContent = _MainQuotedContent;
-    mainQuotedUser = _MainQuotedUser;
-    mainQuotedUserImage = _MainQuotedUserImage;
-    mainQuotedImg = _MainQuotedImg;
-  }
+  const { quotedContent, quotedUser, quotedUserImage, quotedImg } = mainTweet
   const currentTodo = {
     url,
     postContent: extractTweetFullText(mainTweet!),
@@ -224,10 +189,14 @@ export function transformXData(data: any) {
       mainTweet?.legacy.conversation_id_str ||
       checkedComments?.[0]?.conversationId,
     isInitialLoad: false,
-    mainQuotedContent: mainQuotedContent,
-    mainQuotedUser: mainQuotedUser,
-    mainQuotedUserImage: mainQuotedUserImage,
-    mainQuotedImg: mainQuotedImg,
+    quotedContent,
+    quotedUser,
+    quotedUserImage,
+    quotedImg,
+    // mainQuotedContent: mainQuotedContent,
+    // mainQuotedUser: mainQuotedUser,
+    // mainQuotedUserImage: mainQuotedUserImage,
+    // mainQuotedImg: mainQuotedImg,
   };
   if (mainTweet) {
     // 添加一个标记表示这是页面加载的初始数据
