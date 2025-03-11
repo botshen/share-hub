@@ -7,4 +7,18 @@ const currentIdStorage = storage.defineItem<number | string>(
   },
 );
 
-export { currentIdStorage };
+const isDebugModeStorage = storage.defineItem<boolean>(
+  'local:isDebugMode',
+  {
+    fallback: false,
+  },
+);
+
+const xMockConfigStorage = storage.defineItem<{
+  mockData: any;
+}>('local:xMockConfig', {
+  fallback: {
+    mockData: null,
+  },
+});
+export { currentIdStorage, isDebugModeStorage, xMockConfigStorage };

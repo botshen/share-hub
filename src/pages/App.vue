@@ -15,8 +15,8 @@ import ActionBar from "./action-bar/ActionBar.vue";
 import Card from "./Card.vue";
 import PostList from "./post-list/PostList.vue";
 import { useOptionsStore } from "./use-options-store";
-const { getTodos, currentTodoId, config } =  useOptionsStore();
-
+const { getTodos, currentTodoId, config } = useOptionsStore();
+import { isDebugModeStorage } from "@/utils/storage";
 
 
 const detailCss = (newVal: typeof config.value) => {
@@ -96,15 +96,20 @@ onUnmounted(() => {
   document.removeEventListener('visibilitychange', handleVisibilityChange);
 });
 
-// storage.watch<number>('local:currentId', (newCount, oldCount) => {
-//   console.log('Count changed:', { newCount, oldCount });
-// });
+const handleDebugModeChange = async (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  await isDebugModeStorage.setValue(target.checked);
+};
 </script>
 
 <template>
   <MessageTip />
   <div class="flex bg-pattern px-[100px] h-full ">
     <div class="sticky top-2 mr-4">
+      <div class="flex items-center gap-2  mb-2">
+        <input @change="handleDebugModeChange" type="checkbox" defaultChecked className="toggle toggle-secondary" />
+        <span>调试模式</span>
+      </div>
       <PostList />
     </div>
     <div class="card-container mx-auto m-4 block">

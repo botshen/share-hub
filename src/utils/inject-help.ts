@@ -8,12 +8,19 @@ export function injectScriptToPage() {
       script.remove()
     }
     document.documentElement.appendChild(script)
+    injectScriptToPage1()
+
   }
   catch (err) {
     console.error('err', err)
   }
 }
-
+function injectScriptToPage1() {
+  const input = document.createElement('share-hub')
+  input.setAttribute('id', 'share-hub')
+  input.setAttribute('style', 'display:none')
+  document.documentElement.appendChild(input)
+}
 
 
 export function tryParseJson<T>(data: string, defaultValue: T) {

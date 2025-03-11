@@ -109,15 +109,21 @@ export function transformXData(data: any) {
     let quotedUserImage = "";
     let quotedImg = "";
     if (comment.quoted_status_result?.result) {
-      const [start, end] = comment.quoted_status_result?.result?.legacy?.display_text_range;
-      const _quotedContent = comment.quoted_status_result?.result?.legacy?.full_text.substring(start, end);
-      const _quotedUser = comment.quoted_status_result?.result?.core?.user_results?.result?.legacy?.name;
-      const _quotedUserImage = comment.quoted_status_result?.result?.core?.user_results?.result?.legacy?.profile_image_url_https;
-      const _quotedImg = comment.quoted_status_result?.result?.legacy?.extended_entities?.media?.find(m => m.type === 'photo')?.media_url_https;
-      quotedContent = _quotedContent;
-      quotedUser = _quotedUser;
-      quotedUserImage = _quotedUserImage;
-      quotedImg = _quotedImg;
+      console.log('comment', comment)
+      console.log('comment.quoted_status_result?.result', comment.quoted_status_result?.result)
+      const tweet = comment.quoted_status_result?.result || comment.quoted_status_result?.result?.tweet
+      const range = tweet?.legacy?.display_text_range
+      if (range && Array.isArray(range)) {
+        const [start, end] = range;
+        const _quotedContent = tweet?.legacy?.full_text.substring(start, end);
+        const _quotedUser = tweet?.core?.user_results?.result?.legacy?.name;
+        const _quotedUserImage = tweet?.core?.user_results?.result?.legacy?.profile_image_url_https;
+        const _quotedImg = tweet?.legacy?.extended_entities?.media?.find(m => m.type === 'photo')?.media_url_https;
+        quotedContent = _quotedContent;
+        quotedUser = _quotedUser;
+        quotedUserImage = _quotedUserImage;
+        quotedImg = _quotedImg;
+      }
     }
     const card = comment.card?.legacy?.binding_values?.reduce(
       (acc: Record<string, any>, item: { key: string; value: any }) => {
