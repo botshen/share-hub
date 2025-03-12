@@ -1,6 +1,6 @@
-import { defineConfig } from 'wxt';
-import Icons from "unplugin-icons/vite";
 import Tailwindcss from "@tailwindcss/vite";
+import Icons from "unplugin-icons/vite";
+import { defineConfig } from 'wxt';
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
@@ -30,7 +30,7 @@ export default defineConfig({
     web_accessible_resources: [
       {
         resources: ['/injected.js'],
-        matches: ['https://x.com/*'],
+        matches: ['<all_urls>'],
       },
     ],
     host_permissions: [

@@ -1,12 +1,14 @@
-import { proxy } from "ajax-hook";
+import { getMockData } from "@/utils/dom";
 import { sendMessageToContentScript } from "@/utils/inject-help";
-import { transformXData } from "@/utils/x-util";
 import { isXTweetDetailUrl } from "@/utils/x-api";
-
+import { transformXData } from "@/utils/x-util";
+import { proxy } from "ajax-hook";
 
 export default defineUnlistedScript(() => {
   proxy({
     onRequest: (config, handler) => {
+      const mockData = getMockData();
+      console.log('mockData', mockData)
       handler.next(config);
     },
     onError: (err, handler) => {

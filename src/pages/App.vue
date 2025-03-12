@@ -9,14 +9,13 @@ import {
   widthMap,
   type WidthSize,
 } from "@/utils/post-config";
-import { currentIdStorage } from "@/utils/storage";
+import { currentIdStorage, isDebugModeStorage } from "@/utils/storage";
 import { onMounted, onUnmounted, watch } from "vue";
 import ActionBar from "./action-bar/ActionBar.vue";
 import Card from "./Card.vue";
 import PostList from "./post-list/PostList.vue";
 import { useOptionsStore } from "./use-options-store";
 const { getTodos, currentTodoId, config } = useOptionsStore();
-import { isDebugModeStorage } from "@/utils/storage";
 
 
 const detailCss = (newVal: typeof config.value) => {
@@ -99,6 +98,7 @@ onUnmounted(() => {
 const handleDebugModeChange = async (e: Event) => {
   const target = e.target as HTMLInputElement;
   await isDebugModeStorage.setValue(target.checked);
+  
 };
 </script>
 

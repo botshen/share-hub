@@ -8,18 +8,30 @@ export function injectScriptToPage() {
       script.remove()
     }
     document.documentElement.appendChild(script)
-    injectScriptToPage1()
 
   }
   catch (err) {
     console.error('err', err)
   }
 }
-function injectScriptToPage1() {
-  const input = document.createElement('share-hub')
-  input.setAttribute('id', 'share-hub')
+
+export function executeScript(data: any) {
+  const code = JSON.stringify(data)
+  const inputElem = document.getElementById(
+    'share-hub-message'
+  ) as HTMLInputElement
+  if (inputElem !== null) {
+    inputElem.value = code
+  }
+}
+
+export function injectElementForMessage(data: any) {
+  const input = document.createElement('input') as HTMLInputElement
+  input.setAttribute('id', 'share-hub-message')
   input.setAttribute('style', 'display:none')
+  input.value = JSON.stringify(data)
   document.documentElement.appendChild(input)
+
 }
 
 

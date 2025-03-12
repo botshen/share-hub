@@ -8,3 +8,15 @@ export function findImmersiveElements(doc: Document) {
   });
 }
 
+
+
+export function getMockData() {
+  const inputElem = document.getElementById(
+    'share-hub-message'
+  ) as HTMLInputElement
+  if (!inputElem) {
+    return {};
+  }
+  const configStr = inputElem.value
+  return JSON.parse(configStr)
+}

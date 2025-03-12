@@ -1,8 +1,8 @@
 // 1. Import the style
+import { injectElementForMessage, injectScriptToPage } from '@/utils/inject-help';
+import { isDebugModeStorage } from '@/utils/storage';
 import { createApp } from 'vue';
 import Button from './button.vue';
-import { injectScriptToPage } from '@/utils/inject-help';
-
 
 export default defineContentScript({
   matches: ['<all_urls>'],
@@ -10,7 +10,13 @@ export default defineContentScript({
   cssInjectionMode: 'ui',
   runAt: 'document_start',
   async main(ctx) {
+    const isDebugMode = await isDebugModeStorage.getValue();
+    console.log('isDebugMode', isDebugMode)
+
     injectScriptToPage()
+    injectElementForMessage({
+      isDebugMode,
+    })
 
     // 3. Define your UI
     const ui = await createShadowRootUi(ctx, {
