@@ -106,10 +106,10 @@ const handleDebugModeChange = async (e: Event) => {
   <MessageTip />
   <div class="flex bg-pattern px-[100px] h-full ">
     <div class="sticky top-2 mr-4">
-      <div class="flex items-center gap-2  mb-2">
+      <!-- <div class="flex items-center gap-2  mb-2">
         <input @change="handleDebugModeChange" type="checkbox" defaultChecked className="toggle toggle-secondary" />
         <span>调试模式</span>
-      </div>
+      </div> -->
       <PostList />
     </div>
     <div class="card-container mx-auto m-4 block">

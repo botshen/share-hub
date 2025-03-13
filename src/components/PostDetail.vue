@@ -35,7 +35,7 @@ defineProps<{
       </div>
       <div class="flex flex-col">
         <span class="text-lg font-medium">{{ post?.author }}</span>
-        <div class="text-xs text-red-500">{{ post?.id }}</div>
+        <!-- <div class="text-xs text-red-500">{{ post?.id }}</div> -->
       </div>
     </div>
     <PostLogo v-if="post?.source" :url="post?.url" :source="post?.source as LogoSource" />

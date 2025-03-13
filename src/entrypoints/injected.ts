@@ -29,6 +29,7 @@ export default defineUnlistedScript(() => {
       //   window.dispatchEvent(new CustomEvent('x-mockData', { detail: responseData }));
       // }
       if (isXTweetDetailUrl(url)) {
+
         try {
           const currentTodo = transformXData(responseData);
           sendMessageToContentScript(currentTodo, "x-data");

@@ -8,16 +8,17 @@ import type {
 } from "@/entrypoints/types";
 
 import { strEntitiesToHTML } from "@/utils/x";
-import { findMainTweet, type TweetDetailResponse } from "@/utils/x-api";
+import { type TweetDetailResponse } from "@/utils/x-api";
 
 
 
 export function transformXData(data: any) {
+  const url = window.location.href;
+  const id = url.split('/').pop();
   const json: TweetDetailResponse = JSON.parse(data);
   const instructions =
     json.data.threaded_conversation_with_injections_v2.instructions;
   const originComments: Tweet[] = [];
-  console.log('instructions', instructions)
   const timelineAddEntriesInstruction = instructions.find(
     (i) => i.type === "TimelineAddEntries",
   ) as TimelineAddEntriesInstruction<TimelineTweet>;
@@ -63,7 +64,6 @@ export function transformXData(data: any) {
     originComments.push(...tweetsInConversation);
   }
   console.log("originComments", originComments);
-  const url = window.location.href;
   const checkedComments: {
     id: string;
     conversationId: string;
@@ -127,7 +127,6 @@ export function transformXData(data: any) {
     }
     const card = comment.card?.legacy?.binding_values?.reduce(
       (acc: Record<string, any>, item: { key: string; value: any }) => {
-        // 根据不同的 value type 提取实际值
         const value = item.value.string_value ||
           item.value.image_value ||
           item.value.image_color_value;
@@ -153,9 +152,6 @@ export function transformXData(data: any) {
       cardUrl: card?.card_url
     };
 
-    if (comment.rest_id === "1765246490946277488") {
-      console.log('cardInfo', cardInfo)
-    }
     checkedComments.push({
       id: comment.rest_id,
       conversationId: comment.legacy.conversation_id_str,
@@ -186,10 +182,8 @@ export function transformXData(data: any) {
   });
 
   console.log('checkedComments', checkedComments)
-  const mainTweet = findMainTweet(checkedComments);
-  const realComments = checkedComments.filter((c) => c.id !== mainTweet?.id);
-  console.log('mainTweet', mainTweet)
-  const { quotedContent = "", quotedUser = "", quotedUserImage = "", quotedImg = "" } = mainTweet
+  const mainTweet = checkedComments.find(c => c.id === id);
+  const realComments = checkedComments.filter((c) => c.id !== id);
   const currentTodo = {
     url,
     title: "",
@@ -202,19 +196,17 @@ export function transformXData(data: any) {
     source: "x",
     mediaPhotosUrl:
       mainTweet?.mediaPhotosUrl,
-    id:
-      mainTweet?.id,
+    id,
     isInitialLoad: false,
-    quotedContent,
-    quotedUser,
-    quotedUserImage,
-    quotedImg,
+    quotedContent: mainTweet?.quotedContent,
+    quotedUser: mainTweet?.quotedUser,
+    quotedUserImage: mainTweet?.quotedUserImage,
+    quotedImg: mainTweet?.quotedImg,
 
   };
-  if (mainTweet) {
-    // 添加一个标记表示这是页面加载的初始数据
+  if (checkedComments.some(c => c.id === id)) {
     currentTodo.isInitialLoad = true;
+    console.log('初始加载')
   }
-  console.log("currentTodo-inject", currentTodo);
   return currentTodo;
 }

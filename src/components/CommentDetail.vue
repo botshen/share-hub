@@ -100,7 +100,7 @@ const commentVisible = (comment: Comment) => {
       <span class="font-bold">{{ comment.author }}</span>
       <span class="text-gray-500" v-if="comment.replayUser">@{{ comment.replayUser }}</span>
       <label class="cursor-pointer label" v-if="onlyEditorVisible">
-        <input type="checkbox" :checked="comment.isChecked" class="checkbox checkbox-success" @change="
+        <input type="checkbox" :checked="comment.isChecked" class="checkbox  " @change="
           (e) =>
             handleCommentSelect(
               comment.id,
@@ -108,7 +108,7 @@ const commentVisible = (comment: Comment) => {
             )
         " />
       </label>
-      <span class="text-xs text-red-500">{{ comment.id }}</span>
+      <!-- <span class="text-xs text-red-500">{{ comment.id }}</span> -->
 
     </div>
     <Tiptap v-if="comment.content" :class="comment.avatarUrl ? 'ml-10' : ''" :content="comment.content"
@@ -131,9 +131,7 @@ const commentVisible = (comment: Comment) => {
         </div>
       </div>
     </div>
-    <div v-if="comment?.quotedContent">
-      <span class="text-gray-500">{{ comment?.quotedContent }}</span>
-    </div>
+ 
     <div class="border border-gray-400 rounded-md p-3 bg-[rgba(0,0,0,0.00)]"
       :class="comment.avatarUrl ? 'ml-10 ' : 'w-full'" v-if="comment.quotedUser">
       <div class="flex items-center gap-2 mb-2">
@@ -146,10 +144,14 @@ const commentVisible = (comment: Comment) => {
           <span class="text-gray-500">{{ comment?.quotedUser }}</span>
         </div>
       </div>
+      <div v-if="comment?.quotedContent">
+      <span class="text-gray-500">{{ comment?.quotedContent }}</span>
+    </div>
       <div v-if="comment?.quotedImg">
         <img :src="comment?.quotedImg" class="rounded-md" />
       </div>
     </div>
+  
 
 
   </div>
