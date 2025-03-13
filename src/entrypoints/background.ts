@@ -1,11 +1,9 @@
-import { onMessage } from "@/utils/message";
+import { onMessage, sendMessage } from "@/utils/message";
 import { registerTodosRepo } from "@/utils/service";
 import { openDB } from "idb";
 
 export default defineBackground(() => {
-  // console.log("Hello background!", { id: browser.runtime.id });
 
-  // Open the database and register your service
   const db = openDB("todos", 1, {
     upgrade(db) {
       // 创建一个名为 'todos' 的对象存储
@@ -33,6 +31,28 @@ export default defineBackground(() => {
         url,
         active: true
       });
+    }
+  });
+
+  browser.runtime.onInstalled.addListener(() => {
+    // 创建一个分享菜单项
+    browser.contextMenus.create({
+      id: "shareMenu",
+      title: "分享",
+      contexts: ["all"], // 可以是 ["page", "selection", "link", "image"] 等
+    });
+  });
+  browser.contextMenus.onClicked.addListener(async (info, tab) => {
+    switch (info.menuItemId) {
+      case "shareMenu":
+        console.log("点击了分享菜单");
+        // 获取当前活动标签页
+        const currentTab = await browser.tabs.query({ active: true, currentWindow: true });
+        const tabId = currentTab[0].id!;
+        await sendMessage("sharePost", undefined, { tabId });
+        break;
+      default:
+        break;
     }
   });
 });
