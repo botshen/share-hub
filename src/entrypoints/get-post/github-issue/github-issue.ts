@@ -99,96 +99,96 @@ function extractGitHubIssueData(documentData: string): Issue {
 export async function parseGitHubIssueFromDocument(): Promise<void> {
   // 获取文档中的嵌入式数据
   const scriptElement = document.querySelector('script[type="application/json"][data-target="react-app.embeddedData"]');
-  console.log('scriptElement', scriptElement)
+  // console.log('scriptElement', scriptElement)
   if (scriptElement) {
     const issueData = extractGitHubIssueData(scriptElement.textContent || '');
 
-    // 输出Issue基本信息
-    console.log('===== Issue基本信息 =====');
-    console.log('Issue ID:', issueData.id);
-    console.log('Issue编号:', issueData.number);
-    console.log('Issue标题:', issueData.title);
-    console.log('Issue状态:', issueData.state, issueData.stateReason ? `(${issueData.stateReason})` : '');
-    console.log('创建时间:', new Date(issueData.createdAt).toLocaleString());
-    console.log('更新时间:', new Date(issueData.updatedAt).toLocaleString());
+    // // 输出Issue基本信息
+    // console.log('===== Issue基本信息 =====');
+    // console.log('Issue ID:', issueData.id);
+    // console.log('Issue编号:', issueData.number);
+    // console.log('Issue标题:', issueData.title);
+    // console.log('Issue状态:', issueData.state, issueData.stateReason ? `(${issueData.stateReason})` : '');
+    // console.log('创建时间:', new Date(issueData.createdAt).toLocaleString());
+    // console.log('更新时间:', new Date(issueData.updatedAt).toLocaleString());
 
-    // 输出Issue作者信息
-    console.log('\n===== Issue作者信息 =====');
-    console.log('作者用户名:', issueData.author.login);
-    console.log('作者ID:', issueData.author.id);
-    console.log('作者头像URL:', issueData.author.avatarUrl);
-    if (issueData.author.name) {
-      console.log('作者显示名称:', issueData.author.name);
-    }
+    // // 输出Issue作者信息
+    // console.log('\n===== Issue作者信息 =====');
+    // console.log('作者用户名:', issueData.author.login);
+    // console.log('作者ID:', issueData.author.id);
+    // console.log('作者头像URL:', issueData.author.avatarUrl);
+    // if (issueData.author.name) {
+    //   console.log('作者显示名称:', issueData.author.name);
+    // }
 
     // 输出Issue内容
-    console.log('\n===== Issue内容 =====');
-    console.log('Issue描述:', issueData.body);
-    console.log('Issue描述(HTML):', issueData.bodyHTML); // HTML内容较长，可选择是否输出
+    // console.log('\n===== Issue内容 =====');
+    // console.log('Issue描述:', issueData.body);
+    // console.log('Issue描述(HTML):', issueData.bodyHTML); // HTML内容较长，可选择是否输出
 
     // 输出标签信息
-    if (issueData.labels && issueData.labels.edges && issueData.labels.edges.length > 0) {
-      console.log('\n===== Issue标签 =====');
-      issueData.labels.edges.forEach((labelEdge, index) => {
-        const label = labelEdge.node;
-        console.log(`标签 ${index + 1}:`, label.name);
-        console.log(`标签 ${index + 1} 颜色:`, label.color);
-        if (label.description) {
-          console.log(`标签 ${index + 1} 描述:`, label.description);
-        }
-      });
-    }
+    // if (issueData.labels && issueData.labels.edges && issueData.labels.edges.length > 0) {
+    //   console.log('\n===== Issue标签 =====');
+    //   issueData.labels.edges.forEach((labelEdge, index) => {
+    //     const label = labelEdge.node;
+    //     console.log(`标签 ${index + 1}:`, label.name);
+    //     console.log(`标签 ${index + 1} 颜色:`, label.color);
+    //     if (label.description) {
+    //       console.log(`标签 ${index + 1} 描述:`, label.description);
+    //     }
+    //   });
+    // }
 
     // 输出指派人信息
-    if (issueData.assignees && issueData.assignees.nodes && issueData.assignees.nodes.length > 0) {
-      console.log('\n===== Issue指派人 =====');
-      issueData.assignees.nodes.forEach((assignee, index) => {
-        console.log(`指派人 ${index + 1}:`, assignee.login);
-        console.log(`指派人 ${index + 1} 头像:`, assignee.avatarUrl);
-        if (assignee.name) {
-          console.log(`指派人 ${index + 1} 显示名称:`, assignee.name);
-        }
-      });
-    }
+    // if (issueData.assignees && issueData.assignees.nodes && issueData.assignees.nodes.length > 0) {
+    //   console.log('\n===== Issue指派人 =====');
+    //   issueData.assignees.nodes.forEach((assignee, index) => {
+    //     console.log(`指派人 ${index + 1}:`, assignee.login);
+    //     console.log(`指派人 ${index + 1} 头像:`, assignee.avatarUrl);
+    //     if (assignee.name) {
+    //       console.log(`指派人 ${index + 1} 显示名称:`, assignee.name);
+    //     }
+    //   });
+    // }
 
     // 输出关联的Pull Request
-    if (issueData.linkedPullRequests && issueData.linkedPullRequests.nodes && issueData.linkedPullRequests.nodes.length > 0) {
-      console.log('\n===== 关联的Pull Request =====');
-      issueData.linkedPullRequests.nodes.forEach((pr, index) => {
-        console.log(`PR ${index + 1} 标题:`, pr.title);
-        console.log(`PR ${index + 1} 编号:`, pr.number);
-        console.log(`PR ${index + 1} 状态:`, pr.state);
-        console.log(`PR ${index + 1} URL:`, pr.url);
-        console.log(`PR ${index + 1} 仓库:`, `${pr.repository.owner.login}/${pr.repository.name}`);
-      });
-    }
+    // if (issueData.linkedPullRequests && issueData.linkedPullRequests.nodes && issueData.linkedPullRequests.nodes.length > 0) {
+    //   console.log('\n===== 关联的Pull Request =====');
+    //   issueData.linkedPullRequests.nodes.forEach((pr, index) => {
+    //     console.log(`PR ${index + 1} 标题:`, pr.title);
+    //     console.log(`PR ${index + 1} 编号:`, pr.number);
+    //     console.log(`PR ${index + 1} 状态:`, pr.state);
+    //     console.log(`PR ${index + 1} URL:`, pr.url);
+    //     console.log(`PR ${index + 1} 仓库:`, `${pr.repository.owner.login}/${pr.repository.name}`);
+    //   });
+    // }
 
-    // 输出评论信息
-    if (issueData.comments && issueData.comments.length > 0) {
-      console.log('\n===== Issue评论 =====');
-      console.log('评论总数:', issueData.comments.length);
+    // // 输出评论信息
+    // if (issueData.comments && issueData.comments.length > 0) {
+    //   console.log('\n===== Issue评论 =====');
+    //   console.log('评论总数:', issueData.comments.length);
 
-      issueData.comments.forEach((comment, index) => {
-        console.log(`\n----- 评论 ${index + 1} -----`);
-        console.log(`评论ID:`, comment.id);
-        console.log(`评论时间:`, new Date(comment.createdAt).toLocaleString());
+    //   issueData.comments.forEach((comment, index) => {
+    //     console.log(`\n----- 评论 ${index + 1} -----`);
+    //     console.log(`评论ID:`, comment.id);
+    //     console.log(`评论时间:`, new Date(comment.createdAt).toLocaleString());
 
-        // 评论作者信息
-        console.log(`评论作者:`, comment.author.login);
-        console.log(`评论作者ID:`, comment.author.id);
-        console.log(`评论作者头像:`, comment.author.avatarUrl);
-        if (comment.author.name) {
-          console.log(`评论作者显示名称:`, comment.author.name);
-        }
+    //     // 评论作者信息
+    //     console.log(`评论作者:`, comment.author.login);
+    //     console.log(`评论作者ID:`, comment.author.id);
+    //     console.log(`评论作者头像:`, comment.author.avatarUrl);
+    //     if (comment.author.name) {
+    //       console.log(`评论作者显示名称:`, comment.author.name);
+    //     }
 
-        // 评论内容
-        console.log(`评论内容:`, comment.body);
-        // console.log(`评论内容(HTML):`, comment.bodyHTML); // HTML内容较长，可选择是否输出
-      });
-    }
+    //     // 评论内容
+    //     console.log(`评论内容:`, comment.body);
+    //     // console.log(`评论内容(HTML):`, comment.bodyHTML); // HTML内容较长，可选择是否输出
+    //   });
+    // }
 
     // 返回完整的Issue数据对象，方便进一步处理
-    console.log('issueData', issueData)
+    // console.log('issueData', issueData)
     const mdtohtml = (str: string) => {
       var converter = new showdown.Converter()
       return converter.makeHtml(str)
@@ -207,8 +207,8 @@ export async function parseGitHubIssueFromDocument(): Promise<void> {
       id: issueData.id,
       content: mdtohtml(issueData.body),
       title: title,
-      author: issueData.author.name || issueData.author.login,
-      avatarUrl: issueData.author.avatarUrl,
+      author: issueData?.author?.name || issueData?.author?.login,
+      avatarUrl: issueData?.author?.avatarUrl,
       comments: formattedComments,
       postscripts: [],
       url: window.location.href,
