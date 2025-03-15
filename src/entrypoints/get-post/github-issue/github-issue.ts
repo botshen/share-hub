@@ -26,6 +26,7 @@ function processHtmlContent(content: string): string {
  * @returns 转义后的文本
  */
 function escapeHtml(text: string): string {
+  if (!text) return ''
   return text
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
