@@ -2,7 +2,7 @@
 import PostLogo from './PostLogo.vue'
 import Tiptap from './Tiptap.vue'
 
-type LogoSource = 'v2ex' | 'reddit' | 'hacknews' | 'x'
+type LogoSource = 'v2ex' | 'reddit' | 'hacknews' | 'x' | 'github-issue'
 type Post = {
   avatarUrl: string
   author: string
@@ -19,7 +19,7 @@ type Post = {
 
   conversationId: string
   replyId: string
-}
+} | null
 defineProps<{
   post: Post
 }>()
@@ -43,6 +43,7 @@ defineProps<{
 
   <div class="post-content">
     <Tiptap v-if="post?.title" class="text-2xl font-bold mb-3" :content="post?.title" />
+    
     <Tiptap v-if="post?.content" class="mb-4 cursor-pointer" :content="post?.content" />
 
     <div v-if="post?.mediaPhotosUrl?.length" class="media-gallery grid gap-2 mb-4">

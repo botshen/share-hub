@@ -18,6 +18,7 @@
     "@mozilla/readability": "^0.5.0",
     "@tanstack/vue-query": "^5.59.13",
     "@tiptap/extension-bubble-menu": "^2.11.5",
+    "@tiptap/extension-code-block-lowlight": "^2.11.5",
     "@tiptap/extension-highlight": "^2.11.5",
     "@tiptap/extension-image": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
@@ -29,8 +30,10 @@
     "async-mutex": "^0.5.0",
     "gsap": "^3.12.7",
     "idb": "^8.0.2",
+    "lowlight": "^2.9.0",
     "modern-screenshot": "^4.6.0",
     "nanoid": "^5.1.2",
+    "showdown": "^2.1.0",
     "uuid": "^11.1.0"
   },
   "devDependencies": {
@@ -38,6 +41,7 @@
     "@tailwindcss/vite": "^4.0.6",
     "@types/chrome": "^0.0.280",
     "@types/jsdom": "^21.1.7",
+    "@types/showdown": "^2.0.6",
     "@wxt-dev/auto-icons": "^1.0.2",
     "@wxt-dev/i18n": "^0.2.1",
     "@wxt-dev/module-vue": "^1.0.1",

@@ -7,6 +7,7 @@ import { sharePostHacknews } from './get-post/hacknews/hacknews';
 import { sharePostReddit } from './get-post/reddit/reddit';
 import { sharePostV2ex } from './get-post/v2ex/v2ex';
 import { getWebKind } from '@/utils/get-web-kind';
+import { parseGitHubIssueFromDocument } from './get-post/github-issue/github-issue';
 export default defineContentScript({
   matches: ['<all_urls>'],
   cssInjectionMode: 'ui',
@@ -98,6 +99,8 @@ export default defineContentScript({
         sharePostHacknews();
       } else if (webKind === "x" && xId.value) {
         sharePostX(xId.value);
+      } else if (webKind === "github-issue") {
+        parseGitHubIssueFromDocument();
       } else {
         sharePostCommon();
       }

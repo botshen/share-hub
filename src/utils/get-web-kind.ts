@@ -12,6 +12,9 @@ export const getWebKind = () => {
   if (url.includes('x.com')) {
     return 'x'
   }
+  if (url.includes('github.com') && url.includes('issues')) {
+    return 'github-issue';
+  }
   return 'unknown';
 };
 
