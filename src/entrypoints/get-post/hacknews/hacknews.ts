@@ -9,9 +9,9 @@ import { createNanoId } from "@/utils/id-helper";
 export async function sharePostHacknews() {
   findImmersiveElements(document);
   const title = document.querySelector('.titleline')?.innerHTML?.replace(/Ask HN:|问 HN：/g, '');
-   const fatitem = document.querySelector('.fatitem')
-   const author = fatitem?.querySelector('.hnuser')?.textContent
-   const content = document.querySelector('.toptext')
+  const fatitem = document.querySelector('.fatitem')
+  const author = fatitem?.querySelector('.hnuser')?.textContent
+  const content = document.querySelector('.toptext')
   const comments = getComment()
   const url = window.location.href;
   const todosRepo = getTodosRepo();
@@ -25,7 +25,7 @@ export async function sharePostHacknews() {
     comments,
     postscripts: [],
     source: "hacknews",
-    postContent: content?.innerHTML || "",
+    content: content?.innerHTML || "",
   };
   currentIdStorage.setValue(currentTodo.id);
   todosRepo.update(currentTodo);
