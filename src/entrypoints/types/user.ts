@@ -1,4 +1,4 @@
-import { EntityURL } from './index';
+import type { EntityURL } from './index';
 
 export interface TimelineUser {
   itemType: 'TimelineUser';

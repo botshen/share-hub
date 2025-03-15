@@ -3,8 +3,8 @@ import type { IDBPDatabase } from 'idb';
 
 interface Todo {
   id: number | string | null | undefined;
-  postContent: string | null | undefined;
   title: string | null | undefined;
+  content: string | null | undefined;
   author: string | null | undefined;
   avatarUrl: string | null | undefined;
   comments: {
@@ -12,7 +12,7 @@ interface Todo {
     content: string | null | undefined;
     author: string | null | undefined;
     avatarUrl: string | null | undefined;
-    replyId: number | string | null | undefined;
+    replyId?: number | string | null | undefined;
   }[];
   postscripts: {
     content: string | null | undefined;

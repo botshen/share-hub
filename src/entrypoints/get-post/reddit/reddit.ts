@@ -79,7 +79,7 @@ export async function sharePostReddit() {
   const id = createNanoId()
   const currentTodo = {
     id,
-    postContent: _content,
+    content: _content,
     title,
     author,
     url,

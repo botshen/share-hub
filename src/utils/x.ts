@@ -1,7 +1,7 @@
-import { EntityURL } from "@/entrypoints/types";
-  function xssFilter(str: string) {
-    return str.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  }
+import type { EntityURL } from "@/entrypoints/types";
+function xssFilter(str: string) {
+  return str.replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
 /**
  * Replace t.co URLs in a string with real HTML links.
  *
@@ -22,20 +22,20 @@ import { EntityURL } from "@/entrypoints/types";
  * ```
  */
 export function strEntitiesToHTML(str: string, urls?: EntityURL[]) {
-    let temp = str;
-  
-    if (!urls?.length) {
-      return temp;
-    }
-  
-    for (const { url, display_url, expanded_url } of urls) {
-      temp = temp.replaceAll(
-        url,
-        `<a class="link" target="_blank" href="${xssFilter(expanded_url ?? url)}">${xssFilter(
-          display_url ?? url,
-        )}</a>`,
-      );
-    }
-  
+  let temp = str;
+
+  if (!urls?.length) {
     return temp;
   }
+
+  for (const { url, display_url, expanded_url } of urls) {
+    temp = temp.replaceAll(
+      url,
+      `<a class="link" target="_blank" href="${xssFilter(expanded_url ?? url)}">${xssFilter(
+        display_url ?? url,
+      )}</a>`,
+    );
+  }
+
+  return temp;
+}

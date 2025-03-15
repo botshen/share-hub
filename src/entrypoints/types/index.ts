@@ -1,6 +1,6 @@
-import { TimelineTwitterList } from './list';
-import { TimelineTweet } from './tweet';
-import { TimelineUser } from './user';
+import { type TimelineTwitterList } from './list';
+import { type TimelineTweet } from './tweet';
+import { type TimelineUser } from './user';
 
 export * from './list';
 export * from './tweet';
@@ -114,12 +114,12 @@ export interface TimelineTimelineModule<T = ItemContentUnion> {
   __typename: 'TimelineTimelineModule';
   clientEventInfo: unknown;
   displayType:
-    | 'Vertical'
-    | 'VerticalConversation'
-    | 'VerticalGrid'
-    | 'ListWithPin'
-    | 'ListWithSubscribe'
-    | string;
+  | 'Vertical'
+  | 'VerticalConversation'
+  | 'VerticalGrid'
+  | 'ListWithPin'
+  | 'ListWithSubscribe'
+  | string;
   items: {
     // "who-to-follow-{id}-user-{uid}"
     // "profile-conversation-{id}-tweet-{tid}"
