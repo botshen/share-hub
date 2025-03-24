@@ -1,8 +1,8 @@
 {
-  "name": "share-hub",
-  "description": "share-hub",
+  "name": "ShareHub: Smart Content Collection & Reading Experience",
+  "description": "Collect and beautifully format content from Reddit, V2EX, Hacker News, Twitter, GitHub Issues and more with a single click.",
   "private": true,
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "module",
   "scripts": {
     "dev": "wxt",
